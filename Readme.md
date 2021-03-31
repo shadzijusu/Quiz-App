@@ -6,9 +6,9 @@ Pri preuzimanju ovog repozitorija editujte ovaj Readme tako da sadrži vaš poda
 Ne mijenjajte naziv aplikacije niti početnih paketa.
 
 
-| Ime i prezime  | Index  | Grupa     |
-|----------------|--------|-----------|
-| Neko Nekić     | 12345  | PON 09:00 |
+| Ime i prezime        | Index  | Grupa     |
+|----------------------|--------|-----------|
+| Selma Hadžijusufović | 18461  | PON 10:30 |
 
 &nbsp;
 
