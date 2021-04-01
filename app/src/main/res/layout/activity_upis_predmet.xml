@@ -3,44 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout2"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".UpisPredmet"
     tools:deviceIds="wear">
 
     <Spinner
         android:id="@+id/odabirGodina"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="23dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/dodajPredmetDugme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.21" />
 
     <Spinner
         android:id="@+id/odabirPredmet"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="23dp"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="48dp"
-        android:layout_marginEnd="5dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/odabirGodina" />
-
-    <Spinner
-        android:id="@+id/odabirGrupe"
-        android:layout_width="150dp"
-        android:layout_height="23dp"
         android:layout_marginEnd="5dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/dodajPredmetDugme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.61"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/odabirGodina"
+        app:layout_constraintVertical_bias="0.015" />
+
+    <Spinner
+        android:id="@+id/odabirGrupe"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/dodajPredmetDugme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.602"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/odabirPredmet"
-        app:layout_constraintVertical_bias="0.336" />
+        app:layout_constraintVertical_bias="0.45" />
 
     <Button
         android:id="@+id/dodajPredmetDugme"
@@ -61,10 +67,9 @@
         android:id="@+id/cardView"
         android:layout_width="163dp"
         android:layout_height="234dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         app:cardBackgroundColor="#67C3C3"
-        app:layout_constraintEnd_toStartOf="@+id/odabirPredmet"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 

@@ -1,5 +1,7 @@
 package ba.etf.rma21.projekat.view
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
 
 
 class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
@@ -23,23 +27,36 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
 
     override fun getItemCount() = kvizovi.size
 
+
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
+        val current : Date = Date(2021, 4, 1)
+
         holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
         holder.nazivKviza.text = kvizovi[position].naziv
 
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
         holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
-        holder.datumKviza.text = kvizovi[position].datumPocetka.day.toString() + "." + kvizovi[position].datumPocetka.month + "."+ kvizovi[position].datumPocetka.year
-//        val drawable: Int = holder.stanjeKviza.getTag() as Int
-//        when (drawable) {
-//            R.drawable.crvena -> holder.datumKviza.text = kvizovi[position].datumKraj.toString()
-//            R.drawable.zuta -> holder.datumKviza.text = kvizovi[position].datumPocetka.toString()
-//            R.drawable.plava -> holder.datumKviza.text = kvizovi[position].datumRada.toString()
-//            else -> holder.datumKviza.text = kvizovi[position].datumKraj.toString()
-//        }
+        if(kvizovi[position].datumRada?.day != 0) {
+            holder.datumKviza.text = kvizovi[position].datumRada?.day.toString() + "."+ kvizovi[position].datumRada?.month.toString() + "." + kvizovi[position].datumRada?.year.toString()
+            holder.stanjeKviza.setImageResource(R.drawable.plava)
+        }//ako je poslije danasnjeg datuma to je future i ide zuta
+        else if(kvizovi[position].datumKraj.compareTo(current) > 0) {
+            holder.datumKviza.text = kvizovi[position].datumPocetka?.day.toString() + "."+ kvizovi[position].datumPocetka.month.toString() + "." + kvizovi[position].datumPocetka.year.toString()
+            holder.stanjeKviza.setImageResource(R.drawable.zuta)
+            }
+        //crvena - before today i bodovi nula
+        else if(kvizovi[position].datumKraj.compareTo(current) < 0 && kvizovi[position].osvojeniBodovi == 0F) {
+            holder.datumKviza.text = kvizovi[position].datumKraj.day.toString() + "."+ kvizovi[position].datumKraj.month.toString() + "." + kvizovi[position].datumKraj.year.toString()
+            holder.stanjeKviza.setImageResource(R.drawable.crvena)
+        }
+        else {
+            holder.datumKviza.text = kvizovi[position].datumKraj.day.toString() + "."+ kvizovi[position].datumKraj.month.toString() + "." + kvizovi[position].datumKraj.year.toString()
+            holder.stanjeKviza.setImageResource(R.drawable.zelena)
+        }
     }
 
-    fun updateKvizove(kvizovi: List<Kviz>) {
+
+fun updateKvizove(kvizovi: List<Kviz>) {
         this.kvizovi = kvizovi
         notifyDataSetChanged()
     }
@@ -54,3 +71,5 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
         //val upisDugme : FloatingActionButton = itemView.findViewById(R.id.upisDugme)
     }
 }
+
+
