@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import ba.etf.rma21.projekat.data.groupsByPredmet
 import ba.etf.rma21.projekat.data.models.Grupa
 
 class GrupaRepository {
@@ -9,8 +10,7 @@ class GrupaRepository {
         }
 
         fun getGroupsByPredmet(nazivPredmeta: String): List<Grupa> {
-            // TODO: Implementirati
-            return emptyList()
+           return groupsByPredmet(nazivPredmeta)
         }
     }
 }

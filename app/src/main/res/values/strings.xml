@@ -13,4 +13,37 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string-array name="godine">
+        <item>Prva godina</item>
+        <item>Druga godina</item>
+        <item>Treća godina</item>
+        <item>Četvrta godina</item>
+        <item>Peta godina</item>
+    </string-array>
+    <string-array name="prva">
+        <item>OE</item>
+        <item>IM1</item>
+        <item>LAG</item>
+        <item>IF1</item>
+        <item>UUP</item>
+        <item>IM2</item>
+        <item>VIS</item>
+        <item>OS</item>
+        <item>MLTI</item>
+        <item>TP</item>
+    </string-array>
+    <string-array name="druga">
+        <item>ASP</item>
+        <item>OBP</item>
+        <item>DM</item>
+        <item>SP</item>
+        <item>RPR</item>
+        <item>LD</item>
+        <item>ORM</item>
+        <item>RMA</item>
+        <item>OOAD</item>
+        <item>RA</item>
+        <item>IEK</item>
+        <item>AFJ</item>
+    </string-array>
 </resources>

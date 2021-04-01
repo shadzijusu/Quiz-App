@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
@@ -28,13 +29,14 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
 
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
         holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
-        val drawable: Int = holder.stanjeKviza.getTag() as Int
-        when (drawable) {
-            R.drawable.crvena -> holder.datumKviza.text = kvizovi[position].datumKraj.toString()
-            R.drawable.zuta -> holder.datumKviza.text = kvizovi[position].datumPocetka.toString()
-            R.drawable.plava -> holder.datumKviza.text = kvizovi[position].datumRada.toString()
-            else -> holder.datumKviza.text = kvizovi[position].datumKraj.toString()
-        }
+        holder.datumKviza.text = kvizovi[position].datumPocetka.day.toString() + "." + kvizovi[position].datumPocetka.month + "."+ kvizovi[position].datumPocetka.year
+//        val drawable: Int = holder.stanjeKviza.getTag() as Int
+//        when (drawable) {
+//            R.drawable.crvena -> holder.datumKviza.text = kvizovi[position].datumKraj.toString()
+//            R.drawable.zuta -> holder.datumKviza.text = kvizovi[position].datumPocetka.toString()
+//            R.drawable.plava -> holder.datumKviza.text = kvizovi[position].datumRada.toString()
+//            else -> holder.datumKviza.text = kvizovi[position].datumKraj.toString()
+//        }
     }
 
     fun updateKvizove(kvizovi: List<Kviz>) {
@@ -49,6 +51,6 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
         val trajanjeKviza: TextView = itemView.findViewById(R.id.trajanjeKviza)
         val osvojeniBodovi: TextView = itemView.findViewById(R.id.osvojeniBodovi)
         val stanjeKviza: ImageView = itemView.findViewById(R.id.stanjeKviza)
-
+        //val upisDugme : FloatingActionButton = itemView.findViewById(R.id.upisDugme)
     }
 }
