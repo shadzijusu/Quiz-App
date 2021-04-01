@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.data.view
+package ba.etf.rma21.projekat.view
 
 import android.view.LayoutInflater
 import android.view.View

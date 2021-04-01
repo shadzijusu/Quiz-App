@@ -1,12 +1,13 @@
 package ba.etf.rma21.projekat
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ba.etf.rma21.projekat.data.view.ListaKvizovaAdapter
+import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -49,7 +50,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openUpisPredmet() {
-        TODO("Not yet implemented")
+        val intent = Intent(this, UpisPredmet::class.java).apply {
+        }
+        startActivity(intent)
     }
 }
 
