@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
     private fun openUpisPredmet(view : View) {
         val intent = Intent(this, UpisPredmet::class.java).apply {
-            putExtra(" ", " " )
+            putExtra("Upis", "Upišite se" )
         }
         startActivity(intent)
     }

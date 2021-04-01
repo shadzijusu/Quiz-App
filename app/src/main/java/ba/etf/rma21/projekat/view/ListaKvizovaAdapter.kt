@@ -59,7 +59,6 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
 
     }
 
-
 fun updateKvizove(kvizovi: List<Kviz>) {
         this.kvizovi = kvizovi
         notifyDataSetChanged()

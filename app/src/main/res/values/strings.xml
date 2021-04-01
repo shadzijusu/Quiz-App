@@ -14,11 +14,11 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string-array name="godine">
-        <item>Prva godina</item>
-        <item>Druga godina</item>
-        <item>Treća godina</item>
-        <item>Četvrta godina</item>
-        <item>Peta godina</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
     <string-array name="prva">
         <item>OE</item>
@@ -45,5 +45,39 @@
         <item>RA</item>
         <item>IEK</item>
         <item>AFJ</item>
+    </string-array>
+    <string-array name="treca">
+        <item>WT</item>
+        <item>RG</item>
+        <item>OIS</item>
+        <item>OOI</item>
+        <item>OOI</item>
+        <item>PJP</item>
+        <item>VVS</item>
+        <item>VI</item>
+    </string-array>
+    <string-array name="cetvrta">
+        <item>RV</item>
+        <item>NOS</item>
+        <item>NASP</item>
+        <item>MU</item>
+        <item>PRS</item>
+    </string-array>
+    <string-array name="peta">
+        <item>RI</item>
+        <item>MPVI</item>
+        <item>NSI</item>
+        <item>TS</item>
+    </string-array>
+    <string-array name="grupeRA">
+        <item>Grupa1</item>
+        <item>Grupa2</item>
+    </string-array>
+    <string-array name="grupeOOAD">
+        <item>PON9</item>
+        <item>PON13</item>
+        <item>UTO12</item>
+        <item>SRI15</item>
+        <item>PET10</item>
     </string-array>
 </resources>
