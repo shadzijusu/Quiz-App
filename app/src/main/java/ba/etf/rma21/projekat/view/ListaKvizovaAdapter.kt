@@ -35,24 +35,28 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
         holder.nazivKviza.text = kvizovi[position].naziv
 
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
+        if(kvizovi[position].osvojeniBodovi != null)
         holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
-        if(kvizovi[position].datumRada?.day != 0) {
-            holder.datumKviza.text = kvizovi[position].datumRada?.day.toString() + "."+ kvizovi[position].datumRada?.month.toString() + "." + kvizovi[position].datumRada?.year.toString()
-            holder.stanjeKviza.setImageResource(R.drawable.plava)
-        }//ako je poslije danasnjeg datuma to je future i ide zuta
-        else if(kvizovi[position].datumKraj.compareTo(current) > 0) {
+
+        //ako je poslije danasnjeg datuma - zuta - tek treba biti aktivan
+         if(kvizovi[position].datumPocetka.compareTo(current) > 0) {
             holder.datumKviza.text = kvizovi[position].datumPocetka?.day.toString() + "."+ kvizovi[position].datumPocetka.month.toString() + "." + kvizovi[position].datumPocetka.year.toString()
             holder.stanjeKviza.setImageResource(R.drawable.zuta)
-            }
-        //crvena - before today i bodovi nula
-        else if(kvizovi[position].datumKraj.compareTo(current) < 0 && kvizovi[position].osvojeniBodovi == 0F) {
+         }
+        //crvena - before today i bodovi nula - prosao nije uradjen
+        else if(kvizovi[position].datumKraj.compareTo(current) < 0 && kvizovi[position].osvojeniBodovi == null) {
             holder.datumKviza.text = kvizovi[position].datumKraj.day.toString() + "."+ kvizovi[position].datumKraj.month.toString() + "." + kvizovi[position].datumKraj.year.toString()
             holder.stanjeKviza.setImageResource(R.drawable.crvena)
+        }
+        else if(kvizovi[position].datumRada?.day != 0) {
+            holder.datumKviza.text = kvizovi[position].datumRada?.day.toString() + "."+ kvizovi[position].datumRada?.month.toString() + "." + kvizovi[position].datumRada?.year.toString()
+            holder.stanjeKviza.setImageResource(R.drawable.plava)
         }
         else {
             holder.datumKviza.text = kvizovi[position].datumKraj.day.toString() + "."+ kvizovi[position].datumKraj.month.toString() + "." + kvizovi[position].datumKraj.year.toString()
             holder.stanjeKviza.setImageResource(R.drawable.zelena)
         }
+
     }
 
 

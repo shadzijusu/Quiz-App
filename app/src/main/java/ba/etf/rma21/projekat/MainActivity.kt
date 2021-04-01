@@ -49,9 +49,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             false
         )
         listaKvizova.addItemDecoration(DefaultItemDecorator(0, 20))
-        listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
+        listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes().sortedBy {  it.datumPocetka })
         listaKvizova.adapter = listaKvizovaAdapter
-        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
         upisDugme.setOnClickListener {
             openUpisPredmet(it)
         }
