@@ -1,6 +1,5 @@
 package ba.etf.rma21.projekat
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -23,7 +22,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private var kvizListViewModel = KvizListViewModel()
 
 
-    @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -52,9 +50,15 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes().sortedBy {  it.datumPocetka })
         listaKvizova.adapter = listaKvizovaAdapter
         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
-        upisDugme.setOnClickListener {
-            openUpisPredmet(it)
-        }
+
+        upisDugme.setOnClickListener(View.OnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    UpisPredmet::class.java
+                )
+            )
+        })
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -92,12 +96,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             }
         }
     }
-    private fun openUpisPredmet(view : View) {
-        val intent = Intent(this, UpisPredmet::class.java).apply {
-            putExtra("Upis", "Upišite se" )
-        }
-        startActivity(intent)
-    }
+
 }
 
 

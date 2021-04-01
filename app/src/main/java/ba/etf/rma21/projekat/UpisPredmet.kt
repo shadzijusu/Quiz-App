@@ -8,8 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import ba.etf.rma21.projekat.data.groupsByPredmet
-import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
 
@@ -27,7 +25,9 @@ class UpisPredmet : AppCompatActivity() {
         setContentView(R.layout.activity_upis_predmet)
         dodajPredmetDugme = findViewById(R.id.dodajPredmetDugme)
         dodajPredmetDugme.visibility = View.GONE
-
+        dodajPredmetDugme.setOnClickListener {
+            upisiMe()
+        }
 
         odabirGodina = findViewById(R.id.odabirGodina)
         odabirPredmet = findViewById(R.id.odabirPredmet)
@@ -169,5 +169,12 @@ class UpisPredmet : AppCompatActivity() {
                     dodajPredmetDugme.visibility = View.VISIBLE
             }
         })
+    }
+
+    private fun upisiMe() {
+        var godina = odabirGodina.selectedItem
+        var nazivPredmeta = odabirPredmet.selectedItem
+        var nazivGrupe = odabirGrupa.selectedItem
+        //implement
     }
 }
