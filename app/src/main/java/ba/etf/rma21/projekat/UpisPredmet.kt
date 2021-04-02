@@ -132,9 +132,9 @@ class UpisPredmet : AppCompatActivity() {
             ) {
                 var predmet: String = parent.getItemAtPosition(position).toString()
                 when (predmet) {
-                    "RA" -> ArrayAdapter.createFromResource(
+                    "VIS" -> ArrayAdapter.createFromResource(
                         view.context,
-                        R.array.grupeRA,
+                        R.array.grupeVIS,
                         android.R.layout.simple_spinner_item
                     ).also { adapter ->
                         // Specify the layout to use when the list of choices appears
@@ -142,10 +142,10 @@ class UpisPredmet : AppCompatActivity() {
                         // Apply the adapter to the spinner
                         odabirGrupa.adapter = adapter
                     }
-                    "OOAD" ->
+                    "OS" ->
                         ArrayAdapter.createFromResource(
                             view.context,
-                            R.array.grupeOOAD,
+                            R.array.grupeOS,
                             android.R.layout.simple_spinner_item
                         ).also { adapter ->
                             // Specify the layout to use when the list of choices appears
@@ -153,6 +153,186 @@ class UpisPredmet : AppCompatActivity() {
                             // Apply the adapter to the spinner
                             odabirGrupa.adapter = adapter
                         }
+                    "MLTI" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeMLTI,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "TP" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeTP,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "ASP" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeASP,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "OBP" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeOBP,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "DM" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeDM,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "RPR" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeRPR,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "OOAD" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeOOAD,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "RMA" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeRMA,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "WT" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeWT,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "OOI" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeOOI,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "VVS" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeVVS,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "VI" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeVI,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "RV" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeRV,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "NOS" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeNOS,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "NASP" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeNASP,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "TS" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeTS,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "MPVI" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeMPVI,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
+                    "NSI" -> ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.grupeNSI,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirGrupa.adapter = adapter
+                    }
                 }
                 odabranPredmet = true
             }

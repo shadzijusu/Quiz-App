@@ -48,7 +48,7 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
             holder.datumKviza.text = kvizovi[position].datumKraj.day.toString() + "."+ kvizovi[position].datumKraj.month.toString() + "." + kvizovi[position].datumKraj.year.toString()
             holder.stanjeKviza.setImageResource(R.drawable.crvena)
         }
-        else if(kvizovi[position].datumRada?.day != 0) {
+        else if(kvizovi[position].datumRada?.day != 0 && kvizovi[position].osvojeniBodovi != null) {
             holder.datumKviza.text = kvizovi[position].datumRada?.day.toString() + "."+ kvizovi[position].datumRada?.month.toString() + "." + kvizovi[position].datumRada?.year.toString()
             holder.stanjeKviza.setImageResource(R.drawable.plava)
         }

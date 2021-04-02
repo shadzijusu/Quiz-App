@@ -21,12 +21,6 @@
         <item>5</item>
     </string-array>
     <string-array name="prva">
-        <item>OE</item>
-        <item>IM1</item>
-        <item>LAG</item>
-        <item>IF1</item>
-        <item>UUP</item>
-        <item>IM2</item>
         <item>VIS</item>
         <item>OS</item>
         <item>MLTI</item>
@@ -36,23 +30,13 @@
         <item>ASP</item>
         <item>OBP</item>
         <item>DM</item>
-        <item>SP</item>
         <item>RPR</item>
-        <item>LD</item>
-        <item>ORM</item>
         <item>RMA</item>
         <item>OOAD</item>
-        <item>RA</item>
-        <item>IEK</item>
-        <item>AFJ</item>
     </string-array>
     <string-array name="treca">
         <item>WT</item>
-        <item>RG</item>
         <item>OIS</item>
-        <item>OOI</item>
-        <item>OOI</item>
-        <item>PJP</item>
         <item>VVS</item>
         <item>VI</item>
     </string-array>
@@ -60,18 +44,52 @@
         <item>RV</item>
         <item>NOS</item>
         <item>NASP</item>
-        <item>MU</item>
-        <item>PRS</item>
     </string-array>
     <string-array name="peta">
         <item>RI</item>
         <item>MPVI</item>
         <item>NSI</item>
-        <item>TS</item>
     </string-array>
-    <string-array name="grupeRA">
+    <string-array name="grupeVIS">
         <item>Grupa1</item>
         <item>Grupa2</item>
+    </string-array>
+    <string-array name="grupeOS">
+        <item>A1</item>
+        <item>B2</item>
+    </string-array>
+    <string-array name="grupeMLTI">
+        <item>MLTI1</item>
+        <item>MLTI2</item>
+        <item>MLTI3</item>
+    </string-array>
+    <string-array name="grupeTP">
+        <item>C++1</item>
+        <item>C++2</item>
+        <item>C++3</item>
+    </string-array>
+    <string-array name="grupeASP">
+        <item>Grupa1A</item>
+        <item>Grupa1B</item>
+        <item>Grupa2A</item>
+    </string-array>
+    <string-array name="grupeOBP">
+        <item>Prva</item>
+        <item>Druga</item>
+    </string-array>
+    <string-array name="grupeDM">
+        <item>G1</item>
+        <item>G2</item>
+        <item>G3</item>
+        <item>G12</item>
+        <item>G13</item>
+        <item>G6</item>
+    </string-array>
+    <string-array name="grupeRPR">
+        <item>Grupa1</item>
+        <item>Grupa2</item>
+        <item>Grupa3</item>
+        <item>Grupa4</item>
     </string-array>
     <string-array name="grupeOOAD">
         <item>PON9</item>
@@ -79,5 +97,55 @@
         <item>UTO12</item>
         <item>SRI15</item>
         <item>PET10</item>
+    </string-array>
+    <string-array name="grupeRMA">
+        <item>PON9</item>
+        <item>PON1130</item>
+        <item>UTO9</item>
+        <item>SRI13</item>
+        <item>CET14</item>
+    </string-array>
+    <string-array name="grupeWT">
+        <item>Prva</item>
+        <item>Druga</item>
+    </string-array>
+    <string-array name="grupeOOI">
+        <item>A</item>
+        <item>B</item>
+    </string-array>
+
+    <string-array name="grupeVVS">
+        <item>A2</item>
+        <item>B1</item>
+    </string-array>
+    <string-array name="grupeVI">
+        <item>Pon1</item>
+        <item>Uto2</item>
+    </string-array>
+
+    <string-array name="grupeRV">
+        <item>D8</item>
+        <item>A5</item>
+    </string-array>
+
+    <string-array name="grupeNOS">
+        <item>EEF</item>
+        <item>AAA</item>
+    </string-array>
+    <string-array name="grupeNASP">
+        <item>naspA</item>
+        <item>naspB</item>
+    </string-array>
+    <string-array name="grupeMPVI">
+        <item>m1</item>
+        <item>m2</item>
+    </string-array>
+    <string-array name="grupeNSI">
+        <item>NSI-A</item>
+        <item>NSI-B</item>
+    </string-array>
+    <string-array name="grupeTS">
+        <item>A-C</item>
+        <item>D-F</item>
     </string-array>
 </resources>
