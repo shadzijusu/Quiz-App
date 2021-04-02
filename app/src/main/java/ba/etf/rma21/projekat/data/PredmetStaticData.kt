@@ -2,6 +2,13 @@ package ba.etf.rma21.projekat.data
 
 import ba.etf.rma21.projekat.data.models.Predmet
 
+var mojiPredmeti = mutableListOf(
+    Predmet("DM", 2),
+    Predmet("RPR", 2),
+    Predmet("OOAD", 2),
+    Predmet("RMA", 2)
+)
+
 fun predmetsByGodina(godina: Int): List<Predmet> {
     when (godina) {
         1 -> return listOf(
@@ -65,11 +72,8 @@ fun all(): List<Predmet> {
 
 }
 
-fun upisani(): List<Predmet> {
-    return listOf(
-        Predmet("DM", 2),
-        Predmet("RPR", 2),
-        Predmet("OOAD", 2),
-        Predmet("RMA", 2)
-    )
+fun upisani(): List<Predmet> = mojiPredmeti
+
+fun upisi(predmet : Predmet) {
+      mojiPredmeti.add(predmet)
 }

@@ -31,5 +31,8 @@ class KvizRepository {
             return notTaken()
         }
         // TODO: Implementirati i ostale potrebne metode
+        fun addMine(kviz : Kviz) {
+            dodajMoj(kviz)
+        }
     }
 }

@@ -15,4 +15,7 @@ class PredmetListViewModel {
     fun getPredmetsByGodina(godina : Int) : List<Predmet> {
         return PredmetRepository.getPredmetsByGodina(godina)
     }
+    fun upisiPredmet(predmet : Predmet) {
+        PredmetRepository.upisiPredmet(predmet)
+    }
 }

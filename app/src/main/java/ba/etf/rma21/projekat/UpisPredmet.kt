@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -8,6 +9,9 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.data.models.Predmet
+import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
 
@@ -19,20 +23,20 @@ class UpisPredmet : AppCompatActivity() {
     private lateinit var dodajPredmetDugme: Button
     private var kvizListViewModel = KvizListViewModel()
     private var predmetListViewModel = PredmetListViewModel()
+    private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upis_predmet)
         dodajPredmetDugme = findViewById(R.id.dodajPredmetDugme)
         dodajPredmetDugme.visibility = View.GONE
-        dodajPredmetDugme.setOnClickListener {
-            upisiMe()
-        }
+
 
         odabirGodina = findViewById(R.id.odabirGodina)
         odabirPredmet = findViewById(R.id.odabirPredmet)
         odabirGrupa = findViewById(R.id.odabirGrupe)
 
+        listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
         ArrayAdapter.createFromResource(
             this,
             R.array.godine,
@@ -349,12 +353,21 @@ class UpisPredmet : AppCompatActivity() {
                     dodajPredmetDugme.visibility = View.VISIBLE
             }
         })
+        dodajPredmetDugme.setOnClickListener {
+            upisiMe()
+        }
     }
 
-    private fun upisiMe() {
-        var godina = odabirGodina.selectedItem
-        var nazivPredmeta = odabirPredmet.selectedItem
+    private fun upisiMe()  {
+        var godina = odabirGodina.selectedItem.toString()
+        var nazivPredmeta = odabirPredmet.selectedItem.toString()
         var nazivGrupe = odabirGrupa.selectedItem
-        //implement
+
+        predmetListViewModel.upisiPredmet(Predmet(nazivPredmeta, godina.toInt()))
+
+        for(kviz in kvizListViewModel.getAll()) {
+            if(kviz.nazivPredmeta.equals(nazivPredmeta) || kviz.nazivGrupe.equals(nazivGrupe) && !kvizListViewModel.getMyKvizes().contains(kviz))
+                kvizListViewModel.addMine(kviz)
+        }
     }
 }

@@ -4,6 +4,7 @@ import ba.etf.rma21.projekat.data.all
 import ba.etf.rma21.projekat.data.models.Predmet
 import ba.etf.rma21.projekat.data.predmetsByGodina
 import ba.etf.rma21.projekat.data.upisani
+import ba.etf.rma21.projekat.data.upisi
 
 class PredmetRepository {
     companion object {
@@ -17,7 +18,9 @@ class PredmetRepository {
         fun getPredmetsByGodina(godina : Int) : List<Predmet> {
             return predmetsByGodina(godina)
         }
-        // TODO: Implementirati i ostale potrebne metode
+        fun upisiPredmet(predmet : Predmet) {
+            upisi(predmet)
+        }
     }
 
 }
