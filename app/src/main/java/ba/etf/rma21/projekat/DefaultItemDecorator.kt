@@ -13,11 +13,11 @@ class DefaultItemDecorator(private val horizontalSpacing: Int, private val verti
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect.right = horizontalSpacing
+        outRect.right = verticalSpacing
         outRect.left = horizontalSpacing
         if (parent.getChildLayoutPosition(view) == 0)
             outRect.top = verticalSpacing
 
-        outRect.bottom = verticalSpacing
+        outRect.bottom = horizontalSpacing
     }
 }

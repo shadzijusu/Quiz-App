@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat
 
+import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.Predmet
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
@@ -358,15 +360,17 @@ class UpisPredmet : AppCompatActivity() {
         }
     }
 
-    private fun upisiMe()  {
+    private fun upisiMe() {
         var godina = odabirGodina.selectedItem.toString()
         var nazivPredmeta = odabirPredmet.selectedItem.toString()
         var nazivGrupe = odabirGrupa.selectedItem
 
         predmetListViewModel.upisiPredmet(Predmet(nazivPredmeta, godina.toInt()))
 
-        for(kviz in kvizListViewModel.getAll()) {
-            if(kviz.nazivPredmeta.equals(nazivPredmeta) || kviz.nazivGrupe.equals(nazivGrupe) && !kvizListViewModel.getMyKvizes().contains(kviz))
+        for (kviz in kvizListViewModel.getAll()) {
+            if (kviz.nazivPredmeta.equals(nazivPredmeta) || kviz.nazivGrupe.equals(nazivGrupe) && !kvizListViewModel.getMyKvizes()
+                    .contains(kviz)
+            )
                 kvizListViewModel.addMine(kviz)
         }
     }
