@@ -38,7 +38,7 @@
         app:layout_constraintVertical_bias="0.241" />
 
     <Spinner
-        android:id="@+id/odabirGrupe"
+        android:id="@+id/odabirGrupa"
         android:layout_width="150dp"
         android:layout_height="23dp"
         android:layout_marginStart="12dp"
