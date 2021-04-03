@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 listaKvizova.adapter = listaKvizovaAdapter
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
             }
-            "Prošli kvizovi (neurađeni)" -> {
+            "Prošli kvizovi" -> {
                 listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getNotTaken())
                 listaKvizova.adapter = listaKvizovaAdapter
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
