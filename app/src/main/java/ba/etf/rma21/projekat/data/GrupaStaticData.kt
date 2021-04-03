@@ -62,15 +62,18 @@ fun groupsByPredmet(nazivPredmeta: String): List<Grupa> {
         )
         "WT" -> return listOf(
             Grupa("Prva", "WT"),
-            Grupa("Druga", "WT")
+            Grupa("Druga", "WT"),
+            Grupa("Treca", "WT")
         )
         "OOI" -> return listOf(
             Grupa("A", "OOI"),
-            Grupa("B", "OOI")
+            Grupa("B", "OOI"),
+            Grupa("C", "OOI")
         )
         "VVS" -> return listOf(
             Grupa("A2", "VVS"),
-            Grupa("B1", "VVS")
+            Grupa("B1", "VVS"),
+            Grupa("C", "VVS")
         )
         "VI" -> return listOf(
             Grupa("Pon1", "VI"),
@@ -95,7 +98,8 @@ fun groupsByPredmet(nazivPredmeta: String): List<Grupa> {
         )
         "NSI" -> return listOf(
             Grupa("NSI-A", "NSI"),
-            Grupa("NSI-B", "NSI")
+            Grupa("NSI-B", "NSI"),
+            Grupa("NSI-C", "NSI")
         )
         "TS" -> return listOf(
             Grupa("A-C", "TS"),
