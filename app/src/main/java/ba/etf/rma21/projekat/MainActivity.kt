@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             popupWindow.isFocusable = true
 
             // Removes default background.
-            popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            popupWindow.showAsDropDown(filterKvizova, 0, 102*8)
+            popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            popupWindow.showAsDropDown(filterKvizova, -10*8, 118*8)
         }
         ArrayAdapter.createFromResource(
             this,
@@ -66,19 +66,17 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         )
         listaKvizova.addItemDecoration(DefaultItemDecorator(15, 5))
         listaKvizovaAdapter =
-            ListaKvizovaAdapter(kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
+            ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
         listaKvizova.adapter = listaKvizovaAdapter
-        listaKvizovaAdapter.updateKvizove(
-            kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
 
-        upisDugme.setOnClickListener(View.OnClickListener {
+        upisDugme.setOnClickListener {
             startActivity(
                 Intent(
                     this,
                     UpisPredmet::class.java
                 )
             )
-        })
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -90,27 +88,27 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         // parent.getItemAtPosition(pos)
         when (parent.getItemAtPosition(pos)) {
             "Svi kvizovi" -> {
-                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getAll())
+                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getAll().sortedBy { it.datumPocetka })
                 listaKvizova.adapter = listaKvizovaAdapter
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
             }
             "Urađeni kvizovi" -> {
-                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getDone())
+                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getDone().sortedBy { it.datumPocetka })
                 listaKvizova.adapter = listaKvizovaAdapter
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
             }
             "Budući kvizovi" -> {
-                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getFuture())
+                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getFuture().sortedBy { it.datumPocetka })
                 listaKvizova.adapter = listaKvizovaAdapter
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
             }
             "Prošli kvizovi" -> {
-                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getNotTaken())
+                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka })
                 listaKvizova.adapter = listaKvizovaAdapter
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
             }
             else -> {
-                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
+                listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
                 listaKvizova.adapter = listaKvizovaAdapter
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
             }
@@ -120,8 +118,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     override fun onResume() {
         super.onResume()
         listaKvizovaAdapter.notifyDataSetChanged()
-        listaKvizovaAdapter.updateKvizove(
-            kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
+//        listaKvizovaAdapter.updateKvizove(
+//            kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
     }
 }
 

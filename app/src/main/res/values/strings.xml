@@ -113,15 +113,18 @@
     <string-array name="grupeWT">
         <item>Prva</item>
         <item>Druga</item>
+        <item>Treca</item>
     </string-array>
     <string-array name="grupeOOI">
         <item>A</item>
         <item>B</item>
+        <item>C</item>
     </string-array>
 
     <string-array name="grupeVVS">
         <item>A2</item>
         <item>B1</item>
+        <item>C</item>
     </string-array>
     <string-array name="grupeVI">
         <item>Pon1</item>
@@ -148,10 +151,15 @@
     <string-array name="grupeNSI">
         <item>NSI-A</item>
         <item>NSI-B</item>
+        <item>NSI-C</item>
     </string-array>
     <string-array name="grupeTS">
         <item>A-C</item>
         <item>D-F</item>
     </string-array>
     <string name="title_activity_info">InfoActivity</string>
+    <string name="done">Kviz koji je urađen</string>
+    <string name="notTaken">Kviz koji je prošao, ali nije urađen</string>
+    <string name="active">Kviz koji je aktivan, ali nije urađen</string>
+    <string name="future">Kviz koji tek treba biti aktivan</string>
 </resources>

@@ -57,7 +57,7 @@ class RepositoryUnitClass {
     @Test
     fun testGetAllKvizes() {
         val kvizovi = KvizRepository.getAll()
-        assertEquals(kvizovi.size, 11)
+        assertEquals(kvizovi.size, 17)
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Priprema za ispit"))))
     }
     @Test
