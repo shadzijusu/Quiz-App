@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         upisDugme = findViewById(R.id.upisDugme)
         filterKvizova = findViewById(R.id.filterKvizova)
         infoButton = findViewById(R.id.infoButton)
-
         infoButton.setOnClickListener {
             val popupWindow = PopupWindow(this)
             val view = layoutInflater.inflate(R.layout.activity_info, null)
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
             // Removes default background.
             popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            popupWindow.showAsDropDown(filterKvizova, -10*8, 118*8)
+            popupWindow.showAsDropDown(infoButton, 15*8, -65*8)
         }
         ArrayAdapter.createFromResource(
             this,
@@ -58,13 +57,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             filterKvizova.adapter = adapter
         }
         filterKvizova.onItemSelectedListener = this
-        listaKvizova.layoutManager = GridLayoutManager(
-            this,
-            2,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        listaKvizova.addItemDecoration(DefaultItemDecorator(15, 5))
+        listaKvizova.layoutManager = GridLayoutManager(this, 2)
+        listaKvizova.addItemDecoration(DefaultItemDecorator(25, 5))
         listaKvizovaAdapter =
             ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
         listaKvizova.adapter = listaKvizovaAdapter

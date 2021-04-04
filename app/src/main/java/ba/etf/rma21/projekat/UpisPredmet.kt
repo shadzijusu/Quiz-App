@@ -35,6 +35,7 @@ class UpisPredmet : AppCompatActivity() {
         odabirGrupa = findViewById(R.id.odabirGrupa)
 
         listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
+
         ArrayAdapter.createFromResource(
             this,
             R.array.godine,
@@ -46,7 +47,7 @@ class UpisPredmet : AppCompatActivity() {
             odabirGodina.adapter = adapter
         }
 
-        var godina: Int = 0
+        var godina : Int = 0
         odabirGodina.onItemSelectedListener = (object : OnItemSelectedListener {
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
             override fun onItemSelected(
@@ -64,7 +65,6 @@ class UpisPredmet : AppCompatActivity() {
                         "5" -> 5
                         else -> 0
                     }
-
                 if (godina == 1) {
                     ArrayAdapter.createFromResource(
                         view.context,
@@ -347,8 +347,8 @@ class UpisPredmet : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                if (godina != 0 && odabranPredmet == true)
-                    dodajPredmetDugme.visibility = View.VISIBLE
+                if(godina != 0 && odabranPredmet)
+                dodajPredmetDugme.visibility = View.VISIBLE
             }
         })
         dodajPredmetDugme.setOnClickListener {
