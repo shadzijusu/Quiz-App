@@ -79,22 +79,22 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
+            android:layout_width="166dp"
             android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/odaberiteGodinu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Odaberite godinu:"
+                android:text="Godina:"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/odaberitePredmet"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.181"
+                app:layout_constraintHorizontal_bias="0.308"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.455"
+                app:layout_constraintVertical_bias="0.454"
                 tools:visibility="visible" />
 
             <TextView
@@ -102,11 +102,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="104dp"
-                android:text="Odaberite predmet:"
+                android:text="Predmet:"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.353"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,16 +116,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:shadowColor="#FFFFFF"
-                android:text="Odaberite grupu:"
+                android:text="Grupa:"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.129"
+                app:layout_constraintHorizontal_bias="0.278"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.819" />
+                app:layout_constraintVertical_bias="0.835" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

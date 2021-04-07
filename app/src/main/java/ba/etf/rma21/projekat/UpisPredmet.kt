@@ -67,6 +67,18 @@ class UpisPredmet : AppCompatActivity() {
                         "5" -> 5
                         else -> 0
                     }
+                if(godina == 0) {
+                    ArrayAdapter.createFromResource(
+                        view.context,
+                        R.array.odaberite,
+                        android.R.layout.simple_spinner_item
+                    ).also { adapter ->
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        // Apply the adapter to the spinner
+                        odabirPredmet.adapter = adapter
+                    }
+                }
                 if (godina == 1) {
                     ArrayAdapter.createFromResource(
                         view.context,
