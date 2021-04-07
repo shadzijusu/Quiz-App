@@ -22,18 +22,17 @@ class UpisPredmet : AppCompatActivity() {
     private var kvizListViewModel = KvizListViewModel()
     private var predmetListViewModel = PredmetListViewModel()
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
-
+    private var preferenceManger: PreferenceManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upis_predmet)
+        preferenceManger = PreferenceManager(this)
         dodajPredmetDugme = findViewById(R.id.dodajPredmetDugme)
-        dodajPredmetDugme.visibility = View.GONE
-
-
         odabirGodina = findViewById(R.id.odabirGodina)
         odabirPredmet = findViewById(R.id.odabirPredmet)
         odabirGrupa = findViewById(R.id.odabirGrupa)
 
+        dodajPredmetDugme.visibility = View.GONE
         listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
 
         ArrayAdapter.createFromResource(
@@ -46,16 +45,19 @@ class UpisPredmet : AppCompatActivity() {
             // Apply the adapter to the spinner
             odabirGodina.adapter = adapter
         }
-
-        var godina : Int = 0
+        var godina: Int = 0
         odabirGodina.onItemSelectedListener = (object : OnItemSelectedListener {
-            override fun onNothingSelected(arg0: AdapterView<*>?) {}
+            override fun onNothingSelected(arg0: AdapterView<*>?) {
+                odabirGodina.setSelection(preferenceManger!!.selection)
+            }
+
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
                 position: Int,
                 id: Long
             ) {
+                preferenceManger!!.selection = position
                 godina =
                     when (parent.getItemAtPosition(position)) {
                         "1" -> 1
@@ -348,9 +350,9 @@ class UpisPredmet : AppCompatActivity() {
                 id: Long
             ) {
                 if(godina != 0 && odabranPredmet)
-                dodajPredmetDugme.visibility = View.VISIBLE
+                    dodajPredmetDugme.visibility = View.VISIBLE
             }
-        })
+            })
         dodajPredmetDugme.setOnClickListener {
             upisiMe()
         }
@@ -370,5 +372,12 @@ class UpisPredmet : AppCompatActivity() {
                 kvizListViewModel.addMine(kviz)
         }
         finish()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        odabirGodina.setSelection(preferenceManger?.selection!!)
+        odabirPredmet.setSelection(preferenceManger?.selection!!)
+        odabirGrupa.setSelection(preferenceManger?.selection!!)
     }
 }

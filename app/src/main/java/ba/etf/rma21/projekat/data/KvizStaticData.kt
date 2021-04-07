@@ -20,8 +20,8 @@ var mojiKvizovi = mutableListOf(
         "Grupa4", 3F
     ),
     Kviz(
-        "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 12),
-        Date(121, 3, 18), Date(0, 0, 0), 2,
+        "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 25),
+        Date(121, 3, 30), Date(0, 0, 0), 2,
         "PON11:30", null
     ),
     Kviz(
@@ -56,8 +56,8 @@ fun allKvizes(): List<Kviz> {
             "Grupa4", 3F
         ),
         Kviz(
-            "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 12),
-            Date(121, 3, 18), Date(0, 0, 0), 2,
+            "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 25),
+            Date(121, 3, 30), Date(0, 0, 0), 2,
             "PON11:30", null
         ),
         Kviz(
@@ -136,8 +136,8 @@ fun done(): List<Kviz> {
 fun future(): List<Kviz> {
     return listOf(
         Kviz(
-            "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 12),
-            Date(121, 3, 18), Date(0, 0, 0), 2,
+            "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 25),
+            Date(121, 3, 30), Date(0, 0, 0), 2,
             "PON11:30", null
         )
     )

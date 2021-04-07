@@ -8,13 +8,8 @@
         <item>Prošli kvizovi</item>
     </string-array>
     <string name="title_activity_upis_predmet">UpisPredmet</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
+
     <string-array name="godine">
-        <item>Odaberite</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -22,14 +17,12 @@
         <item>5</item>
     </string-array>
     <string-array name="prva">
-        <item>Odaberite</item>
         <item>VIS</item>
         <item>OS</item>
         <item>MLTI</item>
         <item>TP</item>
     </string-array>
     <string-array name="druga">
-        <item>Odaberite</item>
         <item>ASP</item>
         <item>OBP</item>
         <item>DM</item>
@@ -38,21 +31,18 @@
         <item>OOAD</item>
     </string-array>
     <string-array name="treca">
-        <item>Odaberite</item>
         <item>WT</item>
         <item>OIS</item>
         <item>VVS</item>
         <item>VI</item>
     </string-array>
     <string-array name="cetvrta">
-        <item>Odaberite</item>
         <item>RV</item>
         <item>NOS</item>
         <item>NASP</item>
     </string-array>
     <string-array name="peta">
-        <item>Odaberite</item>
-        <item>RI</item>
+        <item>TS</item>
         <item>MPVI</item>
         <item>NSI</item>
     </string-array>
