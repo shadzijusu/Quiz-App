@@ -67,8 +67,7 @@ fun all(): List<Predmet> {
         Predmet("NASP", 4),
         Predmet("TS", 5),
         Predmet("MPVI", 5),
-        Predmet("NSI", 5),
-        Predmet("RI", 5)
+        Predmet("NSI", 5)
     )
 
 }

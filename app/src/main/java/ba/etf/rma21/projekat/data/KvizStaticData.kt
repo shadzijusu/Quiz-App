@@ -110,11 +110,6 @@ fun allKvizes(): List<Kviz> {
             Date(120, 2, 18), Date(0, 0, 0), 15,
             "EEF", -1F
         )
-//        Kviz(
-//            "Kviz vježbe 1-5", "WT", Date(121, 3, 1),
-//            Date(121, 3, 30), Date(0, 0, 0), 5,
-//            "Prva", null
-//        )
     )
 }
 
