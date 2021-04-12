@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class FragmentKvizovi : Fragment() {
     private lateinit var listaKvizova: RecyclerView
@@ -109,11 +110,8 @@ class FragmentKvizovi : Fragment() {
         var pokusajFragment = FragmentPokusaj()
         fragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.layout, pokusajFragment)
-            ?.commit();
-
-
-
+            ?.replace(R.id.container, pokusajFragment)
+            ?.commit()
     }
 
     companion object {

@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 
-class ListaKvizovaAdapter(private var kvizovi: List<Kviz>,  private val onItemClicked: (kviz : Kviz) -> Unit) :
+class ListaKvizovaAdapter(private var kvizovi: List<Kviz>,  private val onItemClicked : (kviz : Kviz) -> Unit) :
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
