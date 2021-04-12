@@ -22,7 +22,6 @@ class FragmentPredmeti : Fragment() {
     private lateinit var upisDugme : Button
     private var kvizListViewModel = KvizListViewModel()
     private var predmetListViewModel = PredmetListViewModel()
-    private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private var preferenceManger: PreferenceManager? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view =  inflater.inflate(R.layout.fragment_predmeti, container, false)
@@ -31,7 +30,6 @@ class FragmentPredmeti : Fragment() {
         odabirPredmet = view.findViewById(R.id.odabirPredmet)
         odabirGrupa = view.findViewById(R.id.odabirGrupa)
         upisDugme = view.findViewById(R.id.upisDugme)
-        listaKvizovaAdapter = ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
         activity?.let {
             ArrayAdapter.createFromResource(
                 it,
@@ -375,18 +373,14 @@ class FragmentPredmeti : Fragment() {
         odabirPredmet.setSelection(preferenceManger?.selection!!)
         odabirGrupa.setSelection(preferenceManger?.selection!!)
 
-//        val porukaFragment = FragmentPoruka()
-//        activity!!.supportFragmentManager.beginTransaction()
-//            .replace(R.id.container, porukaFragment, "$nazivPredmeta-$nazivGrupe")
-//            .addToBackStack(null)
-//            .commit()
+
         var bundle : Bundle = Bundle();
         bundle.putString("data", "$nazivPredmeta-$nazivGrupe"); // Put anything what you want
         val porukaFragment = FragmentPoruka()
         porukaFragment.arguments = bundle
         fragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.container, porukaFragment)
+            ?.replace(R.id.layout, porukaFragment)
       ?.commit();
 
     }

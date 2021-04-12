@@ -66,31 +66,31 @@ class FragmentKvizovi : Fragment() {
                 when (parent.getItemAtPosition(pos)) {
                     "Svi kvizovi" -> {
                         listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getAll().sortedBy { it.datumPocetka })
+                            kvizListViewModel.getAll().sortedBy { it.datumPocetka }) {otvoriFragmentPokusaj()}
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
                     }
                     "Urađeni kvizovi" -> {
                         listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getDone().sortedBy { it.datumPocetka })
+                            kvizListViewModel.getDone().sortedBy { it.datumPocetka }) {otvoriFragmentPokusaj()}
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
                     }
                     "Budući kvizovi" -> {
                         listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getFuture().sortedBy { it.datumPocetka })
+                            kvizListViewModel.getFuture().sortedBy { it.datumPocetka }) {otvoriFragmentPokusaj()}
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
                     }
                     "Prošli kvizovi" -> {
                         listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka })
+                            kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka }) {otvoriFragmentPokusaj()}
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
                     }
                     else -> {
                         listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
+                            kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka }) {otvoriFragmentPokusaj()}
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
                     }
@@ -100,9 +100,20 @@ class FragmentKvizovi : Fragment() {
         listaKvizova.layoutManager = GridLayoutManager(activity, 2)
         listaKvizova.addItemDecoration(DefaultItemDecorator(25, 5))
         listaKvizovaAdapter =
-            ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
+            ListaKvizovaAdapter(kvizListViewModel.getMyKvizes()) {otvoriFragmentPokusaj()}
         listaKvizova.adapter = listaKvizovaAdapter
         return view
+    }
+
+    private fun otvoriFragmentPokusaj() {
+        var pokusajFragment = FragmentPokusaj()
+        fragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.layout, pokusajFragment)
+            ?.commit();
+
+
+
     }
 
     companion object {
