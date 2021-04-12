@@ -11,6 +11,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -107,7 +108,10 @@ class FragmentKvizovi : Fragment() {
     }
 
     private fun otvoriFragmentPokusaj() {
-        var pokusajFragment = FragmentPokusaj()
+        var pokusajFragment = FragmentPokusaj(
+            listOf(Pitanje("Pitanje 1", "Ako želimo da BroadcastReceiver osluškuje obavijesti čak i kada aplikacija nije pokrenuta, tada taj BroadcastReceiver registrujemo u ...",
+            listOf("manifestu", "u glavnoj klasi aktivnosti aplikacije", "nemoguće"), 0)
+        ))
         fragmentManager
             ?.beginTransaction()
             ?.replace(R.id.container, pokusajFragment)

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textAlignment="viewStart"
-        android:textSize="14sp"
+        android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/odgovoriLista"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.385"

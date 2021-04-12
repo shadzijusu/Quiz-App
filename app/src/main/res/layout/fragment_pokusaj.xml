@@ -9,13 +9,15 @@
 
     <FrameLayout
         android:id="@+id/framePitanje"
-        android:layout_width="345dp"
-        android:layout_height="730dp"
+        android:layout_width="298dp"
+        android:layout_height="700dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toEndOf="@+id/navigacijaPitanja"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -24,8 +26,12 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigacijaPitanja"
-        android:layout_width="61dp"
-        android:layout_height="728dp"
+        android:layout_width="77dp"
+        android:layout_height="707dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="16dp"
+        android:textAlignment="gravity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
