@@ -159,4 +159,6 @@
     <string name="notTaken">Kviz koji je prošao, ali nije urađen</string>
     <string name="active">Kviz koji je aktivan, ali nije urađen</string>
     <string name="future">Kviz koji tek treba biti aktivan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
