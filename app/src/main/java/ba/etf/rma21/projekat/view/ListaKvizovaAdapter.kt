@@ -18,7 +18,6 @@ import java.util.*
 
 class ListaKvizovaAdapter(private var kvizovi: List<Kviz>,  private val onItemClicked : (kviz : Kviz) -> Unit) :
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
         val view = LayoutInflater
             .from(parent.context)
@@ -58,7 +57,7 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>,  private val onItemCl
             holder.stanjeKviza.setImageResource(R.drawable.zelena)
             holder.osvojeniBodovi.text = ""
         }
-        holder.itemView.setOnClickListener{ onItemClicked(kvizovi[position]) }
+        holder.itemView.setOnClickListener{ onItemClicked(kvizovi[position])}
     }
 
 fun updateKvizove(kvizovi: List<Kviz>) {
@@ -74,6 +73,9 @@ fun updateKvizove(kvizovi: List<Kviz>) {
         val osvojeniBodovi: TextView = itemView.findViewById(R.id.osvojeniBodovi)
         val stanjeKviza: ImageView = itemView.findViewById(R.id.stanjeKviza)
     }
+//
+//    Bundle args = new Bundle();
+//    args.putString("data", "This data has sent to FragmentTwo");
 }
 
 

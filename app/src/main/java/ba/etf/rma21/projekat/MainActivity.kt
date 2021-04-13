@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         bottomNavigation = findViewById(R.id.bottomNav)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        bottomNavigation.findViewById<View>(R.id.predajKviz).visibility = View.GONE
-        bottomNavigation.findViewById<View>(R.id.zaustaviKviz).visibility = View.GONE
 
         //Defaultni fragment
         bottomNavigation.selectedItemId = R.id.kvizovi

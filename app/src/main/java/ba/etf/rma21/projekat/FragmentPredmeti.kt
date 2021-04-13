@@ -351,7 +351,7 @@ class FragmentPredmeti : Fragment() {
         upisDugme.setOnClickListener {
             upisiMe()
         }
-        return view;
+        return view
     }
     companion object {
         fun newInstance(): FragmentPredmeti = FragmentPredmeti()
@@ -374,14 +374,14 @@ class FragmentPredmeti : Fragment() {
         odabirGrupa.setSelection(preferenceManger?.selection!!)
 
 
-        var bundle : Bundle = Bundle();
-        bundle.putString("data", "$nazivPredmeta-$nazivGrupe"); // Put anything what you want
+        var bundle : Bundle = Bundle()
+        bundle.putString("data", "$nazivPredmeta-$nazivGrupe") // Put anything what you want
         val porukaFragment = FragmentPoruka()
         porukaFragment.arguments = bundle
         fragmentManager
             ?.beginTransaction()
             ?.replace(R.id.layout, porukaFragment)
-      ?.commit();
+      ?.commit()
 
     }
 }

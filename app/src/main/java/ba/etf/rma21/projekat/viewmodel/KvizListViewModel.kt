@@ -23,7 +23,8 @@ class KvizListViewModel {
     fun getNotTaken(): List<Kviz> {
         return KvizRepository.getNotTaken()
     }
-    fun addMine(kviz : Kviz) {
+
+    fun addMine(kviz: Kviz) {
         KvizRepository.addMine(kviz)
     }
 }

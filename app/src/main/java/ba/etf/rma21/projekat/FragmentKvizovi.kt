@@ -1,26 +1,27 @@
 package ba.etf.rma21.projekat
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 
 class FragmentKvizovi : Fragment() {
     private lateinit var listaKvizova: RecyclerView
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private lateinit var filterKvizova: Spinner
     private var kvizListViewModel = KvizListViewModel()
+    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private lateinit var infoButton: ImageButton
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,10 +109,7 @@ class FragmentKvizovi : Fragment() {
     }
 
     private fun otvoriFragmentPokusaj() {
-        var pokusajFragment = FragmentPokusaj(
-            listOf(Pitanje("Pitanje 1", "Ako želimo da BroadcastReceiver osluškuje obavijesti čak i kada aplikacija nije pokrenuta, tada taj BroadcastReceiver registrujemo u ...",
-            listOf("manifestu", "u glavnoj klasi aktivnosti aplikacije", "nemoguće"), 0)
-        ))
+        var pokusajFragment = FragmentPokusaj(pitanjeKvizListViewModel.getPitanja("", ""))
         fragmentManager
             ?.beginTransaction()
             ?.replace(R.id.container, pokusajFragment)
