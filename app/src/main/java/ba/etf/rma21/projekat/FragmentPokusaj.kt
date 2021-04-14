@@ -7,12 +7,13 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.FrameLayout
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.navGraphViewModels
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
@@ -30,7 +31,7 @@ class FragmentPokusaj() : Fragment() {
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private var kvizListViewModel = KvizListViewModel()
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
-    private lateinit var drawerLayout : DrawerLayout
+    private lateinit var drawerLayout: DrawerLayout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,6 +42,8 @@ class FragmentPokusaj() : Fragment() {
         drawerLayout = view.findViewById(R.id.drawer_layout)
         framePitanje = view.findViewById(R.id.framePitanje)
         pitanja = pitanjeKvizListViewModel.getPitanja("", "")
+
+        setHasOptionsMenu(true)
 
         var menu: Menu = navigacijaPitanja.menu
         var itemId = 0
@@ -53,8 +56,9 @@ class FragmentPokusaj() : Fragment() {
         navigacijaPitanja.setNavigationItemSelectedListener { menuItem ->
             val pitanje = pitanja.get(menuItem.itemId)
             var bundle = Bundle()
-            bundle.putString("odabranoPitanje", menuItem.itemId.toString())
+            bundle.putString("data", menuItem.itemId.toString())
             val pitanjeFragment = FragmentPitanje(pitanje)
+            pitanjeFragment.arguments = bundle
             redirectToFragment(pitanjeFragment)
             menuItem.isChecked = true
             true
@@ -64,10 +68,16 @@ class FragmentPokusaj() : Fragment() {
 
 
     private fun redirectToFragment(pitanjeFragment: FragmentPitanje) {
-        val manager: FragmentManager? = activity?.supportFragmentManager
-        val ft: FragmentTransaction? = manager?.beginTransaction()
-        ft?.replace(R.id.framePitanje, pitanjeFragment)
-        ft?.commit()
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.replace(R.id.framePitanje, pitanjeFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    //    val manager = childFragmentManager
+        //val manager: FragmentManager? = activity?.supportFragmentManager
+//        val ft: FragmentTransaction? = manager.beginTransaction()
+//        ft?.replace(R.id.framePitanje, pitanjeFragment)
+//        ft?.commit()
+
     }
 
 
@@ -82,7 +92,6 @@ class FragmentPokusaj() : Fragment() {
         }
 
     }
-
 
 
 }
