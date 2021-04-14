@@ -43,15 +43,17 @@ class FragmentPitanje() : Fragment() {
         //change text color instead of background
         odgovoriLista.setOnItemClickListener { parent, view, position, id ->
             var menuItem = poruka?.toInt()?.let { navigacijaPitanja.menu.getItem(it) }
-            val s = SpannableString(menuItem?.title.toString())
+            var s : SpannableString = SpannableString("")
             if (position.equals(pitanje.tacan)) {
                 parent.getChildAt(position).setBackgroundColor(resources.getColor(R.color.tacno))
+                 s = SpannableString(menuItem?.title.toString() + " +")
                 s.setSpan(ForegroundColorSpan(Color.GREEN), 0, s.length, 0)
 
             } else if (!position.equals(pitanje.tacan)) {
                 parent.getChildAt(position).setBackgroundColor(resources.getColor(R.color.netacno))
                 parent.getChildAt(pitanje.tacan)
                     .setBackgroundColor(resources.getColor(R.color.tacno))
+                 s = SpannableString(menuItem?.title.toString() + " -")
                 s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
             }
             menuItem?.title = s

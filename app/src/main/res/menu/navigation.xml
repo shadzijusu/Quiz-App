@@ -9,6 +9,7 @@
         android:id="@+id/predmeti"
         android:title="Predmeti"
         android:icon="@drawable/subject"/>
+    />
     <item
         android:id="@+id/predajKviz"
         android:title="Predaj kviz"
@@ -18,6 +19,4 @@
         android:id="@+id/zaustaviKviz"
         android:title="Zaustavi kviz"
         android:icon="@drawable/stop"/>
-    />
-    />
 </menu>

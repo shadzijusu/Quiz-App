@@ -26,11 +26,12 @@
     <androidx.drawerlayout.widget.DrawerLayout
 
         android:id="@+id/drawer_layout"
-        android:layout_width="125dp"
+        android:layout_width="123dp"
         android:layout_height="623dp"
         android:layout_marginTop="350dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="4dp"
+        android:background="#FFFFFF"
         android:fitsSystemWindows="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/framePitanje"
@@ -41,15 +42,15 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigacijaPitanja"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:background="#FFFFFF"
             android:clickable="true"
             android:paddingLeft="16dp"
             android:textAlignment="gravity"
-            app:itemShapeFillColor="#EC8888"
+            app:itemShapeFillColor="#000000"
             app:itemTextColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

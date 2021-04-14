@@ -19,10 +19,6 @@ class FragmentPoruka : Fragment() {
         tvPoruka = view.findViewById(R.id.tvPoruka)
         var bundle = this.arguments
         var poruka = bundle?.getString("data")
-        var predmetIGrupa: List<String>? = poruka?.split("-")
-        var nazivPredmeta = predmetIGrupa?.get(0)
-        var nazivGrupe = predmetIGrupa?.get(1)
-        poruka = "Uspješno ste upisani u grupu ${nazivGrupe} predmeta ${nazivPredmeta}!"
         tvPoruka.text = poruka
 
         return view

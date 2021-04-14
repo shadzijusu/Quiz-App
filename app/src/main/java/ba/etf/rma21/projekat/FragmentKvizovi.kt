@@ -10,14 +10,11 @@ import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
-import kotlin.concurrent.fixedRateTimer
 
 class FragmentKvizovi : Fragment() {
     private lateinit var listaKvizova: RecyclerView
@@ -26,6 +23,7 @@ class FragmentKvizovi : Fragment() {
     private var kvizListViewModel = KvizListViewModel()
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private lateinit var infoButton: ImageButton
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,6 +32,7 @@ class FragmentKvizovi : Fragment() {
         var view = inflater.inflate(R.layout.fragment_kvizovi, container, false)
         listaKvizova = view.findViewById(R.id.listaKvizova)
         filterKvizova = view.findViewById(R.id.filterKvizova)
+
 //        infoButton = view.findViewById(R.id.infoButton)
 //        infoButton.setOnClickListener {
 //            val popupWindow = PopupWindow()
@@ -112,14 +111,11 @@ class FragmentKvizovi : Fragment() {
     }
 
     private fun otvoriFragmentPokusaj() {
-        var pokusajFragment = FragmentPokusaj(pitanjeKvizListViewModel.getPitanja("", ""))
-        redirectToFragment(pokusajFragment)
-    }
-    private fun redirectToFragment(pokusajFragment: FragmentPokusaj) {
-        val manager: FragmentManager? = activity?.supportFragmentManager
-        val ft: FragmentTransaction? = manager?.beginTransaction()
-        ft?.replace(R.id.container, pokusajFragment)
-        ft?.commit()
+       var fragmentPokusaj = FragmentPokusaj(pitanjeKvizListViewModel.getPitanja("",""))
+        fragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.container, fragmentPokusaj)?.addToBackStack(null)
+            ?.commit()
     }
 
     companion object {

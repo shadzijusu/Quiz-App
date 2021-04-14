@@ -375,7 +375,7 @@ class FragmentPredmeti : Fragment() {
 
 
         var bundle : Bundle = Bundle()
-        bundle.putString("data", "$nazivPredmeta-$nazivGrupe") // Put anything what you want
+        bundle.putString("data", "Uspješno ste upisani u grupu ${nazivGrupe} predmeta ${nazivPredmeta}!") // Put anything what you want
         val porukaFragment = FragmentPoruka()
         porukaFragment.arguments = bundle
         fragmentManager
