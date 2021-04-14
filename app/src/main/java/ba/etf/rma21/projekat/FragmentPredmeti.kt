@@ -30,6 +30,7 @@ class FragmentPredmeti : Fragment() {
         odabirPredmet = view.findViewById(R.id.odabirPredmet)
         odabirGrupa = view.findViewById(R.id.odabirGrupa)
         upisDugme = view.findViewById(R.id.upisDugme)
+
         activity?.let {
             ArrayAdapter.createFromResource(
                 it,
@@ -134,6 +135,7 @@ class FragmentPredmeti : Fragment() {
                 }
             }
         })
+        var odabranPredmet = false
         odabirPredmet.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
             override fun onItemSelected(
@@ -346,9 +348,11 @@ class FragmentPredmeti : Fragment() {
                         odabirGrupa.adapter = adapter
                     }
                 }
+                odabranPredmet = true
             }
         })
         upisDugme.setOnClickListener {
+            if(odabirPredmet.selectedItem != null && odabirGrupa.selectedItem != null)
             upisiMe()
         }
         return view
@@ -373,15 +377,16 @@ class FragmentPredmeti : Fragment() {
         odabirPredmet.setSelection(preferenceManger?.selection!!)
         odabirGrupa.setSelection(preferenceManger?.selection!!)
 
-
-        var bundle : Bundle = Bundle()
-        bundle.putString("data", "Uspješno ste upisani u grupu ${nazivGrupe} predmeta ${nazivPredmeta}!") // Put anything what you want
-        val porukaFragment = FragmentPoruka()
-        porukaFragment.arguments = bundle
-        fragmentManager
-            ?.beginTransaction()
-            ?.replace(R.id.layout, porukaFragment)
-      ?.commit()
-
-    }
+            var bundle: Bundle = Bundle()
+            bundle.putString(
+                "data",
+                "Uspješno ste upisani u grupu ${nazivGrupe} predmeta ${nazivPredmeta}!"
+            ) // Put anything what you want
+            val porukaFragment = FragmentPoruka()
+            porukaFragment.arguments = bundle
+            fragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.layout, porukaFragment)?.addToBackStack(null)
+                ?.commit()
+        }
 }

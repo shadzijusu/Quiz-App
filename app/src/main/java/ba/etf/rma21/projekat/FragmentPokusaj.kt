@@ -35,8 +35,7 @@ class FragmentPokusaj() : Fragment() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.zaustaviKviz -> {
-                  //  val kvizoviFragment = FragmentKvizovi.newInstance()
-                  //  openFragment(kvizoviFragment)
+                    fragmentManager?.popBackStackImmediate()
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -53,12 +52,13 @@ class FragmentPokusaj() : Fragment() {
         navigacijaPitanja = view.findViewById(R.id.navigacijaPitanja)
         drawerLayout = view.findViewById(R.id.drawer_layout)
         framePitanje = view.findViewById(R.id.framePitanje)
-        pitanja = pitanjeKvizListViewModel.getPitanja("", "")
+
+       // pitanja = pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
         bottomNavigationView = requireActivity().findViewById(R.id.bottomNav)
-        bottomNavigationView.findViewById<View>(R.id.kvizovi).visibility = View.GONE
-        bottomNavigationView.findViewById<View>(R.id.predmeti).visibility = View.GONE
-        bottomNavigationView.findViewById<View>(R.id.predajKviz).visibility = View.VISIBLE
-        bottomNavigationView.findViewById<View>(R.id.zaustaviKviz).visibility = View.VISIBLE
+        bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = true
+        bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = true
+        bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = false
+        bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -86,16 +86,15 @@ class FragmentPokusaj() : Fragment() {
     private fun openFragment(porukaFragment: FragmentPoruka) {
         var brojTacnih = 0.0
         var menu: Menu = navigacijaPitanja.menu
-        for(i in 0 until menu.size()) {
-            var menuItem : MenuItem = navigacijaPitanja.menu.getItem(i)
+        for (i in 0 until menu.size()) {
+            var menuItem: MenuItem = navigacijaPitanja.menu.getItem(i)
             var item = menuItem.toString().split(" ")
-            if(item[1] == "+") {
+            if (item[1] == "+") {
                 brojTacnih++
             }
         }
         var brojSvih = brojPitanja.toDouble()
-        var percentage = brojTacnih/brojSvih
-        println(percentage)
+        var percentage = brojTacnih / brojSvih
         var bundle = Bundle()
         bundle.putString("data", "Završili ste kviz Naziv sa tačnosti $percentage!")
         porukaFragment.arguments = bundle
@@ -105,10 +104,10 @@ class FragmentPokusaj() : Fragment() {
         transaction?.commit()
 
     }
+
     private fun redirectToFragment(pitanjeFragment: FragmentPitanje) {
         val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.framePitanje, pitanjeFragment)
-        transaction.addToBackStack(null)
+        transaction.replace(R.id.framePitanje, pitanjeFragment).addToBackStack(null)
         transaction.commit()
     }
 
