@@ -24,23 +24,22 @@ class FragmentPokusaj() : Fragment() {
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private var kvizListViewModel = KvizListViewModel()
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
-    private lateinit var drawerLayout: DrawerLayout
 
-    private val mOnNavigationItemSelectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.predajKviz -> {
-                    val porukaFragment = FragmentPoruka.newInstance()
-                    openFragment(porukaFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.zaustaviKviz -> {
-                    fragmentManager?.popBackStackImmediate()
-                    return@OnNavigationItemSelectedListener true
-                }
-            }
-            false
-        }
+//    private val mOnNavigationItemSelectedListener =
+//        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+//            when (item.itemId) {
+//                R.id.predajKviz -> {
+//                    val porukaFragment = FragmentPoruka.newInstance()
+//                    openFragment(porukaFragment)
+//                    return@OnNavigationItemSelectedListener true
+//                }
+//                R.id.zaustaviKviz -> {
+//                    requireActivity().onBackPressed()
+//                    return@OnNavigationItemSelectedListener true
+//                }
+//            }
+//            false
+//        }
 
 
     override fun onCreateView(
@@ -58,7 +57,6 @@ class FragmentPokusaj() : Fragment() {
         bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         var menu: Menu = navigacijaPitanja.menu
         var itemId = 0
@@ -80,7 +78,6 @@ class FragmentPokusaj() : Fragment() {
         }
         return view
     }
-
     private fun openFragment(porukaFragment: FragmentPoruka) {
         var brojTacnih = 0.0
         var menu: Menu = navigacijaPitanja.menu

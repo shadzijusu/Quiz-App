@@ -1,9 +1,7 @@
 package ba.etf.rma21.projekat
 
 
-import android.app.Activity
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,7 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var kvizoviFragment : FragmentKvizovi
     private lateinit var bottomNavigation: BottomNavigationView
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -26,23 +24,38 @@ class MainActivity : AppCompatActivity() {
                     openFragment(kvizoviFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+                R.id.predajKviz -> {
+                    val porukaFragment = FragmentPoruka.newInstance()
+                    openFragment(porukaFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.zaustaviKviz -> {
+                    bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+                    bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+                    bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+                    bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
+                    bottomNavigation.selectedItemId = R.id.kvizovi
+                    return@OnNavigationItemSelectedListener false
+                }
             }
-            false
+            true
         }
+    override fun onResume() {
+        bottomNavigation.selectedItemId = R.id.kvizovi
+        super.onResume()
 
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottomNavigation = findViewById(R.id.bottomNav)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        //bottomNavigation.findViewById<View>(R.id.predajKviz).visibility = View.GONE
-        //bottomNavigation.findViewById<View>(R.id.zaustaviKviz).visibility = View.GONE
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
 
         //Defaultni fragment
         bottomNavigation.selectedItemId = R.id.kvizovi
-        val kvizoviFragment = FragmentKvizovi.newInstance()
+        kvizoviFragment = FragmentKvizovi.newInstance()
         openFragment(kvizoviFragment)
 
 
@@ -55,28 +68,15 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-
     override fun onBackPressed() {
-        val bottomNavigationView =
-            findViewById<View>(R.id.bottomNav) as BottomNavigationView
-        bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
-        bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
-        bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
-        bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
-        val selectedItemId = bottomNavigationView.selectedItemId
-        if (R.id.kvizovi != selectedItemId) {
-            supportFragmentManager.popBackStack();
-            setHomeItem(this@MainActivity)
-        } else {
-            super.onBackPressed()
-        }
+        supportFragmentManager.popBackStack()
+        bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+        bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
+        bottomNavigation.selectedItemId = R.id.kvizovi
     }
 
-    fun setHomeItem(activity: Activity) {
-        val bottomNavigationView =
-            activity.findViewById<View>(R.id.bottomNav) as BottomNavigationView
-        bottomNavigationView.selectedItemId = R.id.kvizovi
-    }
 }
 
 
