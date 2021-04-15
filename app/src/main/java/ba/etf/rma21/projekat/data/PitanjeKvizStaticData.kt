@@ -1,7 +1,20 @@
 package ba.etf.rma21.projekat.data
 
 import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.data.models.PitanjeKviz
 
+fun svaPitanjaSNazivomKviza() : List<PitanjeKviz> {
+    return listOf(
+        PitanjeKviz(
+            Pitanje(
+                "Pitanje 1",
+                "Ako želimo da BroadcastReceiver osluškuje obavijesti čak i kada aplikacija nije pokrenuta, tada taj BroadcastReceiver registrujemo u ...",
+                listOf("manifestu", "u glavnoj klasi aktivnosti aplikacije", "nemoguće"),
+                0
+            ), "Kviz 1 - vježbe 2 i 3"
+        )
+    )
+}
 
 fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
     var pitanjaKviza = listOf<Pitanje>()

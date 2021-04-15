@@ -1,7 +1,9 @@
 package ba.etf.rma21.projekat.data.repositories
 
 import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.data.models.PitanjeKviz
 import ba.etf.rma21.projekat.data.pitanja
+import ba.etf.rma21.projekat.data.svaPitanjaSNazivomKviza
 
 class PitanjeKvizRepository {
 
@@ -13,6 +15,9 @@ class PitanjeKvizRepository {
 
         fun getPitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
             return pitanja(nazivKviza, nazivPredmeta)
+        }
+        fun getSvaSNazivom() : List<PitanjeKviz> {
+            return svaPitanjaSNazivomKviza()
         }
     }
 }

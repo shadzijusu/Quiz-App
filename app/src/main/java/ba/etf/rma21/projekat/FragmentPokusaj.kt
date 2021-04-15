@@ -25,21 +25,17 @@ class FragmentPokusaj() : Fragment() {
     private var kvizListViewModel = KvizListViewModel()
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
 
-//    private val mOnNavigationItemSelectedListener =
-//        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.predajKviz -> {
-//                    val porukaFragment = FragmentPoruka.newInstance()
-//                    openFragment(porukaFragment)
-//                    return@OnNavigationItemSelectedListener true
-//                }
-//                R.id.zaustaviKviz -> {
-//                    requireActivity().onBackPressed()
-//                    return@OnNavigationItemSelectedListener true
-//                }
-//            }
-//            false
-//        }
+    private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.predajKviz -> {
+                    val porukaFragment = FragmentPoruka.newInstance()
+                    openFragment(porukaFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            false
+        }
 
 
     override fun onCreateView(
@@ -56,7 +52,7 @@ class FragmentPokusaj() : Fragment() {
         bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = true
         bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
-
+        bottomNavigationView.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
 
         var menu: Menu = navigacijaPitanja.menu
         var itemId = 0
@@ -88,11 +84,26 @@ class FragmentPokusaj() : Fragment() {
                 brojTacnih++
             }
         }
+        var nazivKviza = ""
+        var svaPitanjaSNazivom = pitanjeKvizListViewModel.getSvaSNazivom()
+        for(pitanjeKviz in svaPitanjaSNazivom)
+        {
+            for(pitanje in pitanja) {
+                if(pitanje.tekst.equals(pitanjeKviz.pitanje.tekst)) {
+                    nazivKviza = pitanjeKviz.nazivKviza
+                    break
+                }
+            }
+        }
+
+
         var brojSvih = brojPitanja.toDouble()
         var percentage = brojTacnih / brojSvih
         var bundle = Bundle()
-        bundle.putString("data", "Završili ste kviz Naziv sa tačnosti $percentage!")
+        var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
+        bundle.putString("data", poruka)
         porukaFragment.arguments = bundle
+        println(porukaFragment.arguments.toString())
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.container, porukaFragment)
         transaction?.addToBackStack(null)

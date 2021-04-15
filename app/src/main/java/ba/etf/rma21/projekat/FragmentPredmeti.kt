@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.data.models.Predmet
-import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
 
@@ -29,7 +28,7 @@ class FragmentPredmeti : Fragment() {
         odabirGodina = view.findViewById(R.id.odabirGodina)
         odabirPredmet = view.findViewById(R.id.odabirPredmet)
         odabirGrupa = view.findViewById(R.id.odabirGrupa)
-        upisDugme = view.findViewById(R.id.upisDugme)
+        upisDugme = view.findViewById(R.id.dodajPredmetDugme)
 
         activity?.let {
             ArrayAdapter.createFromResource(
@@ -363,7 +362,7 @@ class FragmentPredmeti : Fragment() {
     private fun upisiMe() {
         var godina = odabirGodina.selectedItem.toString()
         var nazivPredmeta = odabirPredmet.selectedItem.toString()
-        var nazivGrupe = odabirGrupa.selectedItem
+        var nazivGrupe = odabirGrupa.selectedItem.toString()
 
         predmetListViewModel.upisiPredmet(Predmet(nazivPredmeta, godina.toInt()))
 

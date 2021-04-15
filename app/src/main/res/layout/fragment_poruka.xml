@@ -10,8 +10,8 @@
 
     <TextView
         android:id="@+id/tvPoruka"
-        android:layout_width="336dp"
-        android:layout_height="108dp"
+        android:layout_width="321dp"
+        android:layout_height="138dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textColor="#FFFFFF"

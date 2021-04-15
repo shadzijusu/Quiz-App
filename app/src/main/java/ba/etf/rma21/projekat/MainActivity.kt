@@ -24,11 +24,6 @@ class MainActivity : AppCompatActivity() {
                     openFragment(kvizoviFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.predajKviz -> {
-                    val porukaFragment = FragmentPoruka.newInstance()
-                    openFragment(porukaFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
                 R.id.zaustaviKviz -> {
                     bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
                     bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
