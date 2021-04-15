@@ -50,9 +50,7 @@ class FragmentPokusaj() : Fragment() {
     ): View? {
         var view = inflater.inflate(R.layout.fragment_pokusaj, container, false)
         navigacijaPitanja = view.findViewById(R.id.navigacijaPitanja)
-        drawerLayout = view.findViewById(R.id.drawer_layout)
         framePitanje = view.findViewById(R.id.framePitanje)
-
        // pitanja = pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
         bottomNavigationView = requireActivity().findViewById(R.id.bottomNav)
         bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = true
@@ -99,7 +97,7 @@ class FragmentPokusaj() : Fragment() {
         bundle.putString("data", "Završili ste kviz Naziv sa tačnosti $percentage!")
         porukaFragment.arguments = bundle
         val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.constraintL, porukaFragment)
+        transaction?.replace(R.id.container, porukaFragment)
         transaction?.addToBackStack(null)
         transaction?.commit()
 

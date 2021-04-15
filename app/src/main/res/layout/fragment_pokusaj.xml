@@ -8,57 +8,40 @@
     android:clickable="false"
     android:contextClickable="false"
     tools:context=".FragmentPokusaj">
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigacijaPitanja"
+        android:layout_width="72dp"
+        android:layout_height="682dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"
+        android:clickable="true"
+        android:paddingLeft="16dp"
+        android:textAlignment="gravity"
+        app:itemShapeFillColor="#000000"
+        app:itemTextColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.153">
+
+    </com.google.android.material.navigation.NavigationView>
+
     <FrameLayout
         android:id="@+id/framePitanje"
-        android:layout_width="280dp"
-        android:layout_height="681dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="335dp"
+        android:layout_height="687dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:background="#FFFFFF"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/drawer_layout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toEndOf="@+id/navigacijaPitanja"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.drawerlayout.widget.DrawerLayout
-
-        android:id="@+id/drawer_layout"
-        android:layout_width="123dp"
-        android:layout_height="623dp"
-        android:layout_marginTop="350dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="4dp"
-        android:background="#FFFFFF"
-        android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/framePitanje"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:openDrawer="@android:string/yes">
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigacijaPitanja"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:background="#FFFFFF"
-            android:clickable="true"
-            android:paddingLeft="16dp"
-            android:textAlignment="gravity"
-            app:itemShapeFillColor="#000000"
-            app:itemTextColor="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
-
-        </com.google.android.material.navigation.NavigationView>
-    </androidx.drawerlayout.widget.DrawerLayout>
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
