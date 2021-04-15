@@ -1,14 +1,13 @@
-package ba.etf.rma21.projekat
+package ba.etf.rma21.projekat.view
 
 
 import android.app.usage.UsageEvents.Event.NONE
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Pitanje
-import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,41 +18,62 @@ class FragmentPokusaj() : Fragment() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var navigacijaPitanja: NavigationView
     private lateinit var framePitanje: FrameLayout
+    private lateinit var state: Bundle
     private var brojPitanja: Int = 0
     private lateinit var pitanja: List<Pitanje>
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private var kvizListViewModel = KvizListViewModel()
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
-
+    private val TAG = "Q&A"
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.predajKviz -> {
-                    val porukaFragment = FragmentPoruka.newInstance()
+                    val porukaFragment =
+                        FragmentPoruka.newInstance()
                     openFragment(porukaFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+                R.id.zaustaviKviz -> {
+                    fragmentManager?.popBackStack()
+                    bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
+                    bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
+                    bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
+                    bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
+                    bottomNavigationView.selectedItemId =
+                        R.id.kvizovi
+                    return@OnNavigationItemSelectedListener false
+                }
             }
-            false
+            true
         }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = inflater.inflate(R.layout.fragment_pokusaj, container, false)
-        navigacijaPitanja = view.findViewById(R.id.navigacijaPitanja)
-        framePitanje = view.findViewById(R.id.framePitanje)
-       // pitanja = pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
+        var view = if (view != null) view else inflater.inflate(
+            R.layout.fragment_pokusaj,
+            container,
+            false
+        )
+    //    var view = inflater.inflate(R.layout.fragment_pokusaj, container, false)
+        if (view != null) {
+            navigacijaPitanja = view.findViewById(R.id.navigacijaPitanja)
+        }
+        if (view != null) {
+            framePitanje = view.findViewById(R.id.framePitanje)
+        }
+        // pitanja = pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
         bottomNavigationView = requireActivity().findViewById(R.id.bottomNav)
         bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = true
         bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = true
+//        bottomNavigationView.menu.findItem(R.id.predajKviz).isEnabled = true
+//        bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isEnabled = true
         bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
-        bottomNavigationView.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
-
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         var menu: Menu = navigacijaPitanja.menu
         var itemId = 0
 
@@ -66,7 +86,8 @@ class FragmentPokusaj() : Fragment() {
             val pitanje = pitanja.get(menuItem.itemId)
             var bundle = Bundle()
             bundle.putString("data", menuItem.itemId.toString())
-            val pitanjeFragment = FragmentPitanje(pitanje)
+            val pitanjeFragment =
+                FragmentPitanje(pitanje)
             pitanjeFragment.arguments = bundle
             redirectToFragment(pitanjeFragment)
             menuItem.isChecked = true
@@ -74,6 +95,7 @@ class FragmentPokusaj() : Fragment() {
         }
         return view
     }
+
     private fun openFragment(porukaFragment: FragmentPoruka) {
         var brojTacnih = 0.0
         var menu: Menu = navigacijaPitanja.menu
@@ -86,10 +108,9 @@ class FragmentPokusaj() : Fragment() {
         }
         var nazivKviza = ""
         var svaPitanjaSNazivom = pitanjeKvizListViewModel.getSvaSNazivom()
-        for(pitanjeKviz in svaPitanjaSNazivom)
-        {
-            for(pitanje in pitanja) {
-                if(pitanje.tekst.equals(pitanjeKviz.pitanje.tekst)) {
+        for (pitanjeKviz in svaPitanjaSNazivom) {
+            for (pitanje in pitanja) {
+                if (pitanje.tekst.equals(pitanjeKviz.pitanje.tekst)) {
                     nazivKviza = pitanjeKviz.nazivKviza
                     break
                 }
@@ -103,7 +124,7 @@ class FragmentPokusaj() : Fragment() {
         var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
         bundle.putString("data", poruka)
         porukaFragment.arguments = bundle
-        println(porukaFragment.arguments.toString())
+        //  println(porukaFragment.arguments.toString())
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.container, porukaFragment)
         transaction?.addToBackStack(null)
@@ -119,7 +140,8 @@ class FragmentPokusaj() : Fragment() {
 
 
     companion object {
-        fun newInstance(): FragmentPokusaj = FragmentPokusaj()
+        fun newInstance(): FragmentPokusaj =
+            FragmentPokusaj()
     }
 
     constructor(pitanja: List<Pitanje>) : this() {

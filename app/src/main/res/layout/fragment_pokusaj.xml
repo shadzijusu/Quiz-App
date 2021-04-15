@@ -8,7 +8,7 @@
     android:background="#EDC0C0"
     android:clickable="false"
     android:contextClickable="false"
-    tools:context=".FragmentPokusaj">
+    tools:context=".view.FragmentPokusaj">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigacijaPitanja"

@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat
+package ba.etf.rma21.projekat.view
 
 
 import android.graphics.Color
@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Pitanje
 import com.google.android.material.navigation.NavigationView
 
@@ -61,7 +62,8 @@ class FragmentPitanje() : Fragment() {
         return view
     }
     companion object {
-        fun newInstance(): FragmentPitanje = FragmentPitanje()
+        fun newInstance(): FragmentPitanje =
+            FragmentPitanje()
     }
 
     constructor(pitanje: Pitanje) : this() {

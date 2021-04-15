@@ -1,7 +1,7 @@
 package ba.etf.rma21.projekat.data.repositories
 
-import ba.etf.rma21.projekat.data.*
 import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.data.staticdata.*
 
 class KvizRepository {
 

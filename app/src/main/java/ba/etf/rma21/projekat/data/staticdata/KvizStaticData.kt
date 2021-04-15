@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.data
+package ba.etf.rma21.projekat.data.staticdata
 
 import ba.etf.rma21.projekat.data.models.Kviz
 import java.util.*
@@ -11,7 +11,7 @@ var mojiKvizovi = mutableListOf(
     ),
     Kviz(
         "Test", "OOAD", Date(121, 3, 3),
-        Date(121, 4, 30), Date(0, 0, 0),
+        Date(121, 8, 30), Date(0, 0, 0),
         6, "SRI15", null
     ),
     Kviz(
@@ -20,8 +20,8 @@ var mojiKvizovi = mutableListOf(
         "Grupa4", 3F
     ),
     Kviz(
-        "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 25),
-        Date(121, 3, 30), Date(0, 0, 0), 2,
+        "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 6, 25),
+        Date(121, 6, 30), Date(0, 0, 0), 2,
         "PON11:30", null
     ),
     Kviz(

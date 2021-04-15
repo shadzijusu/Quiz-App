@@ -1,8 +1,8 @@
-package ba.etf.rma21.projekat.data
+package ba.etf.rma21.projekat.data.staticdata
 
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.models.PitanjeKviz
-
+//Pitanja za kvizove iz RMA i OOAD
 fun svaPitanjaSNazivomKviza() : List<PitanjeKviz> {
     return listOf(
         PitanjeKviz(
@@ -12,7 +12,27 @@ fun svaPitanjaSNazivomKviza() : List<PitanjeKviz> {
                 listOf("manifestu", "u glavnoj klasi aktivnosti aplikacije", "nemoguće"),
                 0
             ), "Kviz 1 - vježbe 2 i 3"
-        )
+        ),
+        PitanjeKviz( Pitanje(
+            "Pitanje 1",
+            "Fragment je",
+            listOf(
+                "modularni dio aktivnosti",
+                "obavezni dio aktivnosti",
+                "komponenta Android aplikacija"
+            ),
+            0
+        ), "Kviz 2 - vježbe 4 i 5"),
+        PitanjeKviz( Pitanje(
+            "Pitanje 1",
+            "Dijagram klasa i dijagram objekata spadaju UML skupini dijagrama",
+            listOf(
+                "ponašanja",
+                "strukture",
+                "ne pripadaju istoj skupini"
+            ),
+            0
+        ), "Test")
     )
 }
 
@@ -60,7 +80,7 @@ fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
                     0
                 )
             )
-            else ->  listOf(
+            "Kviz 2 - vježbe 4 i 5" ->  listOf(
                 Pitanje(
                     "Pitanje 1",
                     "Fragment je",
@@ -100,6 +120,48 @@ fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
                     1
                 )
             )
+            "Test" -> listOf(
+                Pitanje(
+                    "Pitanje 1",
+                    "Dijagram klasa i dijagram objekata spadaju UML skupini dijagrama",
+                    listOf(
+                        "ponašanja",
+                        "strukture",
+                        "ne pripadaju istoj skupini"
+                    ),
+                    0
+                ),
+                Pitanje(
+                    "Pitanje 2",
+                    "Koji od sljedećih koncepata su povezani sa dijagramom aktivnosti",
+                    listOf(
+                        "include relacija",
+                        "generalizacija",
+                        "particije"
+                    ),
+                    2
+                ),
+                Pitanje(
+                    "Pitanje 3",
+                    "Za dijagram objekata je istinito",
+                    listOf("pripada procesnom pogledu na sistem", "link je veza između objekata", "objekat ne može biti anoniman"),
+                    1
+                ),
+                Pitanje(
+                    "Pitanje 4",
+                    "Dijagram slučajeva upotrebe nam govori",
+                    listOf("šta sistem radi", "kako sistem radi", "ništa od navedenog"),
+                    0
+                ),
+                Pitanje(
+                    "Pitanje 5",
+                    "Koju vezu između Uređivanje profila i Promjena šifre ćemo upotrijebiti za modeliranje sljedeće situacije: " +
+                            "Student uređuje svoj korisnički profil. Pri tome može i promijeniti lozinku ako želi.\n",
+                    listOf("asocijaciju", "extend", "include"),
+                    1
+                )
+            )
+                else -> emptyList()
             }
     return pitanjaKviza
 }

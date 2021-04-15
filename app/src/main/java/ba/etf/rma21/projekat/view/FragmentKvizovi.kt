@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat
+package ba.etf.rma21.projekat.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,8 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
+import ba.etf.rma21.projekat.DefaultItemDecorator
+import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 
@@ -103,7 +104,12 @@ class FragmentKvizovi : Fragment() {
             }
         })
         listaKvizova.layoutManager = GridLayoutManager(activity, 2)
-        listaKvizova.addItemDecoration(DefaultItemDecorator(25, 5))
+        listaKvizova.addItemDecoration(
+            DefaultItemDecorator(
+                25,
+                5
+            )
+        )
         listaKvizovaAdapter =
             ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
         listaKvizova.adapter = listaKvizovaAdapter
@@ -121,7 +127,8 @@ class FragmentKvizovi : Fragment() {
 //    }
 
     companion object {
-        fun newInstance(): FragmentKvizovi = FragmentKvizovi()
+        fun newInstance(): FragmentKvizovi =
+            FragmentKvizovi()
     }
 
 }

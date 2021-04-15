@@ -1,6 +1,5 @@
 package ba.etf.rma21.projekat.view
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import ba.etf.rma21.projekat.FragmentKvizovi
-import ba.etf.rma21.projekat.FragmentPokusaj
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
@@ -65,7 +62,11 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
                 var nazivKviza = kvizovi[position].naziv
                 var nazivPredmeta = kvizovi[position].nazivPredmeta
                 var activity : AppCompatActivity = view?.context as AppCompatActivity
-                var pokusajFragment : FragmentPokusaj = FragmentPokusaj(pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta))
+
+                var pokusajFragment : FragmentPokusaj =
+                    FragmentPokusaj(
+                        pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
+                    )
                 activity.supportFragmentManager.beginTransaction().replace(R.id.container, pokusajFragment).addToBackStack(null).commit()
             }
 

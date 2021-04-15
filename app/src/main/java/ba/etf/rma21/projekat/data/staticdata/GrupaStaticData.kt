@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.data
+package ba.etf.rma21.projekat.data.staticdata
 
 import ba.etf.rma21.projekat.data.models.Grupa
 

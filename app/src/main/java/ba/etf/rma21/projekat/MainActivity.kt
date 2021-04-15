@@ -2,9 +2,10 @@ package ba.etf.rma21.projekat
 
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import ba.etf.rma21.projekat.view.FragmentKvizovi
+import ba.etf.rma21.projekat.view.FragmentPredmeti
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -24,14 +25,6 @@ class MainActivity : AppCompatActivity() {
                     openFragment(kvizoviFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.zaustaviKviz -> {
-                    bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-                    bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
-                    bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
-                    bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
-                    bottomNavigation.selectedItemId = R.id.kvizovi
-                    return@OnNavigationItemSelectedListener false
-                }
             }
             true
         }
@@ -44,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottomNavigation = findViewById(R.id.bottomNav)
+        bottomNavigation.requestFocus()
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
@@ -64,14 +58,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        supportFragmentManager.popBackStack()
-        bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
-        bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
-        bottomNavigation.selectedItemId = R.id.kvizovi
+            supportFragmentManager.popBackStack()
+            bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+            bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+            bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+            bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
+            bottomNavigation.selectedItemId = R.id.kvizovi
     }
-
 }
 
 

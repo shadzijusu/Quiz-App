@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat
+package ba.etf.rma21.projekat.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import ba.etf.rma21.projekat.PreferenceManager
+import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Predmet
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
@@ -357,7 +359,8 @@ class FragmentPredmeti : Fragment() {
         return view
     }
     companion object {
-        fun newInstance(): FragmentPredmeti = FragmentPredmeti()
+        fun newInstance(): FragmentPredmeti =
+            FragmentPredmeti()
     }
     private fun upisiMe() {
         var godina = odabirGodina.selectedItem.toString()
@@ -372,9 +375,9 @@ class FragmentPredmeti : Fragment() {
             )
                 kvizListViewModel.addMine(kviz)
         }
-        odabirGodina.setSelection(preferenceManger?.selection!!)
-        odabirPredmet.setSelection(preferenceManger?.selection!!)
-        odabirGrupa.setSelection(preferenceManger?.selection!!)
+//        odabirGodina.setSelection(preferenceManger?.selection!!)
+//        odabirPredmet.setSelection(preferenceManger?.selection!!)
+//        odabirGrupa.setSelection(preferenceManger?.selection!!)
 
             var bundle: Bundle = Bundle()
             bundle.putString(
@@ -385,7 +388,7 @@ class FragmentPredmeti : Fragment() {
             porukaFragment.arguments = bundle
             fragmentManager
                 ?.beginTransaction()
-                ?.replace(R.id.layout, porukaFragment)?.addToBackStack(null)
+                ?.replace(R.id.container, porukaFragment)?.addToBackStack(null)
                 ?.commit()
         }
 }
