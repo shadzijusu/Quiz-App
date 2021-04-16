@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottomNavigation = findViewById(R.id.bottomNav)
-        bottomNavigation.requestFocus()
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
@@ -46,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.selectedItemId = R.id.kvizovi
         kvizoviFragment = FragmentKvizovi.newInstance()
         openFragment(kvizoviFragment)
-
 
     }
 
@@ -58,20 +56,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(R.id.predajKviz == bottomNavigation.selectedItemId) {
-            supportFragmentManager.popBackStack("poruka", 1)
-        }
-        else if(R.id.kvizovi != bottomNavigation.selectedItemId) {
-            bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-            bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
-            bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
-            bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
-
+        if(R.id.kvizovi != bottomNavigation.selectedItemId) {
             bottomNavigation.selectedItemId = R.id.kvizovi
         }
         else {
             super.onBackPressed()
         }
+        bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+        bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
         bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
     }
 }

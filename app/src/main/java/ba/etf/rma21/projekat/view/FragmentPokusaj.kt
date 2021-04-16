@@ -100,7 +100,7 @@ class FragmentPokusaj() : Fragment() {
 
         }
         navigacijaPitanja.setNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        onNavigationItemSelectedListener.onNavigationItemSelected(navigacijaPitanja.menu.getItem(0));
+//        onNavigationItemSelectedListener.onNavigationItemSelected(navigacijaPitanja.menu.getItem(0));
         return view
     }
 
@@ -110,7 +110,7 @@ class FragmentPokusaj() : Fragment() {
         for (i in 0 until menu.size()) {
             var menuItem: MenuItem = navigacijaPitanja.menu.getItem(i)
             var item = menuItem.toString().split(" ")
-            if (item[1] == "+") {
+            if (item.get(1) == "+") {
                 brojTacnih++
             }
         }

@@ -24,7 +24,6 @@ class PocetniTest {
 
     @Test
     fun postojiSveNaPocetnoj() {
-
         onView(withId(R.id.filterKvizova)).check(matches(isDisplayed()))
         onView(withId(R.id.listaKvizova)).check(matches(isDisplayed()))
         onView(withId(R.id.bottomNav)).check(matches(isDisplayed()))

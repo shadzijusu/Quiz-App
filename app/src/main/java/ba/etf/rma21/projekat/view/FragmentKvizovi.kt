@@ -115,16 +115,7 @@ class FragmentKvizovi : Fragment() {
         listaKvizova.adapter = listaKvizovaAdapter
         return view
     }
-//
-//    private fun otvoriFragmentPokusaj() {
-//        var nazivKviza = ""
-//        var nazivPredmeta = ""
-//       var fragmentPokusaj = FragmentPokusaj(pitanjeKvizListViewModel.getPitanja(nazivKviza,nazivPredmeta))
-//        fragmentManager
-//            ?.beginTransaction()
-//            ?.replace(R.id.container, fragmentPokusaj)?.addToBackStack(null)
-//            ?.commit()
-//    }
+
 
     companion object {
         fun newInstance(): FragmentKvizovi =
