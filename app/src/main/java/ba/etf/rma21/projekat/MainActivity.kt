@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
         if(R.id.kvizovi != bottomNavigation.selectedItemId) {
             bottomNavigation.selectedItemId = R.id.kvizovi
         }
@@ -66,7 +67,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
         bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
-        bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
     }
 }
 

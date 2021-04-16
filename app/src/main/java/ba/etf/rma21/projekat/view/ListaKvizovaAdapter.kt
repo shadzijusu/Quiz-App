@@ -67,7 +67,7 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
                     FragmentPokusaj(
                         pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
                     )
-                activity.supportFragmentManager.beginTransaction().replace(R.id.container, pokusajFragment).addToBackStack(null).commit()
+                activity.supportFragmentManager.beginTransaction().replace(R.id.container, pokusajFragment).addToBackStack(null).commitNow()
             }
 
         })

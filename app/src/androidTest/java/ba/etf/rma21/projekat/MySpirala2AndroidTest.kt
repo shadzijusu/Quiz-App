@@ -4,16 +4,17 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingPolicies
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerMatchers.isOpen
 import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.`is`
@@ -22,6 +23,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.EnumSet.allOf
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
@@ -32,6 +34,7 @@ class MySpirala2AndroidTest {
 
     @Test
     fun upisiPredmetTest() {
+
         onView(withId(R.id.filterKvizova)).check(matches(isDisplayed()))
         onView(withId(R.id.predmeti)).perform(ViewActions.click())
         onView(withId(R.id.odabirGodina)).perform(ViewActions.click())
@@ -69,9 +72,10 @@ class MySpirala2AndroidTest {
 
         onView(withId(R.id.listaKvizova)).perform(
             RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(CoreMatchers.allOf(
-                ViewMatchers.hasDescendant(ViewMatchers.withText("Kviz 1 - vježbe 2 i 3")),
-                ViewMatchers.hasDescendant(ViewMatchers.withText("RMA"))
+                ViewMatchers.hasDescendant(ViewMatchers.withText("RMA")),
+                ViewMatchers.hasDescendant(ViewMatchers.withText("Kviz 1 - vježbe 2 i 3"))
                 ))).perform(click())
+        onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
     }
     @Test
     fun pitanjaTest() {
@@ -80,5 +84,7 @@ class MySpirala2AndroidTest {
                 ViewMatchers.hasDescendant(ViewMatchers.withText("Kviz 1 - vježbe 2 i 3")),
                 ViewMatchers.hasDescendant(ViewMatchers.withText("RMA"))
             ))).perform(click())
+
+
     }
 }

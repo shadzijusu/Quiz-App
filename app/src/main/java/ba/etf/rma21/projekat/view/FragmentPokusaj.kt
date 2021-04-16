@@ -22,17 +22,9 @@ class FragmentPokusaj() : Fragment() {
     private lateinit var framePitanje: FrameLayout
     private var brojPitanja: Int = 0
     private lateinit var pitanja: List<Pitanje>
-    private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
-    private var kvizListViewModel = KvizListViewModel()
+
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private var pitanjeFragment = FragmentPitanje()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
     private val onNavigationItemSelectedListener =
         NavigationView.OnNavigationItemSelectedListener { item ->
             val pitanje = pitanja.get(item.itemId)
@@ -59,9 +51,8 @@ class FragmentPokusaj() : Fragment() {
                     bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
                     bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
                     bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
+                    fragmentManager?.popBackStack()
                     requireActivity().onBackPressed()
-//                    fragmentManager?.popBackStack()
-//                    bottomNavigationView.selectedItemId = R.id.kvizovi
                     return@OnNavigationItemSelectedListener false
                 }
             }
@@ -107,41 +98,52 @@ class FragmentPokusaj() : Fragment() {
     private fun openFragment(porukaFragment: FragmentPoruka) {
         var brojTacnih = 0.0
         var menu: Menu = navigacijaPitanja.menu
-        for (i in 0 until menu.size()) {
-            var menuItem: MenuItem = navigacijaPitanja.menu.getItem(i)
-            var item = menuItem.toString().split(" ")
-            if (item.get(1) == "+") {
-                brojTacnih++
-            }
+        var nistaOdabrano = true
+        for(i in 0 until menu.size()) {
+            var broj = i+1
+            var menuItem = navigacijaPitanja.menu.getItem(i)
+            nistaOdabrano =
+                !(menuItem.toString().equals("$broj +") || menuItem.toString().equals("$broj -"))
         }
-        var nazivKviza = ""
-        var svaPitanjaSNazivom = pitanjeKvizListViewModel.getSvaSNazivom()
-        for (pitanjeKviz in svaPitanjaSNazivom) {
-            for (pitanje in pitanja) {
-                if (pitanje.tekst.equals(pitanjeKviz.pitanje.tekst)) {
-                    nazivKviza = pitanjeKviz.nazivKviza
-                    break
+
+        if(!nistaOdabrano) {
+            for (i in 0 until menu.size()) {
+                var menuItem: MenuItem = navigacijaPitanja.menu.getItem(i)
+                var item = menuItem.toString().split(" ")
+                if (item.get(1) == "+") {
+                    brojTacnih++
                 }
             }
         }
+        var brojSvih = menu.size().toDouble()
+        var nazivKviza = ""
+        var percentage = 0.0
 
+            var svaPitanjaSNazivom = pitanjeKvizListViewModel.getSvaSNazivom()
+            for (pitanjeKviz in svaPitanjaSNazivom) {
+                for (pitanje in pitanja) {
+                    if (pitanje.tekst.equals(pitanjeKviz.pitanje.tekst)) {
+                        nazivKviza = pitanjeKviz.nazivKviza
+                        break
+                    }
+                }
+            }
 
-        var brojSvih = brojPitanja.toDouble()
-        var percentage = brojTacnih / brojSvih
+        brojSvih = brojPitanja.toDouble()
+        percentage = brojTacnih / brojSvih
         var bundle = Bundle()
         var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
         bundle.putString("data", poruka)
         porukaFragment.arguments = bundle
         val transaction = fragmentManager?.beginTransaction()
         transaction?.add(R.id.container, porukaFragment)
-        transaction?.addToBackStack("poruka")
+        transaction?.addToBackStack(null)
         transaction?.commit()
-
     }
 
     private fun redirectToFragment(pitanjeFragment: FragmentPitanje) {
         val transaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.framePitanje, pitanjeFragment).addToBackStack("pitanja")
+        transaction.add(R.id.framePitanje, pitanjeFragment).addToBackStack(null)
         transaction.commit()
     }
 
