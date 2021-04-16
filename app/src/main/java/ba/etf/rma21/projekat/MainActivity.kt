@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
             }
-            true
+            false
         }
     override fun onResume() {
         bottomNavigation.selectedItemId = R.id.kvizovi
@@ -58,12 +58,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-            supportFragmentManager.popBackStack()
+        if(R.id.predajKviz == bottomNavigation.selectedItemId) {
+            supportFragmentManager.popBackStack("poruka", 1)
+        }
+        else if(R.id.kvizovi != bottomNavigation.selectedItemId) {
             bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
             bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
             bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
             bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
+
             bottomNavigation.selectedItemId = R.id.kvizovi
+        }
+        else {
+            super.onBackPressed()
+        }
+        bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
     }
 }
 

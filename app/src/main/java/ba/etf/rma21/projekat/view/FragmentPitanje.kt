@@ -21,46 +21,49 @@ class FragmentPitanje() : Fragment() {
     private lateinit var odgovoriLista: ListView
     private lateinit var tekstPitanja: TextView
     private lateinit var navigacijaPitanja: NavigationView
-
     private lateinit var pitanje: Pitanje
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = inflater.inflate(R.layout.fragment_pitanje, container, false)
+        val view = inflater.inflate(R.layout.fragment_pitanje, container, false)
         odgovoriLista = view.findViewById(R.id.odgovoriLista)
         tekstPitanja = view.findViewById(R.id.tekstPitanja)
         navigacijaPitanja = requireParentFragment().requireView().findViewById(R.id.navigacijaPitanja)
-
 
         var bundle = this.arguments
         var poruka = bundle?.getString("data")
         tekstPitanja.text = pitanje.tekst
         val listaVrijednosti = pitanje.opcije
         val layoutID = android.R.layout.simple_list_item_1
-        var adapter = ArrayAdapter<String>(view.context, layoutID, listaVrijednosti)
+        var adapter = view.context?.let { ArrayAdapter<String>(it, layoutID, listaVrijednosti) }
         odgovoriLista.adapter = adapter
-        adapter.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
+
         //change text color instead of background
         odgovoriLista.setOnItemClickListener { parent, view, position, id ->
             var menuItem = poruka?.toInt()?.let { navigacijaPitanja.menu.getItem(it) }
-            var s : SpannableString = SpannableString("")
+            var s: SpannableString = SpannableString("")
             if (position.equals(pitanje.tacan)) {
                 parent.getChildAt(position).setBackgroundColor(resources.getColor(R.color.tacno))
-                 s = SpannableString(menuItem?.title.toString() + " +")
+                s = SpannableString(menuItem?.title.toString() + " +")
                 s.setSpan(ForegroundColorSpan(Color.GREEN), 0, s.length, 0)
 
             } else if (!position.equals(pitanje.tacan)) {
                 parent.getChildAt(position).setBackgroundColor(resources.getColor(R.color.netacno))
                 parent.getChildAt(pitanje.tacan)
                     .setBackgroundColor(resources.getColor(R.color.tacno))
-                 s = SpannableString(menuItem?.title.toString() + " -")
+                s = SpannableString(menuItem?.title.toString() + " -")
                 s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
             }
+            odgovoriLista.isEnabled = false
             menuItem?.title = s
         }
         return view
     }
+
     companion object {
         fun newInstance(): FragmentPitanje =
             FragmentPitanje()
@@ -69,5 +72,6 @@ class FragmentPitanje() : Fragment() {
     constructor(pitanje: Pitanje) : this() {
         this.pitanje = pitanje
     }
+
 
 }

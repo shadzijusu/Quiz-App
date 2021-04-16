@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ba.etf.rma21.projekat.data.repositories.KvizRepository
 import ba.etf.rma21.projekat.data.repositories.PitanjeKvizRepository
+import kotlinx.coroutines.android.awaitFrame
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.not
 import org.junit.Rule
@@ -59,6 +60,7 @@ class PitanjeTest {
         val kvizovi = KvizRepository.getMyKvizes()
         onView(withId(R.id.listaKvizova)).perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(CoreMatchers.allOf(hasDescendant(withText(kvizovi[0].naziv)),
             hasDescendant(withText(kvizovi[0].nazivPredmeta))))).perform(click())
+
         onView(withId(R.id.predajKviz)).check(matches(isDisplayed()))
         onView(withId(R.id.zaustaviKviz)).check(matches(isDisplayed()))
         onView(withId(R.id.kvizovi)).check(matches(not(isDisplayed())))

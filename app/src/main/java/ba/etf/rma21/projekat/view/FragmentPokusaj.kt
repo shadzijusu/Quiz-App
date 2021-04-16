@@ -3,8 +3,10 @@ package ba.etf.rma21.projekat.view
 
 import android.app.usage.UsageEvents.Event.NONE
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.*
 import android.widget.FrameLayout
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Pitanje
@@ -18,13 +20,31 @@ class FragmentPokusaj() : Fragment() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var navigacijaPitanja: NavigationView
     private lateinit var framePitanje: FrameLayout
-    private lateinit var state: Bundle
     private var brojPitanja: Int = 0
     private lateinit var pitanja: List<Pitanje>
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private var kvizListViewModel = KvizListViewModel()
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
-    private val TAG = "Q&A"
+    private var pitanjeFragment = FragmentPitanje()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+    }
+    private val onNavigationItemSelectedListener =
+        NavigationView.OnNavigationItemSelectedListener { item ->
+            val pitanje = pitanja.get(item.itemId)
+            var bundle = Bundle()
+            bundle.putString("data", item.itemId.toString())
+            pitanjeFragment =
+                FragmentPitanje(pitanje)
+            pitanjeFragment.arguments = bundle
+            redirectToFragment(pitanjeFragment)
+            item.isChecked = true
+            true
+        }
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -35,13 +55,13 @@ class FragmentPokusaj() : Fragment() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.zaustaviKviz -> {
-                    fragmentManager?.popBackStack()
                     bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
                     bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
                     bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
                     bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
-                    bottomNavigationView.selectedItemId =
-                        R.id.kvizovi
+                    requireActivity().onBackPressed()
+//                    fragmentManager?.popBackStack()
+//                    bottomNavigationView.selectedItemId = R.id.kvizovi
                     return@OnNavigationItemSelectedListener false
                 }
             }
@@ -65,12 +85,9 @@ class FragmentPokusaj() : Fragment() {
         if (view != null) {
             framePitanje = view.findViewById(R.id.framePitanje)
         }
-        // pitanja = pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
         bottomNavigationView = requireActivity().findViewById(R.id.bottomNav)
         bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = true
         bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = true
-//        bottomNavigationView.menu.findItem(R.id.predajKviz).isEnabled = true
-//        bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isEnabled = true
         bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -82,17 +99,8 @@ class FragmentPokusaj() : Fragment() {
             itemId++
 
         }
-        navigacijaPitanja.setNavigationItemSelectedListener { menuItem ->
-            val pitanje = pitanja.get(menuItem.itemId)
-            var bundle = Bundle()
-            bundle.putString("data", menuItem.itemId.toString())
-            val pitanjeFragment =
-                FragmentPitanje(pitanje)
-            pitanjeFragment.arguments = bundle
-            redirectToFragment(pitanjeFragment)
-            menuItem.isChecked = true
-            true
-        }
+        navigacijaPitanja.setNavigationItemSelectedListener(onNavigationItemSelectedListener)
+        onNavigationItemSelectedListener.onNavigationItemSelected(navigacijaPitanja.menu.getItem(0));
         return view
     }
 
@@ -124,17 +132,16 @@ class FragmentPokusaj() : Fragment() {
         var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
         bundle.putString("data", poruka)
         porukaFragment.arguments = bundle
-        //  println(porukaFragment.arguments.toString())
         val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.container, porukaFragment)
-        transaction?.addToBackStack(null)
+        transaction?.add(R.id.container, porukaFragment)
+        transaction?.addToBackStack("poruka")
         transaction?.commit()
 
     }
 
     private fun redirectToFragment(pitanjeFragment: FragmentPitanje) {
         val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.framePitanje, pitanjeFragment).addToBackStack(null)
+        transaction.add(R.id.framePitanje, pitanjeFragment).addToBackStack("pitanja")
         transaction.commit()
     }
 
@@ -151,6 +158,4 @@ class FragmentPokusaj() : Fragment() {
         }
 
     }
-
-
 }
