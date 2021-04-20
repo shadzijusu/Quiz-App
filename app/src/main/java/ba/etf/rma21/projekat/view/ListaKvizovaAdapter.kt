@@ -54,11 +54,11 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
             holder.osvojeniBodovi.text = ""
         }
 
-//        holder.itemView.setOnClickListener {
-//            onItemClicked(kvizovi[position])
-//        }
+//
         holder.itemView.setOnClickListener (object :  View.OnClickListener{
             override fun onClick(view: View?) {
+                if(kvizovi[position].datumKraj.compareTo(current) < 0)
+                    return
                 var nazivKviza = kvizovi[position].naziv
                 var nazivPredmeta = kvizovi[position].nazivPredmeta
                 var activity : AppCompatActivity = view?.context as AppCompatActivity
@@ -67,7 +67,7 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
                     FragmentPokusaj(
                         pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
                     )
-                activity.supportFragmentManager.beginTransaction().replace(R.id.container, pokusajFragment).addToBackStack(null).commitNow()
+                activity.supportFragmentManager.beginTransaction().replace(R.id.container, pokusajFragment).addToBackStack(null).commit()
             }
 
         })

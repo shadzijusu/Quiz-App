@@ -91,7 +91,7 @@ class FragmentPokusaj() : Fragment() {
 
         }
         navigacijaPitanja.setNavigationItemSelectedListener(onNavigationItemSelectedListener)
-//        onNavigationItemSelectedListener.onNavigationItemSelected(navigacijaPitanja.menu.getItem(0));
+        onNavigationItemSelectedListener.onNavigationItemSelected(navigacijaPitanja.menu.getItem(0));
         return view
     }
 
@@ -133,6 +133,8 @@ class FragmentPokusaj() : Fragment() {
         percentage = brojTacnih / brojSvih
         var bundle = Bundle()
         var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
+        if(nistaOdabrano)
+            poruka = "Završili ste kviz!"
         bundle.putString("data", poruka)
         porukaFragment.arguments = bundle
         val transaction = fragmentManager?.beginTransaction()
@@ -143,7 +145,7 @@ class FragmentPokusaj() : Fragment() {
 
     private fun redirectToFragment(pitanjeFragment: FragmentPitanje) {
         val transaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.framePitanje, pitanjeFragment).addToBackStack(null)
+        transaction.replace(R.id.framePitanje, pitanjeFragment).addToBackStack(null)
         transaction.commit()
     }
 

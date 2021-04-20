@@ -6,7 +6,7 @@ import java.util.*
 var mojiKvizovi = mutableListOf(
     Kviz(
         "Kviz 1 - vježbe 2 i 3", "RMA", Date(121, 2, 29),
-        Date(121, 3, 5), Date(121, 2, 29), 2,
+        Date(121, 6, 5), Date(121, 2, 29), 2,
         "PON11:30", 2F
     ),
     Kviz(
@@ -20,8 +20,8 @@ var mojiKvizovi = mutableListOf(
         "Grupa4", 3F
     ),
     Kviz(
-        "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 6, 25),
-        Date(121, 6, 30), Date(0, 0, 0), 2,
+        "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 25),
+        Date(121, 7, 30), Date(0, 0, 0), 2,
         "PON11:30", null
     ),
     Kviz(
@@ -42,7 +42,7 @@ fun allKvizes(): List<Kviz> {
     return listOf(
         Kviz(
             "Kviz 1 - vježbe 2 i 3", "RMA", Date(121, 2, 29),
-            Date(121, 3, 5), Date(121, 2, 29), 2,
+            Date(121, 6, 5), Date(121, 2, 29), 2,
             "PON11:30", 2F
         ),
         Kviz(
@@ -57,7 +57,7 @@ fun allKvizes(): List<Kviz> {
         ),
         Kviz(
             "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 25),
-            Date(121, 3, 30), Date(0, 0, 0), 2,
+            Date(121, 7, 30), Date(0, 0, 0), 2,
             "PON11:30", null
         ),
         Kviz(
@@ -117,7 +117,7 @@ fun done(): List<Kviz> {
     return listOf(
         Kviz(
             "Kviz 1 - vježbe 2 i 3", "RMA", Date(121, 2, 29),
-            Date(121, 3, 5), Date(121, 2, 29), 2,
+            Date(121, 6, 5), Date(121, 2, 29), 2,
             "PON11:30", 2F
         ),
         Kviz(
@@ -132,7 +132,7 @@ fun future(): List<Kviz> {
     return listOf(
         Kviz(
             "Kviz 2 - vježbe 4 i 5", "RMA", Date(121, 3, 25),
-            Date(121, 3, 30), Date(0, 0, 0), 2,
+            Date(121, 7, 30), Date(0, 0, 0), 2,
             "PON11:30", null
         )
     )

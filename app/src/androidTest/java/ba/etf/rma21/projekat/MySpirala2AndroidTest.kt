@@ -4,26 +4,21 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingPolicies
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.DrawerMatchers.isOpen
 import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ba.etf.rma21.projekat.data.repositories.PitanjeKvizRepository
 import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.Matchers.instanceOf
+import org.hamcrest.CoreMatchers.anything
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.EnumSet.allOf
-import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
@@ -33,8 +28,8 @@ class MySpirala2AndroidTest {
     val intentsTestRule = IntentsTestRule<MainActivity>(MainActivity::class.java)
 
     @Test
-    fun upisiPredmetTest() {
-
+    fun testUpisPredmetaIKlik() {
+        //Upis predmeta
         onView(withId(R.id.filterKvizova)).check(matches(isDisplayed()))
         onView(withId(R.id.predmeti)).perform(ViewActions.click())
         onView(withId(R.id.odabirGodina)).perform(ViewActions.click())
@@ -62,6 +57,15 @@ class MySpirala2AndroidTest {
         onView(withId(R.id.dodajPredmetDugme)).perform(ViewActions.click())
         onView(ViewMatchers.withSubstring("Uspješno ste upisani u grupu Grupa2 predmeta VIS!"))
         Espresso.pressBack()
+        //Klik na kviz koji je prošao, ostajemo na listi kvizova
+        onView(withId(R.id.listaKvizova)).perform(
+            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                CoreMatchers.allOf(
+                    hasDescendant(withText("Kviz1")),
+                    hasDescendant(withText("OOAD"))
+                ), click()
+            )
+        )
         onView(withId(R.id.filterKvizova)).perform(click())
         Espresso.onData(
             CoreMatchers.allOf(
@@ -69,22 +73,50 @@ class MySpirala2AndroidTest {
                 CoreMatchers.`is`("Svi moji kvizovi")
             )
         ).perform(ViewActions.click())
-
-        onView(withId(R.id.listaKvizova)).perform(
-            RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(CoreMatchers.allOf(
-                ViewMatchers.hasDescendant(ViewMatchers.withText("RMA")),
-                ViewMatchers.hasDescendant(ViewMatchers.withText("Kviz 1 - vježbe 2 i 3"))
-                ))).perform(click())
-        onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
     }
+
     @Test
     fun pitanjaTest() {
+        onView(withId(R.id.filterKvizova)).perform(click())
+        Espresso.onData(
+            CoreMatchers.allOf(
+                CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)),
+                CoreMatchers.`is`("Svi moji kvizovi")
+            )
+        ).perform(click())
         onView(withId(R.id.listaKvizova)).perform(
-            RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(CoreMatchers.allOf(
-                ViewMatchers.hasDescendant(ViewMatchers.withText("Kviz 1 - vježbe 2 i 3")),
-                ViewMatchers.hasDescendant(ViewMatchers.withText("RMA"))
-            ))).perform(click())
+            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                CoreMatchers.allOf(
+                    hasDescendant(withText("Kviz 1 - vježbe 2 i 3")),
+                    hasDescendant(withText("RMA"))
+                ), click()
+            )
+        )
+        onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
+        onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
+        val pitanja = PitanjeKvizRepository.getPitanja("Kviz 1 - vježbe 2 i 3", "RMA")
+        var indeks = 0
+        for (pitanje in pitanja) {
+            onView(withId(R.id.navigacijaPitanja)).perform(NavigationViewActions.navigateTo(indeks))
+            when (indeks) {
+                0 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(0)
+                    .perform(click())
+                1 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(1)
+                    .perform(click())
+                2 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(2)
+                    .perform(click())
+                3 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(2)
+                    .perform(click())
+                4 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(0)
+                    .perform(click())
+            }
+            indeks++
+        }
 
+        onView(withId(R.id.predajKviz)).perform(click())
+        onView(withSubstring("Završili ste kviz Kviz 1 - vježbe 2 i 3 sa tačnosti 0.8")).check(
+            matches(isDisplayed())
+        )
 
     }
 }
