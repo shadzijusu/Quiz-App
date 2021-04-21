@@ -44,10 +44,10 @@ fun pitanje(nazivKviza: String): Pitanje {
 }
 
 fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
-    var pitanjaKviza = listOf<Pitanje>()
+    var pitanjaKviza = mutableListOf<Pitanje>()
     pitanjaKviza =
         when (nazivKviza) {
-            "Kviz 1 - vježbe 2 i 3" -> listOf(
+            "Kviz 1 - vježbe 2 i 3" -> mutableListOf(
                 Pitanje(
                     "Pitanje 1",
                     "Ako želimo da BroadcastReceiver osluškuje obavijesti čak i kada aplikacija nije pokrenuta, tada taj BroadcastReceiver registrujemo u ...",
@@ -87,7 +87,7 @@ fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
                     0
                 )
             )
-            "Kviz 2 - vježbe 4 i 5" -> listOf(
+            "Kviz 2 - vježbe 4 i 5" -> mutableListOf(
                 Pitanje(
                     "Pitanje 1",
                     "Fragment je",
@@ -127,7 +127,7 @@ fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
                     1
                 )
             )
-            "Test" -> listOf(
+            "Test" -> mutableListOf(
                 Pitanje(
                     "Pitanje 1",
                     "Dijagram klasa i dijagram objekata spadaju UML skupini dijagrama",
@@ -172,7 +172,7 @@ fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
                     1
                 )
             )
-            else -> emptyList()
+            else -> mutableListOf()
         }
     return pitanjaKviza
 }

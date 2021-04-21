@@ -30,6 +30,7 @@ class FragmentPokusaj() : Fragment() {
     private var odabranoPitanje = 0
     private var odabraniOdgovor = -1
     private var nazivKviza = ""
+    private var percentage = 0.0
 
     private var mOnNavigationViewItemSelectedListener =
         NavigationView.OnNavigationItemSelectedListener { item ->
@@ -62,6 +63,10 @@ class FragmentPokusaj() : Fragment() {
                     fragmentManager?.popBackStack()
                     requireActivity().onBackPressed()
                     return@OnNavigationItemSelectedListener false
+                }
+                R.id.rezultat -> {
+                    var rezultat = FragmentPoruka()
+                    openFragment(rezultat)
                 }
             }
             true
@@ -138,7 +143,6 @@ class FragmentPokusaj() : Fragment() {
             }
         }
         var brojSvih = menu.size().toDouble()
-        var percentage = 0.0
 
         brojSvih = brojPitanja.toDouble()
         percentage = brojTacnih / brojSvih
@@ -162,6 +166,7 @@ class FragmentPokusaj() : Fragment() {
             kviz.datumRada = Calendar.getInstance().time
             kvizListViewModel.addMine(kviz)
         }
+        bottomNavigationView.menu.findItem(R.id.rezultat).isVisible = true
     }
 
     private fun redirectToFragment(pitanjeFragment: FragmentPitanje) {

@@ -4,13 +4,16 @@ package ba.etf.rma21.projekat
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPredmeti
+import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var kvizoviFragment : FragmentKvizovi
+    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private lateinit var bottomNavigation: BottomNavigationView
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
-
+        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
         //Defaultni fragment
         bottomNavigation.selectedItemId = R.id.kvizovi
         kvizoviFragment = FragmentKvizovi.newInstance()
@@ -58,23 +61,27 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if(R.id.predajKviz == bottomNavigation.selectedItemId) {
             supportFragmentManager.popBackStack("poruka", 1)
-            bottomNavigation.setSelectedItemId(R.id.invisible)
-            bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
-            bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = false
-            bottomNavigation.menu.findItem(R.id.predmeti).isVisible = false
-            bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = true
-        }
-        else if(R.id.kvizovi != bottomNavigation.selectedItemId) {
-            bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
             bottomNavigation.selectedItemId = R.id.kvizovi
-            bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-            bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
-            bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
-            bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
         }
-//        else {
-//            super.onBackPressed()
-//        }
+        else {
+            super.onBackPressed()
+        }
+        bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
+        bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
+        bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+        bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
+        bottomNavigation.selectedItemId = R.id.kvizovi
+
+        println(pitanjeKvizListViewModel.dajOdgovor(
+            Pitanje(
+            "Pitanje 1",
+            "Ako želimo da BroadcastReceiver osluškuje obavijesti čak i kada aplikacija nije pokrenuta, tada taj BroadcastReceiver registrujemo u ...",
+            listOf("manifestu", "u glavnoj klasi aktivnosti aplikacije", "nemoguće"),
+            0
+        )
+        ))
     }
 }
 
