@@ -27,4 +27,7 @@ class KvizListViewModel {
     fun addMine(kviz: Kviz) {
         KvizRepository.addMine(kviz)
     }
+    fun getKviz(nazivKviza : String) : Kviz {
+        return KvizRepository.getKviz(nazivKviza)
+    }
 }

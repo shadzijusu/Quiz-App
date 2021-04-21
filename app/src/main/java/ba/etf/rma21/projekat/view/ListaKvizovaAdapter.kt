@@ -29,7 +29,7 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
 
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
         val current: Date = Calendar.getInstance().time
-
+        var boja : String = "zelena"
         holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
         holder.nazivKviza.text = kvizovi[position].naziv
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
@@ -40,24 +40,28 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumKraj)
             holder.stanjeKviza.setImageResource(R.drawable.crvena)
             holder.osvojeniBodovi.text = ""
+            boja = "crvena"
         } else if (kvizovi[position].osvojeniBodovi != null && kvizovi[position].datumRada?.day != 0) {
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
             holder.stanjeKviza.setImageResource(R.drawable.plava)
             holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
+            boja = "plava"
         } else if (kvizovi[position].datumPocetka.compareTo(current) > 0 && kvizovi[position].osvojeniBodovi == null) {
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
             holder.stanjeKviza.setImageResource(R.drawable.zuta)
             holder.osvojeniBodovi.text = ""
+            boja = "zuta"
         } else {
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumKraj)
             holder.stanjeKviza.setImageResource(R.drawable.zelena)
             holder.osvojeniBodovi.text = ""
         }
 
-//
+
         holder.itemView.setOnClickListener (object :  View.OnClickListener{
             override fun onClick(view: View?) {
-                if(kvizovi[position].datumKraj.compareTo(current) < 0)
+                var kvizoviSPitanjima = pitanjeKvizListViewModel.getKvizoveSPitanjima()
+                if(!kvizoviSPitanjima.contains(kvizovi[position].naziv))
                     return
                 var nazivKviza = kvizovi[position].naziv
                 var nazivPredmeta = kvizovi[position].nazivPredmeta

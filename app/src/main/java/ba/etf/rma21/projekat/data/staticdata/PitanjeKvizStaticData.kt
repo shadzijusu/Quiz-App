@@ -2,8 +2,15 @@ package ba.etf.rma21.projekat.data.staticdata
 
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.models.PitanjeKviz
+import java.util.*
+
+var zavrseniKvizovi: MutableList<String> =
+    mutableListOf()
+var odgovoriIPitanja : MutableMap<Pitanje, Int> = mutableMapOf()
+var kvizoviKojiImajuPitanja = listOf("Kviz 1 - vježbe 2 i 3", "Test", "Kviz 2 - vježbe 4 i 5")
+
 //Pitanja za kvizove iz RMA i OOAD
-fun svaPitanjaSNazivomKviza() : List<PitanjeKviz> {
+fun svaPitanjaSNazivomKviza(): List<PitanjeKviz> {
     return listOf(
         PitanjeKviz(
             Pitanje(
@@ -13,33 +20,37 @@ fun svaPitanjaSNazivomKviza() : List<PitanjeKviz> {
                 0
             ), "Kviz 1 - vježbe 2 i 3"
         ),
-        PitanjeKviz( Pitanje(
-            "Pitanje 1",
-            "Fragment je",
-            listOf(
-                "modularni dio aktivnosti",
-                "obavezni dio aktivnosti",
-                "komponenta Android aplikacija"
-            ),
-            0
-        ), "Kviz 2 - vježbe 4 i 5"),
-        PitanjeKviz( Pitanje(
-            "Pitanje 1",
-            "Dijagram klasa i dijagram objekata spadaju UML skupini dijagrama",
-            listOf(
-                "ponašanja",
-                "strukture",
-                "ne pripadaju istoj skupini"
-            ),
-            0
-        ), "Test")
+        PitanjeKviz(
+            Pitanje(
+                "Pitanje 1",
+                "Fragment je",
+                listOf(
+                    "modularni dio aktivnosti",
+                    "obavezni dio aktivnosti",
+                    "komponenta Android aplikacija"
+                ),
+                0
+            ), "Kviz 2 - vježbe 4 i 5"
+        ),
+        PitanjeKviz(
+            Pitanje(
+                "Pitanje 1",
+                "Dijagram klasa i dijagram objekata spadaju UML skupini dijagrama",
+                listOf(
+                    "ponašanja",
+                    "strukture",
+                    "ne pripadaju istoj skupini"
+                ),
+                0
+            ), "Test"
+        )
     )
 }
 
 fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
     var pitanjaKviza = listOf<Pitanje>()
     pitanjaKviza =
-            when (nazivKviza) {
+        when (nazivKviza) {
             "Kviz 1 - vježbe 2 i 3" -> listOf(
                 Pitanje(
                     "Pitanje 1",
@@ -80,7 +91,7 @@ fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
                     0
                 )
             )
-            "Kviz 2 - vježbe 4 i 5" ->  listOf(
+            "Kviz 2 - vježbe 4 i 5" -> listOf(
                 Pitanje(
                     "Pitanje 1",
                     "Fragment je",
@@ -144,7 +155,11 @@ fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
                 Pitanje(
                     "Pitanje 3",
                     "Za dijagram objekata je istinito",
-                    listOf("pripada procesnom pogledu na sistem", "link je veza između objekata", "objekat ne može biti anoniman"),
+                    listOf(
+                        "pripada procesnom pogledu na sistem",
+                        "link je veza između objekata",
+                        "objekat ne može biti anoniman"
+                    ),
                     1
                 ),
                 Pitanje(
@@ -161,7 +176,29 @@ fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
                     1
                 )
             )
-                else -> emptyList()
-            }
+            else -> emptyList()
+        }
     return pitanjaKviza
+}
+
+fun daLiJeZavrsen(nazivKviza: String): Boolean {
+    if (zavrseniKvizovi.contains(nazivKviza))
+        return true
+    return false
+}
+
+fun zavrsiKviz(nazivKviza: String) {
+    zavrseniKvizovi.add(nazivKviza)
+}
+fun dodajOdgovor(pitanje : Pitanje, odgovor : Int) {
+    odgovoriIPitanja.putIfAbsent(pitanje, odgovor)
+}
+fun getOdgovor(pitanje : Pitanje): Int? {
+    return odgovoriIPitanja.get(pitanje)
+}
+fun dajSveOdgovore() : Int {
+    return odgovoriIPitanja.size
+}
+fun kvizoviSPitanjima() : List<String> {
+    return kvizoviKojiImajuPitanja
 }

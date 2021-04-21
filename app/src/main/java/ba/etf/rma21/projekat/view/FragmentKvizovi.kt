@@ -113,6 +113,7 @@ class FragmentKvizovi : Fragment() {
         listaKvizovaAdapter =
             ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
         listaKvizova.adapter = listaKvizovaAdapter
+
         return view
     }
 

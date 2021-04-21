@@ -34,5 +34,8 @@ class KvizRepository {
         fun addMine(kviz : Kviz) {
             dodajMoj(kviz)
         }
+        fun getKviz(nazivKviza : String) : Kviz {
+            return dajKviz(nazivKviza)
+        }
     }
 }

@@ -14,6 +14,7 @@ import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 
 class FragmentPokusaj() : Fragment() {
@@ -22,9 +23,10 @@ class FragmentPokusaj() : Fragment() {
     private lateinit var framePitanje: FrameLayout
     private var brojPitanja: Int = 0
     private lateinit var pitanja: List<Pitanje>
-
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private var pitanjeFragment = FragmentPitanje()
+    private var kvizListViewModel = KvizListViewModel()
+
     private val onNavigationItemSelectedListener =
         NavigationView.OnNavigationItemSelectedListener { item ->
             val pitanje = pitanja.get(item.itemId)
@@ -64,18 +66,9 @@ class FragmentPokusaj() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = if (view != null) view else inflater.inflate(
-            R.layout.fragment_pokusaj,
-            container,
-            false
-        )
-    //    var view = inflater.inflate(R.layout.fragment_pokusaj, container, false)
-        if (view != null) {
-            navigacijaPitanja = view.findViewById(R.id.navigacijaPitanja)
-        }
-        if (view != null) {
+     var view = inflater.inflate(R.layout.fragment_pokusaj, container, false)
+        navigacijaPitanja = view.findViewById(R.id.navigacijaPitanja)
             framePitanje = view.findViewById(R.id.framePitanje)
-        }
         bottomNavigationView = requireActivity().findViewById(R.id.bottomNav)
         bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = true
         bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = true
@@ -131,6 +124,13 @@ class FragmentPokusaj() : Fragment() {
 
         brojSvih = brojPitanja.toDouble()
         percentage = brojTacnih / brojSvih
+
+        var kviz = kvizListViewModel.getKviz(nazivKviza)
+        kviz.osvojeniBodovi = percentage.toFloat()
+        kviz.datumRada = Calendar.getInstance().time
+        kvizListViewModel.addMine(kviz)
+        pitanjeKvizListViewModel.finishKviz(nazivKviza)
+
         var bundle = Bundle()
         var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
         if(nistaOdabrano)
@@ -138,14 +138,14 @@ class FragmentPokusaj() : Fragment() {
         bundle.putString("data", poruka)
         porukaFragment.arguments = bundle
         val transaction = fragmentManager?.beginTransaction()
-        transaction?.add(R.id.container, porukaFragment)
-        transaction?.addToBackStack(null)
+        transaction?.replace(R.id.container, porukaFragment, "poruka")
+        transaction?.addToBackStack("poruka")
         transaction?.commit()
     }
 
     private fun redirectToFragment(pitanjeFragment: FragmentPitanje) {
         val transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.framePitanje, pitanjeFragment).addToBackStack(null)
+       transaction.replace(R.id.framePitanje, pitanjeFragment).addToBackStack(null)
         transaction.commit()
     }
 

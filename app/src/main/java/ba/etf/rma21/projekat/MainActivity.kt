@@ -57,6 +57,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
+//        if(R.id.predajKviz == bottomNavigation.selectedItemId) {
+//            supportFragmentManager.popBackStack("poruka", 1)
+//        }
+//        else
         if(R.id.kvizovi != bottomNavigation.selectedItemId) {
             bottomNavigation.selectedItemId = R.id.kvizovi
         }

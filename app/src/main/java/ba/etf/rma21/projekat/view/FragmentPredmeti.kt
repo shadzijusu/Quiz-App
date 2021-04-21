@@ -375,15 +375,11 @@ class FragmentPredmeti : Fragment() {
             )
                 kvizListViewModel.addMine(kviz)
         }
-//        odabirGodina.setSelection(preferenceManger?.selection!!)
-//        odabirPredmet.setSelection(preferenceManger?.selection!!)
-//        odabirGrupa.setSelection(preferenceManger?.selection!!)
-
             var bundle: Bundle = Bundle()
             bundle.putString(
                 "data",
                 "Uspješno ste upisani u grupu ${nazivGrupe} predmeta ${nazivPredmeta}!"
-            ) // Put anything what you want
+            )
             val porukaFragment = FragmentPoruka()
             porukaFragment.arguments = bundle
             fragmentManager
@@ -391,4 +387,9 @@ class FragmentPredmeti : Fragment() {
                 ?.replace(R.id.container, porukaFragment)?.addToBackStack(null)
                 ?.commit()
         }
+
+    override fun onResume() {
+        super.onResume()
+        odabirGodina.setSelection(preferenceManger?.selection!!)
+    }
 }
