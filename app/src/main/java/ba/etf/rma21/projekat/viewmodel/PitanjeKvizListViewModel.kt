@@ -10,8 +10,8 @@ class PitanjeKvizListViewModel {
         return PitanjeKvizRepository.getPitanja(nazivKviza, nazivPredmeta)
     }
 
-    fun getSvaSNazivom(): List<PitanjeKviz> {
-        return PitanjeKvizRepository.getSvaSNazivom()
+    fun getPitanje(nazivKviza: String): Pitanje{
+        return PitanjeKvizRepository.getPitanje(nazivKviza)
     }
 
     fun getDaLiJeZavrsen(nazivKviza: String): Boolean {

@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.view
+package ba.etf.rma21.projekat.view.fragmenti
 
 
 import android.graphics.Color
@@ -27,10 +27,10 @@ class FragmentPitanje() : Fragment() {
     private lateinit var pitanje: Pitanje
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private var pozicija = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var odabraniOdgovor = pitanjeKvizListViewModel.dajOdgovor(pitanje)
-        println("klik")
         if(odabraniOdgovor != null)
             pozicija = odabraniOdgovor
     }
@@ -77,16 +77,18 @@ class FragmentPitanje() : Fragment() {
                 menuItem?.title = s
             }
         if(pozicija != -1) {
-            println(pozicija)
             val handler = Handler()
             handler.postDelayed(Runnable {
-                odgovoriLista.performItemClick(odgovoriLista.findViewWithTag(odgovoriLista.getAdapter().getItem(0)), 0,
-                    odgovoriLista.getAdapter().getItemId(0))
+                odgovoriLista.performItemClick(
+                    odgovoriLista.findViewWithTag(odgovoriLista.getAdapter().getItem(pozicija)),
+                    pozicija,
+                    odgovoriLista.getAdapter().getItemId(pozicija)
+                )
 
-            }, 50)
-    }
-        return view
-    }
+            }, 10)
+        }
+            return view
+        }
 
     companion object {
         fun newInstance(): FragmentPitanje =

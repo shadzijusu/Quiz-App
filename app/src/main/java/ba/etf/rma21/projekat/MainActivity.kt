@@ -4,8 +4,8 @@ package ba.etf.rma21.projekat
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import ba.etf.rma21.projekat.view.FragmentKvizovi
-import ba.etf.rma21.projekat.view.FragmentPredmeti
+import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
+import ba.etf.rma21.projekat.view.fragmenti.FragmentPredmeti
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -56,21 +56,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
-//        if(R.id.predajKviz == bottomNavigation.selectedItemId) {
-//            supportFragmentManager.popBackStack("poruka", 1)
-//        }
-//        else
-        if(R.id.kvizovi != bottomNavigation.selectedItemId) {
+        if(R.id.predajKviz == bottomNavigation.selectedItemId) {
+            supportFragmentManager.popBackStack("poruka", 1)
+            bottomNavigation.setSelectedItemId(R.id.invisible)
+            bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
+            bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = false
+            bottomNavigation.menu.findItem(R.id.predmeti).isVisible = false
+            bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = true
+        }
+        else if(R.id.kvizovi != bottomNavigation.selectedItemId) {
+            bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
             bottomNavigation.selectedItemId = R.id.kvizovi
+            bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+            bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+            bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+            bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
         }
-        else {
-            super.onBackPressed()
-        }
-        bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
-        bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
+//        else {
+//            super.onBackPressed()
+//        }
     }
 }
 

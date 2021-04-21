@@ -18,8 +18,8 @@ class PitanjeKvizRepository {
                 nazivPredmeta
             )
         }
-        fun getSvaSNazivom() : List<PitanjeKviz> {
-            return svaPitanjaSNazivomKviza()
+        fun getPitanje(nazivKviza: String) : Pitanje {
+            return pitanje(nazivKviza)
         }
         fun getDaLiJeZavrsen(nazivKviza: String): Boolean {
             return daLiJeZavrsen(nazivKviza)

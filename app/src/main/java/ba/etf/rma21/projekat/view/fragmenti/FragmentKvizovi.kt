@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.view
+package ba.etf.rma21.projekat.view.fragmenti
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.DefaultItemDecorator
 import ba.etf.rma21.projekat.R
+import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 
@@ -71,32 +72,37 @@ class FragmentKvizovi : Fragment() {
                 // parent.getItemAtPosition(pos)
                 when (parent.getItemAtPosition(pos)) {
                     "Svi kvizovi" -> {
-                        listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getAll().sortedBy { it.datumPocetka })
+                        listaKvizovaAdapter =
+                            ListaKvizovaAdapter(
+                                kvizListViewModel.getAll().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
                     }
                     "Urađeni kvizovi" -> {
-                        listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getDone().sortedBy { it.datumPocetka })
+                        listaKvizovaAdapter =
+                            ListaKvizovaAdapter(
+                                kvizListViewModel.getDone().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
                     }
                     "Budući kvizovi" -> {
-                        listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getFuture().sortedBy { it.datumPocetka })
+                        listaKvizovaAdapter =
+                            ListaKvizovaAdapter(
+                                kvizListViewModel.getFuture().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
                     }
                     "Prošli kvizovi" -> {
-                        listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka })
+                        listaKvizovaAdapter =
+                            ListaKvizovaAdapter(
+                                kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
                     }
                     else -> {
-                        listaKvizovaAdapter = ListaKvizovaAdapter(
-                            kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
+                        listaKvizovaAdapter =
+                            ListaKvizovaAdapter(
+                                kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
                     }

@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.view
+package ba.etf.rma21.projekat.view.fragmenti
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -380,7 +380,8 @@ class FragmentPredmeti : Fragment() {
                 "data",
                 "Uspješno ste upisani u grupu ${nazivGrupe} predmeta ${nazivPredmeta}!"
             )
-            val porukaFragment = FragmentPoruka()
+            val porukaFragment =
+                FragmentPoruka()
             porukaFragment.arguments = bundle
             fragmentManager
                 ?.beginTransaction()

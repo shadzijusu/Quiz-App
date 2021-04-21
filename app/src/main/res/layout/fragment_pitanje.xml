@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#EDC0C0"
     android:clickable="true"
-    tools:context=".view.FragmentPitanje">
+    tools:context=".view.fragmenti.FragmentPitanje">
 
     <TextView
         android:id="@+id/tekstPitanja"

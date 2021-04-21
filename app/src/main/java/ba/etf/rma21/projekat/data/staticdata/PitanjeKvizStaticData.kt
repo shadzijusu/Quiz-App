@@ -9,31 +9,16 @@ var zavrseniKvizovi: MutableList<String> =
 var odgovoriIPitanja : MutableMap<Pitanje, Int> = mutableMapOf()
 var kvizoviKojiImajuPitanja = listOf("Kviz 1 - vježbe 2 i 3", "Test", "Kviz 2 - vježbe 4 i 5")
 
-//Pitanja za kvizove iz RMA i OOAD
-fun svaPitanjaSNazivomKviza(): List<PitanjeKviz> {
-    return listOf(
-        PitanjeKviz(
-            Pitanje(
+fun pitanje(nazivKviza: String): Pitanje {
+    var pitanje =
+        when(nazivKviza) {
+            "Kviz 1 - vježbe 2 i 3" -> Pitanje(
                 "Pitanje 1",
                 "Ako želimo da BroadcastReceiver osluškuje obavijesti čak i kada aplikacija nije pokrenuta, tada taj BroadcastReceiver registrujemo u ...",
                 listOf("manifestu", "u glavnoj klasi aktivnosti aplikacije", "nemoguće"),
                 0
-            ), "Kviz 1 - vježbe 2 i 3"
-        ),
-        PitanjeKviz(
-            Pitanje(
-                "Pitanje 1",
-                "Fragment je",
-                listOf(
-                    "modularni dio aktivnosti",
-                    "obavezni dio aktivnosti",
-                    "komponenta Android aplikacija"
-                ),
-                0
-            ), "Kviz 2 - vježbe 4 i 5"
-        ),
-        PitanjeKviz(
-            Pitanje(
+            )
+            "Test" -> Pitanje(
                 "Pitanje 1",
                 "Dijagram klasa i dijagram objekata spadaju UML skupini dijagrama",
                 listOf(
@@ -42,9 +27,20 @@ fun svaPitanjaSNazivomKviza(): List<PitanjeKviz> {
                     "ne pripadaju istoj skupini"
                 ),
                 0
-            ), "Test"
-        )
-    )
+            )
+            "Kviz 2 - vježbe 4 i 5" ->    Pitanje(
+                "Pitanje 1",
+                "Fragment je",
+                listOf(
+                    "modularni dio aktivnosti",
+                    "obavezni dio aktivnosti",
+                    "komponenta Android aplikacija"
+                ),
+                0
+            )
+            else -> Pitanje("","", listOf(),-1)
+        }
+    return pitanje
 }
 
 fun pitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {

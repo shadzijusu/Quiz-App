@@ -8,7 +8,7 @@
     android:background="#EDC0C0"
     android:clickable="false"
     android:contextClickable="false"
-    tools:context=".view.FragmentPokusaj">
+    tools:context=".view.fragmenti.FragmentPokusaj">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigacijaPitanja"
@@ -41,7 +41,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/navigacijaPitanja"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
     </FrameLayout>
 

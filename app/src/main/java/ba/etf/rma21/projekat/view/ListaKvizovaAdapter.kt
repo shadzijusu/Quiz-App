@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.view
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.view.fragmenti.FragmentPokusaj
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -71,6 +73,9 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
                     FragmentPokusaj(
                         pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
                     )
+                var bundle = Bundle()
+                bundle.putString("naziv", kvizovi[position].naziv)
+                pokusajFragment.arguments = bundle
                 activity.supportFragmentManager.beginTransaction().replace(R.id.container, pokusajFragment).addToBackStack(null).commit()
             }
 

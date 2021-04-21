@@ -65,13 +65,12 @@ class RepositoryUnitClass {
         val kvizovi = KvizRepository.getDone()
         assertEquals(kvizovi.size, 2)
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Kviz - OOP u Javi"))))
-        assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Kviz 1 - vježbe 2 i 3"))))
     }
     @Test
     fun testGetFuture() {
         val kvizovi = KvizRepository.getFuture()
         assertEquals(kvizovi.size, 1)
-        assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Kviz 2 - vježbe 4 i 5"))))
+        assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Test2"))))
     }
     @Test
     fun testGetNotTaken() {
