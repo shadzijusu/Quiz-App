@@ -16,6 +16,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ba.etf.rma21.projekat.data.repositories.PitanjeKvizRepository
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.anything
+import org.hamcrest.CoreMatchers.not
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +29,7 @@ class MySpirala2AndroidTest {
     val intentsTestRule = IntentsTestRule<MainActivity>(MainActivity::class.java)
 
     @Test
-    fun testUpisPredmetaIKlik() {
+    fun testUpisPredmeta() {
         //Upis predmeta
         onView(withId(R.id.filterKvizova)).check(matches(isDisplayed()))
         onView(withId(R.id.predmeti)).perform(ViewActions.click())
@@ -100,5 +101,23 @@ class MySpirala2AndroidTest {
         onView(withSubstring("Završili ste kviz Kviz 2 - vježbe 4 i 5 sa tačnosti 0.8")).check(
             matches(isDisplayed())
         )
+        onView(withId(R.id.predajKviz)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.zaustaviKviz)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.kvizovi)).check(matches(isDisplayed()))
+        onView(withId(R.id.predmeti)).check(matches(isDisplayed()))
+        //Povratak na listu kvizova
+        onView(withId(R.id.kvizovi)).perform(click())
+        onView(withId(R.id.listaKvizova)).perform(
+            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
+                CoreMatchers.allOf(
+                    hasDescendant(withText("Kviz 2 - vježbe 4 i 5")),
+                    hasDescendant(withText("RMA"))
+                ), click()
+            )
+        )
+        onView(withId(R.id.predajKviz)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.zaustaviKviz)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.kvizovi)).check(matches(isDisplayed()))
+        onView(withId(R.id.predmeti)).check(matches(isDisplayed()))
     }
 }
