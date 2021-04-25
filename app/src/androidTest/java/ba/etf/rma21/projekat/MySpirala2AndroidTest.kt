@@ -56,23 +56,6 @@ class MySpirala2AndroidTest {
         ).perform(ViewActions.click())
         onView(withId(R.id.dodajPredmetDugme)).perform(ViewActions.click())
         onView(ViewMatchers.withSubstring("Uspješno ste upisani u grupu Grupa2 predmeta VIS!"))
-        Espresso.pressBack()
-        //Klik na kviz koji je prošao, ostajemo na listi kvizova
-        onView(withId(R.id.listaKvizova)).perform(
-            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
-                CoreMatchers.allOf(
-                    hasDescendant(withText("Kviz1")),
-                    hasDescendant(withText("OOAD"))
-                ), click()
-            )
-        )
-        onView(withId(R.id.filterKvizova)).perform(click())
-        Espresso.onData(
-            CoreMatchers.allOf(
-                CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)),
-                CoreMatchers.`is`("Svi moji kvizovi")
-            )
-        ).perform(ViewActions.click())
     }
 
     @Test

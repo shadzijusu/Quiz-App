@@ -10,15 +10,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPokusaj
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
+class ListaKvizovaAdapter(
+    private var kvizovi: List<Kviz>,
+    private var pitanjeKvizListViewModel: PitanjeKvizListViewModel
+) :
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
-    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
         val view = LayoutInflater
             .from(parent.context)
@@ -31,7 +35,7 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
 
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
         val current: Date = Calendar.getInstance().time
-        var boja : String = "zelena"
+        var boja: String = "zelena"
         holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
         holder.nazivKviza.text = kvizovi[position].naziv
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
@@ -60,28 +64,28 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
         }
 
 
-        holder.itemView.setOnClickListener (object :  View.OnClickListener{
+        holder.itemView.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
                 var kvizoviSPitanjima = pitanjeKvizListViewModel.getKvizoveSPitanjima()
-                if(!kvizoviSPitanjima.contains(kvizovi[position].naziv))
+                if (!kvizoviSPitanjima.contains(kvizovi[position].naziv))
                     return
                 var nazivKviza = kvizovi[position].naziv
                 var nazivPredmeta = kvizovi[position].nazivPredmeta
-                var activity : AppCompatActivity = view?.context as AppCompatActivity
-
-                var pokusajFragment : FragmentPokusaj =
+                var activity: AppCompatActivity = view?.context as AppCompatActivity
+               var pokusajFragment =
                     FragmentPokusaj(
                         pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
                     )
                 var bundle = Bundle()
                 bundle.putString("naziv", kvizovi[position].naziv)
                 pokusajFragment.arguments = bundle
-                activity.supportFragmentManager.beginTransaction().replace(R.id.container, pokusajFragment).addToBackStack(null).commit()
+                activity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, pokusajFragment).commit()
             }
-
         })
 
     }
+
     fun updateKvizove(kvizovi: List<Kviz>) {
         this.kvizovi = kvizovi
         notifyDataSetChanged()
@@ -95,7 +99,6 @@ class ListaKvizovaAdapter(private var kvizovi: List<Kviz>) :
         val osvojeniBodovi: TextView = itemView.findViewById(R.id.osvojeniBodovi)
         val stanjeKviza: ImageView = itemView.findViewById(R.id.stanjeKviza)
     }
-
 }
 
 

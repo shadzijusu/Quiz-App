@@ -3,10 +3,11 @@ package ba.etf.rma21.projekat.data.staticdata
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.models.PitanjeKviz
 import java.util.*
+import kotlin.collections.HashMap
 
 var zavrseniKvizovi: MutableList<String> =
     mutableListOf()
-var odgovoriIPitanja : MutableMap<Pitanje, Int> = mutableMapOf()
+var odgovoriIPitanja : HashMap<Pitanje, Int> = hashMapOf()
 var kvizoviKojiImajuPitanja = listOf("Kviz 1 - vježbe 2 i 3", "Test", "Kviz 2 - vježbe 4 i 5")
 
 fun pitanje(nazivKviza: String): Pitanje {
@@ -187,14 +188,17 @@ fun zavrsiKviz(nazivKviza: String) {
     zavrseniKvizovi.add(nazivKviza)
 }
 fun dodajOdgovor(pitanje : Pitanje, odgovor : Int) {
-    odgovoriIPitanja.putIfAbsent(pitanje, odgovor)
+    odgovoriIPitanja.put(pitanje, odgovor)
 }
 fun getOdgovor(pitanje : Pitanje): Int? {
     return odgovoriIPitanja.get(pitanje)
 }
-fun dajSveOdgovore() : Int {
-    return odgovoriIPitanja.size
+fun dajSve() : HashMap<Pitanje, Int> {
+    return odgovoriIPitanja
 }
 fun kvizoviSPitanjima() : List<String> {
     return kvizoviKojiImajuPitanja
+}
+fun setAll(qAndA : HashMap<Pitanje, Int> ) {
+    odgovoriIPitanja = qAndA
 }

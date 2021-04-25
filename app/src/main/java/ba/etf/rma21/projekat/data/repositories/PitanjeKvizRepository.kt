@@ -34,11 +34,14 @@ class PitanjeKvizRepository {
         fun dajOdgovor(pitanje : Pitanje): Int? {
             return getOdgovor(pitanje)
         }
-        fun getAll() : Int {
-            return dajSveOdgovore()
+        fun getAll() : HashMap<Pitanje, Int> {
+            return dajSve()
         }
         fun getKvizoveSPitanjima() : List<String> {
             return kvizoviSPitanjima()
+        }
+        fun setSve(qAndA : HashMap<Pitanje, Int> ) {
+            setAll(qAndA)
         }
     }
 }

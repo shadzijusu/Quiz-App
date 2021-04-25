@@ -1,11 +1,11 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import androidx.lifecycle.ViewModel
 import ba.etf.rma21.projekat.data.models.Pitanje
-import ba.etf.rma21.projekat.data.models.PitanjeKviz
 import ba.etf.rma21.projekat.data.repositories.PitanjeKvizRepository
 import ba.etf.rma21.projekat.data.staticdata.getOdgovor
 
-class PitanjeKvizListViewModel {
+class PitanjeKvizListViewModel : ViewModel() {
     fun getPitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
         return PitanjeKvizRepository.getPitanja(nazivKviza, nazivPredmeta)
     }
@@ -30,10 +30,20 @@ class PitanjeKvizListViewModel {
     fun dajOdgovor(pitanje : Pitanje): Int? {
         return PitanjeKvizRepository.dajOdgovor(pitanje)
     }
-    fun getAll() : Int {
+    fun getAll() : HashMap<Pitanje, Int> {
         return PitanjeKvizRepository.getAll()
     }
     fun getKvizoveSPitanjima() : List<String> {
         return PitanjeKvizRepository.getKvizoveSPitanjima()
+    }
+    fun setAll(qAndA: HashMap<Pitanje, Int>) {
+        PitanjeKvizRepository.setSve(qAndA)
+    }
+    companion object {
+        private var instance : PitanjeKvizListViewModel? = null
+        fun getInstance() =
+            instance ?: synchronized(PitanjeKvizListViewModel::class.java){
+                instance ?: PitanjeKvizListViewModel().also { instance = it }
+            }
     }
 }

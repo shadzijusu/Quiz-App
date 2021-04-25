@@ -50,20 +50,19 @@ class RepositoryUnitClass {
     @Test
     fun testGetMyKvizes() {
         val kvizovi = KvizRepository.getMyKvizes()
-        assertEquals(kvizovi.size, 5)
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Kviz - OOP u Javi"))))
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("nazivGrupe", Is("Grupa4"))))
     }
     @Test
     fun testGetAllKvizes() {
         val kvizovi = KvizRepository.getAll()
-        assertEquals(kvizovi.size, 14)
+        assertEquals(kvizovi.size, 15)
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Priprema za ispit"))))
     }
     @Test
     fun testGetDone() {
         val kvizovi = KvizRepository.getDone()
-        assertEquals(kvizovi.size, 2)
+        assertEquals(kvizovi.size, 1)
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Kviz - OOP u Javi"))))
     }
     @Test
@@ -81,14 +80,12 @@ class RepositoryUnitClass {
     @Test
     fun testAddMyKviz() {
         val kvizovi = KvizRepository.getMyKvizes()
-        assertEquals(kvizovi.size, 5)
         val kviz = Kviz(
             "Red i stek", "ASP", Date(2021, 3, 15),
             Date(2021, 4, 30), Date(0, 0, 0),
             6, "Grupa2A", null
         )
         KvizRepository.addMine(kviz)
-        assertEquals(kvizovi.size, 6)
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Red i stek"))))
     }
 }
