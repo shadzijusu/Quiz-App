@@ -6,16 +6,16 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Pitanje
-import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
-import ba.etf.rma21.projekat.viewmodel.ViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import java.io.Serializable
@@ -29,7 +29,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private var brojPitanja: Int = 0
     private lateinit var pitanja: List<Pitanje>
     private lateinit var pitanje: Pitanje
-    private lateinit var pitanjeKvizListViewModel: PitanjeKvizListViewModel
+    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private var pitanjeFragment = FragmentPitanje()
     private var kvizListViewModel = KvizListViewModel()
     private var odabranoPitanje = 0
@@ -37,14 +37,12 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private var nazivKviza = ""
     private var percentage = 0.0
     private var itemId = 0
-    private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private var mOnNavigationViewItemSelectedListener =
         NavigationView.OnNavigationItemSelectedListener { item ->
-            if(item.title == "Rezultat") {
-                val porukaFragment = FragmentPoruka()
+            if (item.title == "Rezultat") {
+                val porukaFragment = FragmentPoruka.newInstance()
                 otvoriPoruku(porukaFragment)
-            }
-            else {
+            } else {
                 pitanje = pitanja.get(item.itemId)
                 odabranoPitanje = item.itemId
                 var bundle = Bundle()
@@ -93,43 +91,38 @@ class FragmentPokusaj() : Fragment(), Serializable {
 
     override fun onResume() {
         super.onResume()
-        if (pitanjeKvizListViewModel.getAll().size > 0) {
-            var boja = "crvena"
-            var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
-            var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
-            for (i in 0 until questions.size) {
-                for (j in 0 until pitanja.size) {
-                    var menuItem = navigacijaPitanja.menu.getItem(j)
-                    var s: SpannableString = SpannableString("")
-                    s = SpannableString(menuItem?.title.toString() + " +")
-                    if (questions[i].tekst == pitanja[j].tekst) {
-                        if (pitanja[j].tacan == odgovori[i]) {
-                            s.setSpan(ForegroundColorSpan(Color.GREEN), 0, s.length, 0)
-                        } else
-                            s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
-                        menuItem?.title = s
-
+        var present = false
+        var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
+        var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
+        for(question in questions) {
+            if(question.tekst.equals(pitanja[0].tekst))
+                present = true
+        }
+        if(present) {
+                for (i in 0 until questions.size) {
+                    for (j in 0 until pitanja.size) {
+                        var menuItem = navigacijaPitanja.menu.getItem(j)
+                        var s: SpannableString = SpannableString("")
+                        s = SpannableString(menuItem?.title.toString() + " +")
+                        if (questions[i].tekst == pitanja[j].tekst) {
+                            if (pitanja[j].tacan == odgovori[i]) {
+                                s.setSpan(ForegroundColorSpan(Color.GREEN), 0, s.length, 0)
+                            } else
+                                s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
+                            menuItem?.title = s
+                            menuItem.isChecked = true
+                        }
                     }
                 }
+                navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
+                bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
+                bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
+                bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
+                bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
+                bottomNavigationView.selectedItemId = R.id.invisible
             }
-            bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
-            bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
-            bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
-            bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
-        }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        var bundle = this.arguments
-        var poruka = bundle?.getString("naziv")
-        pitanjeKvizListViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance())
-            .get(PitanjeKvizListViewModel::class.java)
-        pitanje = pitanjeKvizListViewModel.getPitanje(poruka.toString())
-        var odabrano = pitanjeKvizListViewModel.dajOdgovor(pitanje)
-        if (odabrano != null)
-            odabraniOdgovor = odabrano
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -165,13 +158,12 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private fun otvoriPoruku(porukaFragment: FragmentPoruka) {
         var menu: Menu = navigacijaPitanja.menu
         var brojTacnih = 0.0
-
         var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
         var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
         for (i in 0 until questions.size) {
             for (j in 0 until pitanja.size) {
-                if(questions[i].tekst == pitanja[j].tekst) {
-                    if(pitanja[j].tacan == odgovori[i])
+                if (pitanja[j].tekst == questions[i].tekst) {
+                    if (pitanja[j].tacan == odgovori[i])
                         brojTacnih++
                 }
             }

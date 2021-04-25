@@ -1,12 +1,15 @@
 package ba.etf.rma21.projekat.data.staticdata
 
+import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.models.PitanjeKviz
 import java.util.*
 import kotlin.collections.HashMap
 
 var zavrseniKvizovi: MutableList<String> =
-    mutableListOf()
+    mutableListOf(
+        "Kviz - OOP u Javi"
+    )
 var odgovoriIPitanja : HashMap<Pitanje, Int> = hashMapOf()
 var kvizoviKojiImajuPitanja = listOf("Kviz 1 - vježbe 2 i 3", "Test", "Kviz 2 - vježbe 4 i 5")
 

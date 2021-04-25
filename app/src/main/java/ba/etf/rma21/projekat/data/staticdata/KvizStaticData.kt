@@ -2,6 +2,14 @@ package ba.etf.rma21.projekat.data.staticdata
 
 import ba.etf.rma21.projekat.data.models.Kviz
 import java.util.*
+var gotovi: MutableList<Kviz> = mutableListOf(
+    Kviz(
+        "Kviz - OOP u Javi", "RPR", Date(121, 1, 8),
+        Date(121, 1, 15), Date(121, 1, 9), 4,
+        "Grupa4", 3F
+    )
+)
+
 
 var mojiKvizovi = mutableListOf(
     Kviz(
@@ -87,7 +95,7 @@ fun myKvizes(): List<Kviz> {
 
 fun dajKviz(nazivKviza: String): Kviz {
     var kviz = when (nazivKviza) {
-        "Kviz 1 - vježbe 2 i 3" -> Kviz(
+        "Kviz 1 - vježbe 2 i 3" ->   Kviz(
             "Kviz 1 - vježbe 2 i 3", "RMA", Date(121, 2, 29),
             Date(121, 6, 5), Date(0, 0, 0), 2,
             "PON11:30", null
@@ -116,11 +124,6 @@ fun allKvizes(): List<Kviz> {
 }
 
 fun done(): List<Kviz> {
-    var gotovi: MutableList<Kviz> = mutableListOf()
-    for (kviz in mojiKvizovi) {
-        if (kviz.osvojeniBodovi != null && kviz.datumRada?.day != 0)
-            gotovi.add(kviz)
-    }
     return gotovi
 }
 
@@ -153,4 +156,5 @@ fun dodajMoj(noviKviz: Kviz) {
         }
     }
     mojiKvizovi.add(noviKviz)
+    gotovi.add(noviKviz)
 }

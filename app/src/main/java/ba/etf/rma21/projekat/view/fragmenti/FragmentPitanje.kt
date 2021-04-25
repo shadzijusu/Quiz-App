@@ -29,11 +29,11 @@ class FragmentPitanje() : Fragment() {
     private lateinit var tekstPitanja: TextView
     private lateinit var navigacijaPitanja: NavigationView
     private lateinit var pitanje: Pitanje
+    private  var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
+
     private var pozicija = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pitanjeKvizListViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance())
-            .get(PitanjeKvizListViewModel::class.java)
         var odabraniOdgovor = pitanjeKvizListViewModel.dajOdgovor(pitanje)
         if (odabraniOdgovor != null) {
             pozicija = odabraniOdgovor
@@ -83,8 +83,8 @@ class FragmentPitanje() : Fragment() {
 
         odgovoriLista.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
-                pitanjeKvizListViewModel.addAnswer(pitanje, position)
-                pitanjaIOdgovori.put(pitanje, position)
+                if (pitanjeKvizListViewModel.dajOdgovor(pitanje) == null)
+                    pitanjeKvizListViewModel.addAnswer(pitanje, position)
                 var menuItem = poruka?.toInt()?.let { navigacijaPitanja.menu.getItem(it) }
                 var s: SpannableString = SpannableString("")
                 if (position.equals(pitanje.tacan)) {
@@ -104,26 +104,12 @@ class FragmentPitanje() : Fragment() {
                 odgovoriLista.isEnabled = false
                 menuItem?.title = s
             }
-//        if (pozicija != -1) {
-//            println(pozicija)
-//            val handler = Handler()
-//            handler.postDelayed(Runnable {
-//                odgovoriLista.performItemClick(
-//                    odgovoriLista.findViewWithTag(odgovoriLista.adapter.getItem(pozicija)),
-//                    pozicija,
-//                    odgovoriLista.adapter.getItemId(pozicija)
-//                )
-//            }, 10)
-//        }
         return view
     }
 
     companion object {
         fun newInstance(): FragmentPitanje =
             FragmentPitanje()
-
-        private var pitanjaIOdgovori = HashMap<Pitanje, Int>()
-        private lateinit var pitanjeKvizListViewModel: PitanjeKvizListViewModel
     }
 
     constructor(pitanje: Pitanje) : this() {

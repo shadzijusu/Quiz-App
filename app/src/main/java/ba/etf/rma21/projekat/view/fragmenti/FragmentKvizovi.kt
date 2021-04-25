@@ -27,7 +27,7 @@ class FragmentKvizovi : Fragment() {
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private lateinit var filterKvizova: Spinner
     private var kvizListViewModel = KvizListViewModel()
-    private lateinit var pitanjeKvizListViewModel : PitanjeKvizListViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,22 +36,6 @@ class FragmentKvizovi : Fragment() {
         var view = inflater.inflate(R.layout.fragment_kvizovi, container, false)
         listaKvizova = view.findViewById(R.id.listaKvizova)
         filterKvizova = view.findViewById(R.id.filterKvizova)
-        pitanjeKvizListViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance()).get(PitanjeKvizListViewModel::class.java)
-//        infoButton = view.findViewById(R.id.infoButton)
-//        infoButton.setOnClickListener {
-//            val popupWindow = PopupWindow()
-//            val view = layoutInflater.inflate(R.layout.activity_info, null)
-//            popupWindow.contentView = view
-//            // Closes the popup window when touch outside. This method was written informatively in Google's docs.
-//            popupWindow.isOutsideTouchable = true
-//
-//            // Set focus true to prevent a touch event to go to a below view (main layout), which works like a dialog with 'cancel' property => Try it! And you will know what I mean.
-//            popupWindow.isFocusable = true
-//
-//            // Removes default background.
-//            popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//            popupWindow.showAsDropDown(infoButton, 15 * 8, -65 * 8)
-//        }
         activity?.let {
             ArrayAdapter.createFromResource(
                 it,
@@ -76,35 +60,35 @@ class FragmentKvizovi : Fragment() {
                     "Svi kvizovi" -> {
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getAll().sortedBy { it.datumPocetka }, pitanjeKvizListViewModel)
+                                kvizListViewModel.getAll().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
                     }
                     "Urađeni kvizovi" -> {
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getDone().sortedBy { it.datumPocetka }, pitanjeKvizListViewModel)
+                                kvizListViewModel.getDone().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
                     }
                     "Budući kvizovi" -> {
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getFuture().sortedBy { it.datumPocetka }, pitanjeKvizListViewModel)
+                                kvizListViewModel.getFuture().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
                     }
                     "Prošli kvizovi" -> {
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka }, pitanjeKvizListViewModel)
+                                kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
                     }
                     else -> {
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka }, pitanjeKvizListViewModel)
+                                kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
                     }
@@ -119,8 +103,9 @@ class FragmentKvizovi : Fragment() {
             )
         )
         listaKvizovaAdapter =
-            ListaKvizovaAdapter(kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka }, pitanjeKvizListViewModel)
+            ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
         listaKvizova.adapter = listaKvizovaAdapter
+        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
         return view
     }
 
@@ -129,5 +114,4 @@ class FragmentKvizovi : Fragment() {
         fun newInstance(): FragmentKvizovi =
             FragmentKvizovi()
     }
-
 }

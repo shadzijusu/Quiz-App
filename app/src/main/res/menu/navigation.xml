@@ -19,4 +19,8 @@
         android:id="@+id/zaustaviKviz"
         android:title="Zaustavi kviz"
         android:icon="@drawable/stop"/>
+    <item
+        android:id="@+id/invisible"
+        android:title="Invisible"
+        android:visible="false"/>
 </menu>

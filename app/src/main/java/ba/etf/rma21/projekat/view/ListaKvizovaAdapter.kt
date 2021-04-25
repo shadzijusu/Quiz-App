@@ -13,16 +13,18 @@ import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPokusaj
+import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class ListaKvizovaAdapter(
-    private var kvizovi: List<Kviz>,
-    private var pitanjeKvizListViewModel: PitanjeKvizListViewModel
-) :
+    private var kvizovi: List<Kviz>) :
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
+    private val pitanjeKvizListViewModel = PitanjeKvizListViewModel()
+    private val kvizListViewModel = KvizListViewModel()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
         val view = LayoutInflater
             .from(parent.context)
@@ -47,7 +49,7 @@ class ListaKvizovaAdapter(
             holder.stanjeKviza.setImageResource(R.drawable.crvena)
             holder.osvojeniBodovi.text = ""
             boja = "crvena"
-        } else if (kvizovi[position].osvojeniBodovi != null && kvizovi[position].datumRada?.day != 0) {
+        } else if (kvizListViewModel.getDone().contains(kvizovi[position])) {
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
             holder.stanjeKviza.setImageResource(R.drawable.plava)
             holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
@@ -83,7 +85,6 @@ class ListaKvizovaAdapter(
                     .replace(R.id.container, pokusajFragment).commit()
             }
         })
-
     }
 
     fun updateKvizove(kvizovi: List<Kviz>) {

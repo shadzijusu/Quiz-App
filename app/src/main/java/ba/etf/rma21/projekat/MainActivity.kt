@@ -17,7 +17,6 @@ import java.util.HashMap
 
 class MainActivity : AppCompatActivity() {
     private lateinit var kvizoviFragment : FragmentKvizovi
-    private lateinit var pitanjeKvizListViewModel : PitanjeKvizListViewModel
     private lateinit var bottomNavigation: BottomNavigationView
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -61,14 +60,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(R.id.predajKviz == bottomNavigation.selectedItemId) {
+        if (R.id.predajKviz == bottomNavigation.selectedItemId) {
             supportFragmentManager.popBackStack("poruka", 1)
             bottomNavigation.selectedItemId = R.id.kvizovi
-        }
-        else {
+        } else {
             super.onBackPressed()
         }
-        bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
