@@ -29,7 +29,7 @@ class FragmentPitanje() : Fragment() {
     private lateinit var tekstPitanja: TextView
     private lateinit var navigacijaPitanja: NavigationView
     private lateinit var pitanje: Pitanje
-//    private var pozicija = -1
+    private var pozicija = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pitanjeKvizListViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance())
@@ -42,18 +42,25 @@ class FragmentPitanje() : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (pozicija != -1) {
-            val handler = Handler()
-            handler.postDelayed(Runnable {
-                odgovoriLista.performItemClick(
-                    odgovoriLista.findViewWithTag(odgovoriLista.adapter.getItem(pozicija)),
-                    pozicija,
-                    odgovoriLista.adapter.getItemId(pozicija)
-                )
-            }, 10)
+        if (pitanjeKvizListViewModel.getAll().size > 0) {
+            var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
+            var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
+            for (i in 0 until questions.size) {
+                    if(questions[i].tekst == pitanje.tekst) {
+                        pozicija = odgovori[i]
+                            val handler = Handler()
+                            handler.postDelayed(Runnable {
+                                odgovoriLista.performItemClick(
+                                    odgovoriLista.findViewWithTag(odgovoriLista.adapter.getItem(pozicija)),
+                                    pozicija,
+                                    odgovoriLista.adapter.getItemId(pozicija)
+                                )
+                            }, 10)
+                }
+            }
         }
-
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -97,16 +104,17 @@ class FragmentPitanje() : Fragment() {
                 odgovoriLista.isEnabled = false
                 menuItem?.title = s
             }
-        if (pozicija != -1) {
-            val handler = Handler()
-            handler.postDelayed(Runnable {
-                odgovoriLista.performItemClick(
-                    odgovoriLista.findViewWithTag(odgovoriLista.adapter.getItem(pozicija)),
-                    pozicija,
-                    odgovoriLista.adapter.getItemId(pozicija)
-                )
-            }, 10)
-        }
+//        if (pozicija != -1) {
+//            println(pozicija)
+//            val handler = Handler()
+//            handler.postDelayed(Runnable {
+//                odgovoriLista.performItemClick(
+//                    odgovoriLista.findViewWithTag(odgovoriLista.adapter.getItem(pozicija)),
+//                    pozicija,
+//                    odgovoriLista.adapter.getItemId(pozicija)
+//                )
+//            }, 10)
+//        }
         return view
     }
 
@@ -116,7 +124,6 @@ class FragmentPitanje() : Fragment() {
 
         private var pitanjaIOdgovori = HashMap<Pitanje, Int>()
         private lateinit var pitanjeKvizListViewModel: PitanjeKvizListViewModel
-        private var pozicija = -1
     }
 
     constructor(pitanje: Pitanje) : this() {

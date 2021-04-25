@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
         //Defaultni fragment
         bottomNavigation.selectedItemId = R.id.kvizovi
         kvizoviFragment = FragmentKvizovi.newInstance()
@@ -72,7 +71,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener (mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
         bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
         bottomNavigation.selectedItemId = R.id.kvizovi

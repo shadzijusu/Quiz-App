@@ -19,8 +19,4 @@
         android:id="@+id/zaustaviKviz"
         android:title="Zaustavi kviz"
         android:icon="@drawable/stop"/>
-    <item
-        android:id="@+id/rezultat"
-        android:title="Rezultat"
-        android:icon="@android:drawable/arrow_up_float"/>
 </menu>

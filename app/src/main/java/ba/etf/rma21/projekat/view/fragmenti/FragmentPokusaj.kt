@@ -36,17 +36,24 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private var odabraniOdgovor = -1
     private var nazivKviza = ""
     private var percentage = 0.0
+    private var itemId = 0
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private var mOnNavigationViewItemSelectedListener =
         NavigationView.OnNavigationItemSelectedListener { item ->
-            pitanje = pitanja.get(item.itemId)
-            odabranoPitanje = item.itemId
-            var bundle = Bundle()
-            bundle.putString("data", item.itemId.toString())
-            pitanjeFragment =
-                FragmentPitanje(pitanje)
-            pitanjeFragment.arguments = bundle
-            redirectToFragment(pitanjeFragment)
+            if(item.title == "Rezultat") {
+                val porukaFragment = FragmentPoruka()
+                otvoriPoruku(porukaFragment)
+            }
+            else {
+                pitanje = pitanja.get(item.itemId)
+                odabranoPitanje = item.itemId
+                var bundle = Bundle()
+                bundle.putString("data", item.itemId.toString())
+                pitanjeFragment =
+                    FragmentPitanje(pitanje)
+                pitanjeFragment.arguments = bundle
+                redirectToFragment(pitanjeFragment)
+            }
             item.isChecked = true
             true
         }
@@ -55,6 +62,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.predajKviz -> {
+                    navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
                     val porukaFragment =
                         FragmentPoruka.newInstance()
                     otvoriPoruku(porukaFragment)
@@ -79,32 +87,35 @@ class FragmentPokusaj() : Fragment(), Serializable {
                     openFragment(kvizoviFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.rezultat -> {
-                    var rezultat = FragmentPoruka()
-                    otvoriPoruku(rezultat)
-                }
             }
             true
         }
 
     override fun onResume() {
         super.onResume()
-        if(pitanjeKvizListViewModel.getAll().size > 0) {
+        if (pitanjeKvizListViewModel.getAll().size > 0) {
             var boja = "crvena"
             var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
             var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
             for (i in 0 until questions.size) {
-               //tacnost odgovora check add
+                for (j in 0 until pitanja.size) {
+                    var menuItem = navigacijaPitanja.menu.getItem(j)
+                    var s: SpannableString = SpannableString("")
+                    s = SpannableString(menuItem?.title.toString() + " +")
+                    if (questions[i].tekst == pitanja[j].tekst) {
+                        if (pitanja[j].tacan == odgovori[i]) {
+                            s.setSpan(ForegroundColorSpan(Color.GREEN), 0, s.length, 0)
+                        } else
+                            s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
+                        menuItem?.title = s
+
+                    }
                 }
-                var menuItem = navigacijaPitanja.menu.getItem(i)
-                var s: SpannableString = SpannableString("")
-                s = SpannableString(menuItem?.title.toString() + " +")
-                if (boja == "zelena")
-                    s.setSpan(ForegroundColorSpan(Color.GREEN), 0, s.length, 0)
-                else
-                    s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
-                menuItem?.title = s
             }
+            bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
+            bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
+            bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
+            bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
         }
     }
 
@@ -135,7 +146,6 @@ class FragmentPokusaj() : Fragment(), Serializable {
         bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         var menu: Menu = navigacijaPitanja.menu
-        var itemId = 0
 
         for (i in 1..brojPitanja) {
             menu.add(0, itemId, NONE, "" + i)
@@ -156,11 +166,14 @@ class FragmentPokusaj() : Fragment(), Serializable {
         var menu: Menu = navigacijaPitanja.menu
         var brojTacnih = 0.0
 
-        for (i in 0 until menu.size()) {
-            var menuItem: MenuItem = navigacijaPitanja.menu.getItem(i)
-            var item = menuItem.toString().split(" ")
-            if (item.get(1) == "+") {
-                brojTacnih++
+        var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
+        var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
+        for (i in 0 until questions.size) {
+            for (j in 0 until pitanja.size) {
+                if(questions[i].tekst == pitanja[j].tekst) {
+                    if(pitanja[j].tacan == odgovori[i])
+                        brojTacnih++
+                }
             }
         }
 
@@ -184,7 +197,6 @@ class FragmentPokusaj() : Fragment(), Serializable {
             kviz.datumRada = Calendar.getInstance().time
             kvizListViewModel.addMine(kviz)
         }
-        bottomNavigationView.menu.findItem(R.id.rezultat).isVisible = true
         bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
         bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
@@ -192,7 +204,6 @@ class FragmentPokusaj() : Fragment(), Serializable {
     }
 
     private fun openFragment(fragment: Fragment) {
-        bottomNavigationView.menu.findItem(R.id.rezultat).isVisible = false
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.container, fragment)?.addToBackStack(null)
         transaction?.commit()
