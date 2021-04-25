@@ -49,7 +49,7 @@ class ListaKvizovaAdapter(
             holder.stanjeKviza.setImageResource(R.drawable.crvena)
             holder.osvojeniBodovi.text = ""
             boja = "crvena"
-        } else if (kvizListViewModel.getDone().contains(kvizovi[position])) {
+        } else if (kvizListViewModel.getDone().contains(kvizovi[position]) && kvizovi[position].osvojeniBodovi != null) {
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
             holder.stanjeKviza.setImageResource(R.drawable.plava)
             holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()

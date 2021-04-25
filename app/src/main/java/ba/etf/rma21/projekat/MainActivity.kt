@@ -63,8 +63,9 @@ class MainActivity : AppCompatActivity() {
         if (R.id.predajKviz == bottomNavigation.selectedItemId) {
             supportFragmentManager.popBackStack("poruka", 1)
             bottomNavigation.selectedItemId = R.id.kvizovi
-        } else {
-            super.onBackPressed()
+        } else if(R.id.kvizovi != bottomNavigation.selectedItemId) {
+            bottomNavigation.selectedItemId = R.id.kvizovi
+
         }
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false

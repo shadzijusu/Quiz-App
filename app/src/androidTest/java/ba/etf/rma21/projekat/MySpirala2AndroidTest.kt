@@ -70,36 +70,35 @@ class MySpirala2AndroidTest {
         onView(withId(R.id.listaKvizova)).perform(
             RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
                 CoreMatchers.allOf(
-                    hasDescendant(withText("Kviz 1 - vježbe 2 i 3")),
+                    hasDescendant(withText("Kviz 2 - vježbe 4 i 5")),
                     hasDescendant(withText("RMA"))
                 ), click()
             )
         )
         onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
         onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
-        val pitanja = PitanjeKvizRepository.getPitanja("Kviz 1 - vježbe 2 i 3", "RMA")
+        val pitanja = PitanjeKvizRepository.getPitanja("Kviz 2 - vježbe 4 i 5", "RMA")
         var indeks = 0
         for (pitanje in pitanja) {
             onView(withId(R.id.navigacijaPitanja)).perform(NavigationViewActions.navigateTo(indeks))
             when (indeks) {
                 0 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(0)
                     .perform(click())
-                1 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(1)
+                1 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(2)
                     .perform(click())
                 2 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(2)
                     .perform(click())
-                3 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(2)
+                3 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(0)
                     .perform(click())
-                4 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(0)
+                4 -> onData(anything()).inAdapterView(withId(R.id.odgovoriLista)).atPosition(1)
                     .perform(click())
             }
             indeks++
         }
 
         onView(withId(R.id.predajKviz)).perform(click())
-        onView(withSubstring("Završili ste kviz Kviz 1 - vježbe 2 i 3 sa tačnosti 0.8")).check(
+        onView(withSubstring("Završili ste kviz Kviz 2 - vježbe 4 i 5 sa tačnosti 0.8")).check(
             matches(isDisplayed())
         )
-
     }
 }
