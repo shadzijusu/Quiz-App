@@ -7,26 +7,22 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.DefaultItemDecorator
 import ba.etf.rma21.projekat.R
-import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
-import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
-import ba.etf.rma21.projekat.viewmodel.ViewModelFactory
 
 class FragmentKvizovi : Fragment() {
     private lateinit var listaKvizova: RecyclerView
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private lateinit var filterKvizova: Spinner
-    private var kvizListViewModel = KvizListViewModel()
+    private lateinit var kvizListViewModel: KvizListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +32,8 @@ class FragmentKvizovi : Fragment() {
         var view = inflater.inflate(R.layout.fragment_kvizovi, container, false)
         listaKvizova = view.findViewById(R.id.listaKvizova)
         filterKvizova = view.findViewById(R.id.filterKvizova)
+        kvizListViewModel = KvizListViewModel(this@FragmentKvizovi::searchDone,this@FragmentKvizovi::onError)
+
         activity?.let {
             ArrayAdapter.createFromResource(
                 it,
@@ -58,11 +56,7 @@ class FragmentKvizovi : Fragment() {
                 // parent.getItemAtPosition(pos)
                 when (parent.getItemAtPosition(pos)) {
                     "Svi kvizovi" -> {
-                        listaKvizovaAdapter =
-                            ListaKvizovaAdapter(
-                                kvizListViewModel.getAll().sortedBy { it.datumPocetka })
-                        listaKvizova.adapter = listaKvizovaAdapter
-                        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
+                        kvizListViewModel.getAll()
                     }
                     "Urađeni kvizovi" -> {
                         listaKvizovaAdapter =
@@ -86,11 +80,7 @@ class FragmentKvizovi : Fragment() {
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
                     }
                     else -> {
-                        listaKvizovaAdapter =
-                            ListaKvizovaAdapter(
-                                kvizListViewModel.getMyKvizes().sortedBy { it.datumPocetka })
-                        listaKvizova.adapter = listaKvizovaAdapter
-                        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+                       kvizListViewModel.getMyKvizes()
                     }
                 }
             }
@@ -103,9 +93,9 @@ class FragmentKvizovi : Fragment() {
             )
         )
         listaKvizovaAdapter =
-            ListaKvizovaAdapter(kvizListViewModel.getMyKvizes())
+            ListaKvizovaAdapter(kvizListViewModel.getDone())
         listaKvizova.adapter = listaKvizovaAdapter
-        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
         return view
     }
 
@@ -113,5 +103,16 @@ class FragmentKvizovi : Fragment() {
     companion object {
         fun newInstance(): FragmentKvizovi =
             FragmentKvizovi()
+    }
+
+    fun searchDone(kvizovi: List<Kviz>) {
+        val toast = Toast.makeText(context, "Search done", Toast.LENGTH_SHORT)
+        toast.show()
+        listaKvizovaAdapter.updateKvizove(kvizovi)
+    }
+
+    fun onError() {
+        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
+        toast.show()
     }
 }

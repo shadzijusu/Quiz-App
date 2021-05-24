@@ -31,7 +31,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private lateinit var pitanje: Pitanje
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private var pitanjeFragment = FragmentPitanje()
-    private var kvizListViewModel = KvizListViewModel()
+    private var kvizListViewModel = KvizListViewModel(null, null)
     private var odabranoPitanje = 0
     private var odabraniOdgovor = -1
     private var nazivKviza = ""

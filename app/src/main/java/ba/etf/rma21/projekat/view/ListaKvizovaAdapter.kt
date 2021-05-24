@@ -23,7 +23,7 @@ class ListaKvizovaAdapter(
     private var kvizovi: List<Kviz>) :
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
     private val pitanjeKvizListViewModel = PitanjeKvizListViewModel()
-    private val kvizListViewModel = KvizListViewModel()
+    private val kvizListViewModel = KvizListViewModel(null, null)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
         val view = LayoutInflater
@@ -41,7 +41,6 @@ class ListaKvizovaAdapter(
         holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
         holder.nazivKviza.text = kvizovi[position].naziv
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
-
         val pattern = "dd.MM.yyyy"
         val simpleDateFormat = SimpleDateFormat(pattern)
         if (kvizovi[position].osvojeniBodovi == -1F) {
@@ -60,7 +59,11 @@ class ListaKvizovaAdapter(
             holder.osvojeniBodovi.text = ""
             boja = "zuta"
         } else {
-            holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumKraj)
+            val datum = kvizovi[position].datumPocetka
+            datum.year = datum.year.minus(1900)
+            datum.month = datum.month.minus(1)
+            holder.datumKviza.text = simpleDateFormat.format(datum)
+            //promijenila datum
             holder.stanjeKviza.setImageResource(R.drawable.zelena)
             holder.osvojeniBodovi.text = ""
         }

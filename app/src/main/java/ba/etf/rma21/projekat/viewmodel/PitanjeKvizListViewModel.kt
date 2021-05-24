@@ -7,7 +7,7 @@ import ba.etf.rma21.projekat.data.staticdata.getOdgovor
 
 class PitanjeKvizListViewModel : ViewModel() {
     fun getPitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
-        return PitanjeKvizRepository.getPitanja(nazivKviza, nazivPredmeta)
+        return PitanjeKvizRepository.getPitanjaa(nazivKviza, nazivPredmeta)
     }
 
     fun getPitanje(nazivKviza: String): Pitanje{

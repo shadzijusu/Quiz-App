@@ -3,11 +3,11 @@ package ba.etf.rma21.projekat.data.staticdata
 import ba.etf.rma21.projekat.data.models.Kviz
 import java.util.*
 var gotovi: MutableList<Kviz> = mutableListOf(
-    Kviz(
-        "Kviz - OOP u Javi", "RPR", Date(121, 1, 8),
-        Date(121, 1, 15), Date(121, 1, 9), 4,
-        "Grupa4", 3F
-    )
+//    Kviz(
+//        "Kviz - OOP u Javi", "RPR", Date(121, 1, 8),
+//        Date(121, 1, 15), Date(121, 1, 9), 4,
+//        "Grupa4", 3F
+//    )
 )
 
 
@@ -129,21 +129,21 @@ fun done(): List<Kviz> {
 
 fun future(): List<Kviz> {
     return listOf(
-        Kviz(
-            "Test2", "OOAD", Date(121, 6, 12),
-            Date(121, 9, 2), Date(0, 0, 0), 5,
-            "SRI15", null
-        )
+//        Kviz(
+//            "Test2", "OOAD", Date(121, 6, 12),
+//            Date(121, 9, 2), Date(0, 0, 0), 5,
+//            "SRI15", null
+//        )
     )
 }
 
 fun notTaken(): List<Kviz> {
     return listOf(
-        Kviz(
-            "Kviz1", "OOAD", Date(121, 1, 12),
-            Date(121, 2, 2), Date(0, 0, 0), 4,
-            "SRI15", -1F
-        )
+//        Kviz(
+//            "Kviz1", "OOAD", Date(121, 1, 12),
+//            Date(121, 2, 2), Date(0, 0, 0), 4,
+//            "SRI15", -1F
+//        )
     )
 }
 
