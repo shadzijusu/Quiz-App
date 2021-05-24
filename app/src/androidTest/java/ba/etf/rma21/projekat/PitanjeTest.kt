@@ -26,21 +26,10 @@ class PitanjeTest {
     @Test
     fun ucitajuSePitanja() {
         onView(withId(R.id.filterKvizova)).perform(click())
-        Espresso.onData(
-            CoreMatchers.allOf(
-                CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)),
-                CoreMatchers.`is`("Svi moji kvizovi")
-            )
-        ).perform(click())
+        Espresso.onData(CoreMatchers.allOf(CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)), CoreMatchers.`is`("Svi moji kvizovi"))).perform(click())
         val kvizovi = KvizRepository.getMyKvizes()
-        onView(withId(R.id.listaKvizova)).perform(
-            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
-                CoreMatchers.allOf(
-                    hasDescendant(withText(kvizovi[0].naziv)),
-                    hasDescendant(withText(kvizovi[0].nazivPredmeta))
-                ), click()
-            )
-        )
+        onView(withId(R.id.listaKvizova)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(CoreMatchers.allOf(hasDescendant(withText(kvizovi[0].naziv)),
+            hasDescendant(withText(kvizovi[0].nazivPredmeta))), click()))
         onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
         onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
         val pitanja = PitanjeKvizRepository.getPitanja(kvizovi[0].naziv, kvizovi[0].nazivPredmeta)
@@ -55,21 +44,10 @@ class PitanjeTest {
     @Test
     fun testPredajKviz() {
         onView(withId(R.id.filterKvizova)).perform(click())
-        Espresso.onData(
-            CoreMatchers.allOf(
-                CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)),
-                CoreMatchers.`is`("Svi moji kvizovi")
-            )
-        ).perform(click())
+        Espresso.onData(CoreMatchers.allOf(CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)), CoreMatchers.`is`("Svi moji kvizovi"))).perform(click())
         val kvizovi = KvizRepository.getMyKvizes()
-        onView(withId(R.id.listaKvizova)).perform(
-            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
-                CoreMatchers.allOf(
-                    hasDescendant(withText(kvizovi[0].naziv)),
-                    hasDescendant(withText(kvizovi[0].nazivPredmeta))
-                ), click()
-            )
-        )
+        onView(withId(R.id.listaKvizova)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(CoreMatchers.allOf(hasDescendant(withText(kvizovi[0].naziv)),
+            hasDescendant(withText(kvizovi[0].nazivPredmeta))), click()))
         onView(withId(R.id.navigacijaPitanja)).check(matches(isDisplayed()))
         onView(withId(R.id.predajKviz)).perform(click())
         onView(withSubstring("Završili ste kviz")).check(matches(isDisplayed()))
@@ -78,21 +56,10 @@ class PitanjeTest {
     @Test
     fun prikazujeSeIspravanBottomNav() {
         onView(withId(R.id.filterKvizova)).perform(click())
-        Espresso.onData(
-            CoreMatchers.allOf(
-                CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)),
-                CoreMatchers.`is`("Svi moji kvizovi")
-            )
-        ).perform(click())
+        Espresso.onData(CoreMatchers.allOf(CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)), CoreMatchers.`is`("Svi moji kvizovi"))).perform(click())
         val kvizovi = KvizRepository.getMyKvizes()
-        onView(withId(R.id.listaKvizova)).perform(
-            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
-                CoreMatchers.allOf(
-                    hasDescendant(withText(kvizovi[0].naziv)),
-                    hasDescendant(withText(kvizovi[0].nazivPredmeta))
-                ), click()
-            )
-        )
+        onView(withId(R.id.listaKvizova)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(CoreMatchers.allOf(hasDescendant(withText(kvizovi[0].naziv)),
+            hasDescendant(withText(kvizovi[0].nazivPredmeta))), click()))
         onView(withId(R.id.predajKviz)).check(matches(isDisplayed()))
         onView(withId(R.id.zaustaviKviz)).check(matches(isDisplayed()))
         onView(withId(R.id.kvizovi)).check(matches(not(isDisplayed())))

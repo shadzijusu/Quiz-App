@@ -1,5 +1,4 @@
 package ba.etf.rma21.projekat
-
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.intent.rule.IntentsTestRule

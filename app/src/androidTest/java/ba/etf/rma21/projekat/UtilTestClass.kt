@@ -1,6 +1,10 @@
 package ba.etf.rma21.projekat
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.widget.ListView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.NoMatchingViewException
@@ -9,16 +13,19 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import ba.etf.rma21.projekat.data.models.Kviz
 import junit.framework.Assert
+import junit.framework.Assert.assertTrue
 import org.hamcrest.CoreMatchers
+import org.hamcrest.Description
+import org.hamcrest.TypeSafeMatcher
 
 class UtilTestClass {
-    companion object {
+    companion object{
         fun hasItemCount(n: Int) = object : ViewAssertion {
             override fun check(view: View?, noViewFoundException: NoMatchingViewException?) {
                 if (noViewFoundException != null) {
                     throw noViewFoundException
                 }
-                Assert.assertTrue("View nije tipa RecyclerView", view is RecyclerView)
+                assertTrue("View nije tipa RecyclerView", view is RecyclerView)
                 var rv: RecyclerView = view as RecyclerView
                 ViewMatchers.assertThat(
                     "GetItemCount RecyclerView broj elementa: ",
@@ -29,7 +36,7 @@ class UtilTestClass {
 
         }
 
-        fun itemTest(id: Int, k: Kviz) {
+        fun itemTest(id:Int, k: Kviz){
             Espresso.onView(ViewMatchers.withId(R.id.listaKvizova)).perform(
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
                     CoreMatchers.allOf(
@@ -38,6 +45,30 @@ class UtilTestClass {
                     )
                 )
             )
+        }
+        fun withTextColor(trazenaBoja: Int) = object:TypeSafeMatcher<View>(){
+            override fun describeTo(description: Description) {
+                description.appendText("Nema tekst zelene boje")
+            }
+
+            override fun matchesSafely(item: View): Boolean {
+                if(!(item is TextView)) return false;
+                return item.currentTextColor== trazenaBoja
+
+            }
+
+        }
+        fun withBackground(trazenaBoja:Int) = object:TypeSafeMatcher<View>(){
+            override fun describeTo(description: Description) {
+                description.appendText("Nema pozadinu zelene boje")
+            }
+
+            override fun matchesSafely(item: View): Boolean {
+                if(!(item.background is ColorDrawable)) return false;
+                var boja = item.background as ColorDrawable
+                return boja.color==trazenaBoja
+            }
+
         }
     }
 }
