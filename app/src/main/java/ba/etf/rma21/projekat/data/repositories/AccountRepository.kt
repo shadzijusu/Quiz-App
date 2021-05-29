@@ -1,19 +1,20 @@
 package ba.etf.rma21.projekat.data.repositories
 
 class AccountRepository {
+
     companion object {
-        private val hexString = StringBuffer()
+        //TODO Ovdje trebate dodati hash string vašeg accounta
+        var acHash: String = ""
+
         fun postaviHash(acHash: String): Boolean {
-            for (i in 0 until acHash.length) hexString.append(
-                Integer.toHexString(
-                    0xFF and acHash[i].toInt()
-                )
-            )
-            return hexString.isNotEmpty()
+            this.acHash = acHash
+            return true
         }
 
         fun getHash(): String {
-            return hexString.toString()
+            return acHash
         }
+
+
     }
 }

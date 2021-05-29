@@ -145,11 +145,11 @@ class FragmentPokusaj() : Fragment(), Serializable {
         }
 
         navigacijaPitanja.setNavigationItemSelectedListener(mOnNavigationViewItemSelectedListener)
-//        mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
-//            navigacijaPitanja.menu.getItem(
-//                0
-//            )
-//        )
+        mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
+            navigacijaPitanja.menu.getItem(
+                0
+            )
+        )
         return view
     }
 

@@ -7,13 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 
-sealed class Rezultat<out R> {
-    data class Success<out T>(val data: T) : Rezultat<T>()
-    data class Error(val exception: Exception) : Rezultat<Nothing>()
-}
-
 object PredmetIGrupaRepository {
-    var predmetZaGrupu = MutableLiveData<Predmet?>()
     suspend fun getPredmeti(): List<Predmet>? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajSvePredmete()

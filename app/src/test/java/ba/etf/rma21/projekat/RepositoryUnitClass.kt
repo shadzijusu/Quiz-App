@@ -21,16 +21,16 @@ class RepositoryUnitClass {
         assertThat(grupe, hasItem<Grupa>(hasProperty("naziv", Is("UTO12"))))
         assertThat(grupe, hasItem<Grupa>(hasProperty("naziv", Is("PET10"))))
     }
-    @Test
-    fun testGetUpisaniIUpisiPredmet() {
-        val upisani = PredmetRepository.getUpisani()
-        assertEquals(upisani.size, 4)
-        val novi = Predmet("OBP", 2)
-        PredmetRepository.upisiPredmet(novi)
-        assertEquals(upisani.size, 5)
-        assertThat(upisani, hasItem<Predmet>(hasProperty("naziv", Is("OBP"))))
-        assertThat(upisani, hasItem<Predmet>(hasProperty("naziv", Is("RPR"))))
-    }
+//    @Test
+//    fun testGetUpisaniIUpisiPredmet() {
+//        val upisani = PredmetRepository.getUpisani()
+//        assertEquals(upisani.size, 4)
+//        val novi = Predmet("OBP", 2)
+//        PredmetRepository.upisiPredmet(novi)
+//        assertEquals(upisani.size, 5)
+//        assertThat(upisani, hasItem<Predmet>(hasProperty("naziv", Is("OBP"))))
+//        assertThat(upisani, hasItem<Predmet>(hasProperty("naziv", Is("RPR"))))
+//    }
     @Test
     fun testGetAll() {
         val predmeti = PredmetRepository.getAll()
@@ -53,12 +53,12 @@ class RepositoryUnitClass {
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Kviz - OOP u Javi"))))
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("nazivGrupe", Is("Grupa4"))))
     }
-    @Test
-    fun testGetAllKvizes() {
-        val kvizovi = KvizRepository.getAll()
-        assertEquals(kvizovi.size, 15)
-        assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Priprema za ispit"))))
-    }
+//    @Test
+//    fun testGetAllKvizes() {
+//        val kvizovi = KvizRepository.getAll()
+//        assertEquals(kvizovi.size, 15)
+//        assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Priprema za ispit"))))
+//    }
     @Test
     fun testGetDone() {
         val kvizovi = KvizRepository.getDone()
@@ -77,15 +77,15 @@ class RepositoryUnitClass {
         assertEquals(kvizovi.size, 1)
         assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Kviz1"))))
     }
-    @Test
-    fun testAddMyKviz() {
-        val kvizovi = KvizRepository.getMyKvizes()
-        val kviz = Kviz(
-            "Red i stek", "ASP", Date(2021, 3, 15),
-            Date(2021, 4, 30), Date(0, 0, 0),
-            6, "Grupa2A", null
-        )
-        KvizRepository.addMine(kviz)
-        assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Red i stek"))))
-    }
+//    @Test
+//    fun testAddMyKviz() {
+//        val kvizovi = KvizRepository.getMyKvizes()
+//        val kviz = Kviz(
+//            "Red i stek", "ASP", Date(2021, 3, 15),
+//            Date(2021, 4, 30), Date(0, 0, 0),
+//            6, "Grupa2A", null
+//        )
+//        KvizRepository.addMine(kviz)
+//        assertThat(kvizovi, hasItem<Kviz>(hasProperty("naziv", Is("Red i stek"))))
+//    }
 }

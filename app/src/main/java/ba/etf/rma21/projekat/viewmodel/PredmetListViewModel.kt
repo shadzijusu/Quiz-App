@@ -8,7 +8,6 @@ import ba.etf.rma21.projekat.data.models.Predmet
 import ba.etf.rma21.projekat.data.repositories.KvizRepository
 import ba.etf.rma21.projekat.data.repositories.PredmetIGrupaRepository
 import ba.etf.rma21.projekat.data.repositories.PredmetRepository
-import ba.etf.rma21.projekat.data.repositories.Rezultat
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 

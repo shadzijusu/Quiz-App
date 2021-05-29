@@ -1,9 +1,6 @@
 package ba.etf.rma21.projekat.data.repositories
 
-import ba.etf.rma21.projekat.data.models.Grupa
-import ba.etf.rma21.projekat.data.models.Kviz
-import ba.etf.rma21.projekat.data.models.Pitanje
-import ba.etf.rma21.projekat.data.models.Predmet
+import ba.etf.rma21.projekat.data.models.*
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
@@ -48,6 +45,30 @@ interface Api {
     suspend fun dajPitanja(
         @Path("id") id : Int
     ) : Response<List<Pitanje>>
+
+
+    @POST("student/{id}/kviz/{kid}")
+    suspend fun zapocniKviz(
+        @Path("kid") kid : Int,
+        @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
+    ) : Response<KvizTaken>
+
+    @GET("student/{id}/kviztaken")
+    suspend fun dajZapocete(
+        @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
+    ) : Response<List<KvizTaken>>
+
+    @GET("student/{id}/kviztaken/{kid}/odgovori")
+    suspend fun dajOdgovore(
+        @Path("kid") kid : Int,
+        @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
+    ) : Response<List<Odgovor>>
+
+//    @POST("student/{id}/kviztaken/{ktid}/dgovor")
+//    suspend fun dodajOdgovor(
+//        idKvizTaken:Int,idPitanje:Int,odgovor:In
+//        @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
+//    ) : Response<List<Odgovor>>
 
 
 }

@@ -14,10 +14,12 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPokusaj
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
+import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,6 +32,8 @@ class ListaKvizovaAdapter(
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
     private val pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
     private val kvizListViewModel = KvizListViewModel(null, null)
+    private val kvizTakenViewModel = KvizTakenViewModel(null, null)
+
     private lateinit var context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
         val view = LayoutInflater
@@ -86,7 +90,11 @@ class ListaKvizovaAdapter(
                 idKviza = kvizovi[position].id
             )
             var questions = pitanjeKvizListViewModel.pitanja.value
-
+            kvizTakenViewModel.zapocniKviz(
+                onSuccess = ::onSuccessPocni,
+                onError = ::onError,
+                idKviza = kvizovi[position].id
+            )
             var pokusajFragment = questions?.let { it1 -> FragmentPokusaj(it1) }
 
             var bundle = Bundle()
@@ -115,6 +123,10 @@ class ListaKvizovaAdapter(
     }
 
     fun onSuccess(pitanja: List<Pitanje>) {
+        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+    fun onSuccessPocni(kvizTaken: KvizTaken) {
         val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
         toast.show()
     }
