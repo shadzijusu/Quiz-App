@@ -12,7 +12,7 @@ import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 
 class FragmentPoruka : Fragment() {
     private lateinit var tvPoruka: TextView
-    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
+    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

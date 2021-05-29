@@ -1,11 +1,42 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.data.repositories.KvizRepository
 import ba.etf.rma21.projekat.data.repositories.PitanjeKvizRepository
 import ba.etf.rma21.projekat.data.staticdata.getOdgovor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class PitanjeKvizListViewModel : ViewModel() {
+class PitanjeKvizListViewModel (private val searchDone: ((pitanja: List<Pitanje>) -> Unit)?,
+                                private val onError: (()->Unit)?
+) {
+    val scope = CoroutineScope(
+        Job() + Dispatchers.Main)
+    var pitanja = MutableLiveData<List<Pitanje>>()
+        fun dajPitanja(onSuccess: (pitanja: List<Pitanje>) -> Unit,
+               onError: () -> Unit, idKviza : Int) {
+        // Create a new coroutine on the UI thread
+        scope.launch {
+            // Make the network call and suspend execution until it finishes
+            val result = PitanjeKvizRepository.getPitanja(idKviza)
+
+            // Display result of the network request to the user
+            when (result) {
+                is List<Pitanje> -> {
+                    onSuccess?.invoke(result)
+                    pitanja.postValue(result!!)
+                }
+                else -> onError?.invoke()
+            }
+        }
+    }
+
+
     fun getPitanja(nazivKviza: String, nazivPredmeta: String): List<Pitanje> {
         return PitanjeKvizRepository.getPitanjaa(nazivKviza, nazivPredmeta)
     }
@@ -38,12 +69,5 @@ class PitanjeKvizListViewModel : ViewModel() {
     }
     fun setAll(qAndA: HashMap<Pitanje, Int>) {
         PitanjeKvizRepository.setSve(qAndA)
-    }
-    companion object {
-        private var instance : PitanjeKvizListViewModel? = null
-        fun getInstance() =
-            instance ?: synchronized(PitanjeKvizListViewModel::class.java){
-                instance ?: PitanjeKvizListViewModel().also { instance = it }
-            }
     }
 }

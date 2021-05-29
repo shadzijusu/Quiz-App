@@ -1,8 +1,11 @@
 package ba.etf.rma21.projekat.data.models
 
-import java.io.Serializable
+import com.google.gson.annotations.SerializedName
 
-class Pitanje(var naziv : String,
-                var tekst : String,
-                var opcije : List<String>,
-                var tacan : Int) : Serializable
+class Pitanje(
+    @SerializedName("id") var id: Int,
+    @SerializedName("naziv") var naziv: String,
+    @SerializedName("tekstPitanja") var tekstPitanja: String,
+    @SerializedName("opcije") var opcije: List<String>,
+    @SerializedName("tacan") var tacan: Int
+)

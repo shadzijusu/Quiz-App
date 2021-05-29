@@ -2,6 +2,7 @@ package ba.etf.rma21.projekat.data.repositories
 
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.models.Predmet
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -42,4 +43,11 @@ interface Api {
     suspend fun dajStudentoveGrupe(
         @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
     ) : Response<List<Grupa>>
+
+    @GET("kviz/{id}/pitanja")
+    suspend fun dajPitanja(
+        @Path("id") id : Int
+    ) : Response<List<Pitanje>>
+
+
 }

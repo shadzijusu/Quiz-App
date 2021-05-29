@@ -14,13 +14,9 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProviders
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Pitanje
-import ba.etf.rma21.projekat.data.staticdata.pitanja
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
-import ba.etf.rma21.projekat.viewmodel.ViewModelFactory
 import com.google.android.material.navigation.NavigationView
 
 
@@ -29,7 +25,7 @@ class FragmentPitanje() : Fragment() {
     private lateinit var tekstPitanja: TextView
     private lateinit var navigacijaPitanja: NavigationView
     private lateinit var pitanje: Pitanje
-    private  var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
+    private  var pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
 
     private var pozicija = -1
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +42,7 @@ class FragmentPitanje() : Fragment() {
             var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
             var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
             for (i in 0 until questions.size) {
-                    if(questions[i].tekst == pitanje.tekst) {
+                    if(questions[i].tekstPitanja == pitanje.tekstPitanja) {
                         pozicija = odgovori[i]
                             val handler = Handler()
                             handler.postDelayed(Runnable {
@@ -72,7 +68,7 @@ class FragmentPitanje() : Fragment() {
             requireParentFragment().requireView().findViewById(R.id.navigacijaPitanja)
         var bundle = this.arguments
         var poruka = bundle?.getString("data")
-        tekstPitanja.text = pitanje.tekst
+        tekstPitanja.text = pitanje.tekstPitanja
 
         val listaVrijednosti = pitanje.opcije
         val layoutID = android.R.layout.simple_list_item_1

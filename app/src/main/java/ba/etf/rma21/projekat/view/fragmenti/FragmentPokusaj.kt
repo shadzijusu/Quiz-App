@@ -29,7 +29,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private var brojPitanja: Int = 0
     private lateinit var pitanja: List<Pitanje>
     private lateinit var pitanje: Pitanje
-    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
+    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
     private var pitanjeFragment = FragmentPitanje()
     private var kvizListViewModel = KvizListViewModel(null, null)
     private var odabranoPitanje = 0
@@ -95,7 +95,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
         var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
         var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
         for(question in questions) {
-            if(question.tekst.equals(pitanja[0].tekst))
+            if(question.tekstPitanja.equals(pitanja[0].tekstPitanja))
                 present = true
         }
         if(present) {
@@ -104,7 +104,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                         var menuItem = navigacijaPitanja.menu.getItem(j)
                         var s: SpannableString = SpannableString("")
                         s = SpannableString(menuItem?.title.toString() + " +")
-                        if (questions[i].tekst == pitanja[j].tekst) {
+                        if (questions[i].tekstPitanja == pitanja[j].tekstPitanja) {
                             if (pitanja[j].tacan == odgovori[i]) {
                                 s.setSpan(ForegroundColorSpan(Color.GREEN), 0, s.length, 0)
                             } else
@@ -139,18 +139,17 @@ class FragmentPokusaj() : Fragment(), Serializable {
         bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         var menu: Menu = navigacijaPitanja.menu
-
         for (i in 1..brojPitanja) {
             menu.add(0, itemId, NONE, "" + i)
             itemId++
         }
 
         navigacijaPitanja.setNavigationItemSelectedListener(mOnNavigationViewItemSelectedListener)
-        mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
-            navigacijaPitanja.menu.getItem(
-                0
-            )
-        )
+//        mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
+//            navigacijaPitanja.menu.getItem(
+//                0
+//            )
+//        )
         return view
     }
 
@@ -162,7 +161,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
         var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
         for (i in 0 until questions.size) {
             for (j in 0 until pitanja.size) {
-                if (pitanja[j].tekst == questions[i].tekst) {
+                if (pitanja[j].tekstPitanja == questions[i].tekstPitanja) {
                     if (pitanja[j].tacan == odgovori[i])
                         brojTacnih++
                 }

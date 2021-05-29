@@ -64,21 +64,21 @@ class FragmentKvizovi : Fragment() {
                     "Urađeni kvizovi" -> {
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getDone().sortedBy { it.datumPocetka })
+                                kvizListViewModel.getDone().sortedBy { it.datumPocetka }, this@FragmentKvizovi)
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
                     }
                     "Budući kvizovi" -> {
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getFuture().sortedBy { it.datumPocetka })
+                                kvizListViewModel.getFuture().sortedBy { it.datumPocetka }, this@FragmentKvizovi)
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
                     }
                     "Prošli kvizovi" -> {
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka })
+                                kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka }, this@FragmentKvizovi)
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
                     }
@@ -99,7 +99,7 @@ class FragmentKvizovi : Fragment() {
             )
         )
         listaKvizovaAdapter =
-            ListaKvizovaAdapter(kvizListViewModel.getDone())
+            ListaKvizovaAdapter(kvizListViewModel.getDone(), this@FragmentKvizovi)
         listaKvizova.adapter = listaKvizovaAdapter
         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
         return view
