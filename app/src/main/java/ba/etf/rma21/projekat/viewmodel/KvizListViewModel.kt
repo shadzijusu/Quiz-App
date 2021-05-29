@@ -2,7 +2,6 @@ package ba.etf.rma21.projekat.viewmodel
 
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.repositories.KvizRepository
-import ba.etf.rma21.projekat.data.repositories.Rezultat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,31 +13,31 @@ class KvizListViewModel(private val searchDone: ((kvizovi: List<Kviz>) -> Unit)?
 ) {
      val scope = CoroutineScope(
         Job() + Dispatchers.Main)
-    fun getMyKvizes() {
+    fun getMyKvizes( onSuccess: (kvizovi: List<Kviz>) -> Unit,
+                onError: () -> Unit){
+        // Create a new coroutine on the UI thread
         scope.launch{
-
             // Make the network call and suspend execution until it finishes
-            val result = KvizRepository.getUpisani(1)
+            val result = KvizRepository.getUpisani()
 
             // Display result of the network request to the user
             when (result) {
-                is Rezultat.Success<*> -> searchDone?.invoke(result.data as List<Kviz>)
+                is List<Kviz> -> onSuccess?.invoke(result)
                 else-> onError?.invoke()
             }
         }
     }
 
-    fun getAll(){
-
+    fun getAll( onSuccess: (kvizovi: List<Kviz>) -> Unit,
+                     onError: () -> Unit){
         // Create a new coroutine on the UI thread
         scope.launch{
-
             // Make the network call and suspend execution until it finishes
             val result = KvizRepository.getAll()
 
             // Display result of the network request to the user
             when (result) {
-                is Rezultat.Success<*> -> searchDone?.invoke(result.data as List<Kviz>)
+                is List<Kviz> -> onSuccess?.invoke(result)
                 else-> onError?.invoke()
             }
         }

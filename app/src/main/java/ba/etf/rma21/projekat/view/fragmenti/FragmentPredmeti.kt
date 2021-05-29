@@ -11,9 +11,8 @@ import ba.etf.rma21.projekat.PreferenceManager
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Predmet
-import ba.etf.rma21.projekat.viewmodel.GrupaListViewModel
-import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
+import okhttp3.ResponseBody
 
 
 class FragmentPredmeti : Fragment() {
@@ -21,12 +20,10 @@ class FragmentPredmeti : Fragment() {
     private lateinit var odabirPredmet: Spinner
     private lateinit var odabirGrupa: Spinner
     private lateinit var upisDugme: Button
-    private var kvizListViewModel = KvizListViewModel(null, null)
     private lateinit var predmetListViewModel: PredmetListViewModel
-    private lateinit var grupaListViewModel: GrupaListViewModel
-    private var predmetId = 0
     private var grupaId = 0
     private var preferenceManger: PreferenceManager? = null
+    private var grupeZaPredmet: ArrayList<Grupa> = arrayListOf()
     private lateinit var grupa: Grupa
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,11 +37,8 @@ class FragmentPredmeti : Fragment() {
         odabirGrupa = view.findViewById(R.id.odabirGrupa)
         upisDugme = view.findViewById(R.id.dodajPredmetDugme)
         predmetListViewModel =
-            PredmetListViewModel(this@FragmentPredmeti::searchDone, this@FragmentPredmeti::onError)
-        grupaListViewModel = GrupaListViewModel(
-            this@FragmentPredmeti::searchDoneGrupe,
-            this@FragmentPredmeti::onError
-        )
+            PredmetListViewModel(null, null)
+
 
         activity?.let {
             ArrayAdapter.createFromResource(
@@ -58,7 +52,28 @@ class FragmentPredmeti : Fragment() {
                 odabirGodina.adapter = adapter
             }
         }
-        predmetListViewModel.getAll()
+        var naziviPredmeta = arrayListOf<String>()
+        val predmetiAdapter: ArrayAdapter<String>
+        predmetiAdapter = ArrayAdapter<String>(
+            view.context,
+            android.R.layout.simple_spinner_dropdown_item,
+            naziviPredmeta
+        )
+        odabirPredmet.adapter = predmetiAdapter
+
+        var naziviGrupa = arrayListOf<String>()
+        val grupeAdapter: ArrayAdapter<String>
+        grupeAdapter = ArrayAdapter<String>(
+            view.context,
+            android.R.layout.simple_spinner_dropdown_item,
+            naziviGrupa
+        )
+        odabirGrupa.setAdapter(grupeAdapter)
+
+        predmetListViewModel.getAll(
+            onSuccess = ::onSuccess,
+            onError = ::onError
+        )
         var godina: Int = 0
         odabirGodina.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(arg0: AdapterView<*>?) {
@@ -81,79 +96,70 @@ class FragmentPredmeti : Fragment() {
                         "5" -> 5
                         else -> 0
                     }
-                var naziviPredmeta = arrayListOf<String>()
                 if (godina == 1) {
                     predmetListViewModel.predmeti.observe(requireActivity(), Observer { id ->
                         // Use `id` for example to update UI.
                         naziviPredmeta.clear()
-                        for (predmet in id) {
-                            if (predmet.godina == 1)
-                                naziviPredmeta.add(predmet.naziv)
-                        }
+                        if (id != null)
+                            for (predmet in id) {
+                                if (predmet.godina == 1)
+                                    naziviPredmeta.add(predmet.naziv)
+                            }
+                        predmetiAdapter.notifyDataSetChanged()
                     })
-                    odabirPredmet.adapter = ArrayAdapter(
-                        view.context,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        naziviPredmeta
-                    )
 
                 } else if (godina == 2) {
                     predmetListViewModel.predmeti.observe(requireActivity(), Observer { id ->
                         naziviPredmeta.clear()
                         // Use `id` for example to update UI.
-                        for (predmet in id) {
-                            if (predmet.godina == 2)
-                                naziviPredmeta.add(predmet.naziv)
-                        }
+                        if (id != null)
+                            for (predmet in id) {
+                                if (predmet.godina == 2)
+                                    naziviPredmeta.add(predmet.naziv)
+                            }
+                        predmetiAdapter.notifyDataSetChanged()
+
                     })
-                    odabirPredmet.adapter = ArrayAdapter(
-                        view.context,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        naziviPredmeta
-                    )
+
 
                 } else if (godina == 3) {
                     predmetListViewModel.predmeti.observe(requireActivity(), Observer { id ->
                         naziviPredmeta.clear()
                         // Use `id` for example to update UI.
-                        for (predmet in id) {
-                            if (predmet.godina == 3)
-                                naziviPredmeta.add(predmet.naziv)
-                        }
+                        if (id != null)
+                            for (predmet in id) {
+                                if (predmet.godina == 3)
+                                    naziviPredmeta.add(predmet.naziv)
+                            }
+                        predmetiAdapter.notifyDataSetChanged()
+
                     })
-                    odabirPredmet.adapter = ArrayAdapter(
-                        view.context,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        naziviPredmeta
-                    )
+
                 } else if (godina == 4) {
                     predmetListViewModel.predmeti.observe(requireActivity(), Observer { id ->
                         naziviPredmeta.clear()
                         // Use `id` for example to update UI.
-                        for (predmet in id) {
-                            if (predmet.godina == 4)
-                                naziviPredmeta.add(predmet.naziv)
-                        }
+                        if (id != null)
+                            for (predmet in id) {
+                                if (predmet.godina == 4)
+                                    naziviPredmeta.add(predmet.naziv)
+                            }
+                        predmetiAdapter.notifyDataSetChanged()
+
                     })
-                    odabirPredmet.adapter = ArrayAdapter(
-                        view.context,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        naziviPredmeta
-                    )
+
                 } else if (godina == 5) {
                     predmetListViewModel.predmeti.observe(requireActivity(), Observer { id ->
                         naziviPredmeta.clear()
                         // Use `id` for example to update UI.
-                        for (predmet in id) {
-                            if (predmet.godina == 5)
-                                naziviPredmeta.add(predmet.naziv)
-                        }
+                        if (id != null)
+                            for (predmet in id) {
+                                if (predmet.godina == 5)
+                                    naziviPredmeta.add(predmet.naziv)
+                            }
+                        predmetiAdapter.notifyDataSetChanged()
+
                     })
-                    odabirPredmet.adapter = ArrayAdapter(
-                        view.context,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        naziviPredmeta
-                    )
                 }
             }
         })
@@ -166,32 +172,47 @@ class FragmentPredmeti : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                //Grupa (naziv, nazivPredmeta)
-                var naziviGrupa = arrayListOf<String>()
+
                 var nazivPredmeta: String = parent.getItemAtPosition(position).toString()
+
+                predmetListViewModel.getAll(
+                    onSuccess = ::onSuccess,
+                    onError = ::onError
+                )
+                var idPredmeta: Int = 0
                 predmetListViewModel.predmeti.observe(requireActivity(), Observer {
-                    for (predmet in it) {
-                        if (predmet.naziv == nazivPredmeta) {
-                            predmetId = predmet.id
-                            break
+                    if (it != null) {
+                        for (predmet in it) {
+                            if (predmet.naziv == nazivPredmeta) {
+                                idPredmeta = predmet.id
+                                break
+                            }
                         }
                     }
                 })
-                grupaListViewModel.getGrupeZaPredmet(predmetId)
-                grupaListViewModel.grupe.observe(requireActivity(), Observer {
-                    naziviGrupa.clear()
-                    for(grupa in it)
-                        naziviGrupa.add(grupa.naziv)
+
+
+                predmetListViewModel.getGrupeZaPredmet(
+                    onSuccess = ::onSuccessGrupe,
+                    onError = ::onError,
+                    idPredmeta = idPredmeta
+                )
+
+                predmetListViewModel.grupeZaPredmet.observe(requireActivity(), Observer {
+                    if (it != null) {
+                        naziviGrupa.clear()
+                        for (grupa in it) {
+                            naziviGrupa.add(grupa.naziv)
+                            grupeZaPredmet.add(grupa)
+                        }
+                    }
+                    grupeAdapter.notifyDataSetChanged()
 
                 })
-                odabirGrupa.adapter = ArrayAdapter(
-                    view.context,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    naziviGrupa
-                )
                 odabranPredmet = true
             }
         }
+
                 )
         odabirGrupa.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
@@ -201,19 +222,22 @@ class FragmentPredmeti : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                grupaListViewModel.grupe.observe(requireActivity(), Observer {
-                    for(grupa in it)
-                        if(grupa.naziv == parent.getItemAtPosition(position)) {
-                            grupaId = grupa.id
-                            break
-                        }
-                })
+                var nazivGrupe = parent.getItemAtPosition(position)
+                for (grupa in grupeZaPredmet) {
+                    if (grupa.naziv.equals(nazivGrupe)) {
+                        grupaId = grupa.id
+                        break
+                    }
+                }
+
             }
+
         }
                 )
 
+
         upisDugme.setOnClickListener {
-            if (odabirPredmet.selectedItem != null && odabirGrupa.selectedItem != null)
+            if (odabirPredmet.selectedItem != null)
                 upisiMe()
         }
         return view
@@ -228,8 +252,11 @@ class FragmentPredmeti : Fragment() {
         var godina = odabirGodina.selectedItem.toString()
         var nazivPredmeta = odabirPredmet.selectedItem.toString()
         var nazivGrupe = odabirGrupa.selectedItem.toString()
-
-        predmetListViewModel.upisiUGrupu(grupaId)
+        predmetListViewModel.upisiStudenta(
+            onSuccess = ::onSuccessUpis,
+            onError = ::onError,
+            idGrupe = grupaId
+        )
 
         var bundle: Bundle = Bundle()
         bundle.putString(
@@ -260,8 +287,23 @@ class FragmentPredmeti : Fragment() {
         toast.show()
     }
 
+    fun onSuccessGrupe(grupe: List<Grupa>) {
+        val toast = Toast.makeText(context, "Grupe pronađene", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccess(predmeti: List<Predmet>) {
+        val toast = Toast.makeText(context, "Predmeti pronađeni", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
     fun onError() {
         val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccessUpis(upis: ResponseBody) {
+        val toast = Toast.makeText(context, "Upisan", Toast.LENGTH_SHORT)
         toast.show()
     }
 }

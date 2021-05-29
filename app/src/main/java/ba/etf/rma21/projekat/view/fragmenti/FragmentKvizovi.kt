@@ -56,7 +56,10 @@ class FragmentKvizovi : Fragment() {
                 // parent.getItemAtPosition(pos)
                 when (parent.getItemAtPosition(pos)) {
                     "Svi kvizovi" -> {
-                        kvizListViewModel.getAll()
+                        kvizListViewModel.getAll(
+                            onSuccess = ::onSuccess,
+                            onError = ::onError
+                        )
                     }
                     "Urađeni kvizovi" -> {
                         listaKvizovaAdapter =
@@ -80,7 +83,10 @@ class FragmentKvizovi : Fragment() {
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
                     }
                     else -> {
-                       kvizListViewModel.getMyKvizes()
+                        kvizListViewModel.getMyKvizes(
+                            onSuccess = ::onSuccess,
+                            onError = ::onError
+                        )
                     }
                 }
             }
@@ -111,6 +117,11 @@ class FragmentKvizovi : Fragment() {
         listaKvizovaAdapter.updateKvizove(kvizovi)
     }
 
+    fun onSuccess(kvizovi: List<Kviz>){
+        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
+        toast.show()
+        listaKvizovaAdapter.updateKvizove(kvizovi)
+    }
     fun onError() {
         val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
         toast.show()

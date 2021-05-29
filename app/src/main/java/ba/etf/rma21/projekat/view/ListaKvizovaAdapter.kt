@@ -38,7 +38,7 @@ class ListaKvizovaAdapter(
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
         val current: Date = Calendar.getInstance().time
         var boja: String = "zelena"
-        holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
+//        holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
         holder.nazivKviza.text = kvizovi[position].naziv
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
         val pattern = "dd.MM.yyyy"
@@ -47,22 +47,21 @@ class ListaKvizovaAdapter(
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumKraj)
             holder.stanjeKviza.setImageResource(R.drawable.crvena)
             holder.osvojeniBodovi.text = ""
-            boja = "crvena"
         } else if (kvizListViewModel.getDone().contains(kvizovi[position]) && kvizovi[position].osvojeniBodovi != null) {
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
             holder.stanjeKviza.setImageResource(R.drawable.plava)
             holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
-            boja = "plava"
-        } else if (kvizovi[position].datumPocetka.compareTo(current) > 0 && kvizovi[position].osvojeniBodovi == null) {
+        } else if (kvizovi[position].datumPocetka != null && (kvizovi[position].datumPocetka.compareTo(current) > 0 && kvizovi[position].osvojeniBodovi == null)) {
             holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
             holder.stanjeKviza.setImageResource(R.drawable.zuta)
             holder.osvojeniBodovi.text = ""
-            boja = "zuta"
         } else {
             val datum = kvizovi[position].datumPocetka
-            datum.year = datum.year.minus(1900)
-            datum.month = datum.month.minus(1)
-            holder.datumKviza.text = simpleDateFormat.format(datum)
+            if(datum != null) {
+                datum.year = datum.year.minus(1900)
+                datum.month = datum.month.minus(1)
+                holder.datumKviza.text = simpleDateFormat.format(datum)
+            }
             //promijenila datum
             holder.stanjeKviza.setImageResource(R.drawable.zelena)
             holder.osvojeniBodovi.text = ""
@@ -75,11 +74,11 @@ class ListaKvizovaAdapter(
                 if (!kvizoviSPitanjima.contains(kvizovi[position].naziv))
                     return
                 var nazivKviza = kvizovi[position].naziv
-                var nazivPredmeta = kvizovi[position].nazivPredmeta
+//                var nazivPredmeta = kvizovi[position].nazivPredmeta
                 var activity: AppCompatActivity = view?.context as AppCompatActivity
                var pokusajFragment =
                     FragmentPokusaj(
-                        pitanjeKvizListViewModel.getPitanja(nazivKviza, nazivPredmeta)
+                        pitanjeKvizListViewModel.getPitanja(nazivKviza, "nazivPredmeta")
                     )
                 var bundle = Bundle()
                 bundle.putString("naziv", kvizovi[position].naziv)
