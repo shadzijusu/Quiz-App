@@ -15,15 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.DefaultItemDecorator
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
+import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
 
 class FragmentKvizovi : Fragment() {
     private lateinit var listaKvizova: RecyclerView
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private lateinit var filterKvizova: Spinner
     private lateinit var kvizListViewModel: KvizListViewModel
-
+    private var kvizTakenViewModel = KvizTakenViewModel(null, null)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,13 +64,13 @@ class FragmentKvizovi : Fragment() {
                         )
                     }
                     "Urađeni kvizovi" -> {
-                        listaKvizovaAdapter =
-                            ListaKvizovaAdapter(
-                                kvizListViewModel.getDone().sortedBy { it.datumPocetka }, this@FragmentKvizovi)
-                        listaKvizova.adapter = listaKvizovaAdapter
-                        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
+                        kvizTakenViewModel.zapocetiKvizovi(
+                            onSuccess = ::onSuccessZapoceti,
+                            onError = ::onError
+                        )
                     }
                     "Budući kvizovi" -> {
+                        //datum pocetka im u buducnosti
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
                                 kvizListViewModel.getFuture().sortedBy { it.datumPocetka }, this@FragmentKvizovi)
@@ -76,6 +78,7 @@ class FragmentKvizovi : Fragment() {
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
                     }
                     "Prošli kvizovi" -> {
+                        //datum kraj prosao nije u kviztaken
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
                                 kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka }, this@FragmentKvizovi)
@@ -121,6 +124,11 @@ class FragmentKvizovi : Fragment() {
         val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
         toast.show()
         listaKvizovaAdapter.updateKvizove(kvizovi)
+    }
+
+    fun onSuccessZapoceti(kvizovi: List<KvizTaken>){
+        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
+        toast.show()
     }
     fun onError() {
         val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)

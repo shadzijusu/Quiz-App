@@ -1,6 +1,5 @@
 package ba.etf.rma21.projekat.view
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
@@ -27,7 +24,7 @@ import java.util.*
 
 class ListaKvizovaAdapter(
     private var kvizovi: List<Kviz>,
-    private var fragment : FragmentKvizovi
+    private var fragment: FragmentKvizovi
 ) :
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
     private val pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
@@ -50,38 +47,27 @@ class ListaKvizovaAdapter(
         val current: Date = Calendar.getInstance().time
         var boja: String = "zelena"
 //        holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
+
         holder.nazivKviza.text = kvizovi[position].naziv
+
+
+
+
+
+
+
+
+
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
         val pattern = "dd.MM.yyyy"
         val simpleDateFormat = SimpleDateFormat(pattern)
-        if (kvizovi[position].osvojeniBodovi == -1F) {
-            holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumKraj)
-            holder.stanjeKviza.setImageResource(R.drawable.crvena)
-            holder.osvojeniBodovi.text = ""
-        } else if (kvizListViewModel.getDone()
-                .contains(kvizovi[position]) && kvizovi[position].osvojeniBodovi != null
-        ) {
-            holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
-            holder.stanjeKviza.setImageResource(R.drawable.plava)
-            holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
-        } else if (kvizovi[position].datumPocetka != null && (kvizovi[position].datumPocetka.compareTo(
-                current
-            ) > 0 && kvizovi[position].osvojeniBodovi == null)
-        ) {
-            holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
-            holder.stanjeKviza.setImageResource(R.drawable.zuta)
-            holder.osvojeniBodovi.text = ""
-        } else {
-            val datum = kvizovi[position].datumPocetka
-            if (datum != null) {
-                datum.year = datum.year.minus(1900)
-                datum.month = datum.month.minus(1)
-                holder.datumKviza.text = simpleDateFormat.format(datum)
-            }
-            //promijenila datum
-            holder.stanjeKviza.setImageResource(R.drawable.zelena)
-            holder.osvojeniBodovi.text = ""
-        }
+
+
+        val datum = kvizovi[position].datumPocetka
+        holder.datumKviza.text = simpleDateFormat.format(datum)
+        holder.stanjeKviza.setImageResource(R.drawable.zelena)
+        holder.osvojeniBodovi.text = ""
+
 
         holder.itemView.setOnClickListener {
             pitanjeKvizListViewModel.dajPitanja(
@@ -126,6 +112,7 @@ class ListaKvizovaAdapter(
         val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
         toast.show()
     }
+
     fun onSuccessPocni(kvizTaken: KvizTaken) {
         val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
         toast.show()

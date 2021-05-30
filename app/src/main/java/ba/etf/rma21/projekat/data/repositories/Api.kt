@@ -1,18 +1,25 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import ba.etf.rma21.projekat.BuildConfig
 import ba.etf.rma21.projekat.data.models.*
+import com.google.gson.JsonObject
 import okhttp3.ResponseBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 
 interface Api {
     @GET("kviz")
     suspend fun dajSveKvizove(
     ): Response<List<Kviz>>
+
+    @GET("kviz/{id}")
+    suspend fun dajKviz(
+        @Path("id") id : Int
+    ) : Response<Kviz>
 
     @GET("grupa/{id}/kvizovi")
     suspend fun dajUpisane(
@@ -64,11 +71,11 @@ interface Api {
         @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
     ) : Response<List<Odgovor>>
 
-//    @POST("student/{id}/kviztaken/{ktid}/dgovor")
-//    suspend fun dodajOdgovor(
-//        idKvizTaken:Int,idPitanje:Int,odgovor:In
-//        @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
-//    ) : Response<List<Odgovor>>
-
+    @POST("student/{id}/kviztaken/{ktid}/odgovor")
+    suspend fun dodajOdgovor(
+        @Path("ktid") ktid: Int,
+        @Body body: JsonObject,
+        @Path("id") id: String = "9d53bd38-18d2-49ec-889f-703ab44db589"
+    ) : Response<ResponseBody>
 
 }

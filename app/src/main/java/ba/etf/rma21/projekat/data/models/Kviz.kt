@@ -9,7 +9,5 @@ data class Kviz(
     @SerializedName("naziv") var naziv: String,
     @SerializedName("datumPocetka") var datumPocetka: Date,
     @SerializedName("datumKraj") var datumKraj: Date,
-    @SerializedName("datumRada") var datumRada: Date?,
-    @SerializedName("trajanje") var trajanje: Int,
-    @SerializedName("osvojeniBodovi") var osvojeniBodovi: Float?
+    @SerializedName("trajanje") var trajanje: Int
 )

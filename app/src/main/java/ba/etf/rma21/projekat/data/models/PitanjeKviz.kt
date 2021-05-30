@@ -1,6 +1,6 @@
 package ba.etf.rma21.projekat.data.models
 
-class PitanjeKviz(
+data class PitanjeKviz(
     var pitanje: Pitanje,
     var nazivKviza : String
 )

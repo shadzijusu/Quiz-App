@@ -183,11 +183,11 @@ class FragmentPokusaj() : Fragment(), Serializable {
         transaction?.addToBackStack("poruka")
         transaction?.commit()
         var kviz = kvizListViewModel.getKviz(nazivKviza)
-        if (kviz.osvojeniBodovi == null) {
-            kviz.osvojeniBodovi = percentage.toFloat()
-            kviz.datumRada = Calendar.getInstance().time
-            kvizListViewModel.addMine(kviz)
-        }
+//        if (kviz.osvojeniBodovi == null) {
+//            kviz.osvojeniBodovi = percentage.toFloat()
+//            kviz.datumRada = Calendar.getInstance().time
+//            kvizListViewModel.addMine(kviz)
+//        }
         bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
         bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true

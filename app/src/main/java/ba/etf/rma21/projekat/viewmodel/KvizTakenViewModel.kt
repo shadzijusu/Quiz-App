@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.repositories.TakeKvizRepository
@@ -14,6 +15,7 @@ class KvizTakenViewModel (private val searchDone: ((kvizTaken: List<KvizTaken>) 
 ) {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main)
+    var kvizovi = MutableLiveData<List<KvizTaken>?>()
     fun zapocniKviz( onSuccess: (kvizTaken: KvizTaken) -> Unit,
                      onError: () -> Unit, idKviza : Int){
         // Create a new coroutine on the UI thread
@@ -36,7 +38,10 @@ class KvizTakenViewModel (private val searchDone: ((kvizTaken: List<KvizTaken>) 
 
             // Display result of the network request to the user
             when (result) {
-                is List<KvizTaken> -> onSuccess?.invoke(result)
+                is List<KvizTaken> -> {
+                    onSuccess?.invoke(result)
+                    kvizovi.postValue(result)
+                }
                 else-> onError?.invoke()
             }
         }

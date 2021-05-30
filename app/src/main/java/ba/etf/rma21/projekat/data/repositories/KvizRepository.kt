@@ -4,6 +4,7 @@ import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.staticdata.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -52,9 +53,13 @@ object KvizRepository {
 
 
 
-//    suspend fun getById(id: Int): Kviz? {
-//
-//    }
+    suspend fun getById(id: Int): Kviz? {
+        return withContext(Dispatchers.IO) {
+            var response = ApiAdapter.retrofit.dajKviz(id)
+            val responseBody = response.body()
+            return@withContext responseBody
+        }
+    }
 
     suspend fun getUpisani(): List<Kviz>? {
         return withContext(Dispatchers.IO) {
