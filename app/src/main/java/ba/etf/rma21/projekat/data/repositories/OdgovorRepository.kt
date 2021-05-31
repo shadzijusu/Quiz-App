@@ -14,7 +14,15 @@ import kotlinx.coroutines.withContext
 object OdgovorRepository {
     suspend fun getOdgovoriKviz(idKviza: Int): List<Odgovor>? {
         return withContext(Dispatchers.IO) {
-            var response = ApiAdapter.retrofit.dajOdgovore(idKviza)
+            var idKvizTaken : Int = 0
+            var responseTaken = ApiAdapter.retrofit.dajZapocete().body()
+            if (responseTaken != null) {
+                for(taken in responseTaken) {
+                    if(taken.KvizId == idKviza)
+                        idKvizTaken = taken.id
+                }
+            }
+            var response = ApiAdapter.retrofit.dajOdgovore(idKvizTaken)
             val responseBody = response.body()
             return@withContext responseBody
         }
@@ -24,7 +32,10 @@ object OdgovorRepository {
         return withContext(Dispatchers.IO) {
             var bodovi = 0f
             var responseTaken = listOf<KvizTaken>()
-            responseTaken = ApiAdapter.retrofit.dajZapocete().body()!!
+            launch {
+                responseTaken = ApiAdapter.retrofit.dajZapocete().body()!!
+            }
+            delay(500)
             var kvizId = 0
             for (kvizTaken in responseTaken) {
                 if (kvizTaken.id == idKvizTaken) {
@@ -33,10 +44,17 @@ object OdgovorRepository {
             }
 
             var pitanja = listOf<Pitanje>()
-            pitanja = ApiAdapter.retrofit.dajPitanja(kvizId).body()!!
+
+            launch {
+                pitanja = ApiAdapter.retrofit.dajPitanja(kvizId).body()!!
+            }
+            delay(500)
 
             var odgovori = listOf<Odgovor>()
-            odgovori = ApiAdapter.retrofit.dajOdgovore(idKvizTaken).body()!!
+            launch {
+                odgovori = ApiAdapter.retrofit.dajOdgovore(idKvizTaken).body()!!
+            }
+
                 var brojTacnih = 0
                 for (pitanje in pitanja) {
                     if (pitanje.id == idPitanje) {
@@ -53,7 +71,6 @@ object OdgovorRepository {
             }
             bodovi = brojTacnih.toFloat()/pitanja.size.toFloat()
             var percentage = (bodovi*100).toInt()
-            PitanjeKvizRepository.dodajKvizIBodove(kvizId, percentage)
             val jsonObject = JsonObject()
             jsonObject.addProperty("odgovor", odgovor)
             jsonObject.addProperty("pitanje", idPitanje)

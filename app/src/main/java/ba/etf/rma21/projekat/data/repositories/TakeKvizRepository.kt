@@ -18,7 +18,9 @@ object TakeKvizRepository {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajZapocete()
             val responseBody = response.body()
-            return@withContext responseBody
+            if(responseBody?.size == 0)
+                return@withContext null
+           else return@withContext responseBody
         }
     }
 }
