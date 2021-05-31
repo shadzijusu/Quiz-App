@@ -12,9 +12,7 @@ import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 
 
-class PredmetListViewModel(private val searchDone: ((predmeti: List<Predmet>) -> Unit)?,
-                        private val onError: (()->Unit)?
-) {
+class PredmetListViewModel() {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main
     )

@@ -10,9 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-class KvizListViewModel(private val searchDone: ((kvizovi: List<Kviz>) -> Unit)?,
-                         private val onError: (()->Unit)?
-) {
+class KvizListViewModel() {
      val scope = CoroutineScope(
         Job() + Dispatchers.Main)
     var kvizovi = MutableLiveData<List<Kviz>>()

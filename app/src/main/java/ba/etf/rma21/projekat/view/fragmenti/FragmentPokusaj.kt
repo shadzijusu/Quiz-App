@@ -39,9 +39,9 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private var brojPitanja: Int = 0
     private lateinit var pitanja: List<Pitanje>
     private lateinit var pitanje: Pitanje
-    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
+    private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private var pitanjeFragment = FragmentPitanje()
-    private var kvizListViewModel = KvizListViewModel(null, null)
+    private var kvizListViewModel = KvizListViewModel()
     private var odabranoPitanje = 0
     private var odabraniOdgovor = -1
     private var nazivKviza = ""
@@ -49,7 +49,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private var odgovorListViewModel = OdgovorViewModel()
     private var itemId = 0
     private var idKvizTaken = 0
-    private val kvizTakenViewModel = KvizTakenViewModel(null, null)
+    private val kvizTakenViewModel = KvizTakenViewModel()
 
     private var mOnNavigationViewItemSelectedListener =
         NavigationView.OnNavigationItemSelectedListener { item ->

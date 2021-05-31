@@ -29,7 +29,7 @@ class FragmentPitanje() : Fragment() {
     private lateinit var tekstPitanja: TextView
     private lateinit var navigacijaPitanja: NavigationView
     private lateinit var pitanje: Pitanje
-    private  var pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
+    private  var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private var odgovorViewModel = OdgovorViewModel()
     private var pozicija = -1
     private var idKvizTaken = 0

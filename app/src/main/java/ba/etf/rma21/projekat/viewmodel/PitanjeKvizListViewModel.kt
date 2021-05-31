@@ -12,9 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class PitanjeKvizListViewModel (private val searchDone: ((pitanja: List<Pitanje>) -> Unit)?,
-                                private val onError: (()->Unit)?
-) {
+class PitanjeKvizListViewModel () {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main)
     var pitanja = MutableLiveData<List<Pitanje>>()

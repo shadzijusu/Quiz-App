@@ -85,6 +85,6 @@ interface Api {
         @Path("ktid") ktid: Int,
         @Body body: JsonObject,
         @Path("id") id: String = "9d53bd38-18d2-49ec-889f-703ab44db589"
-    ) : Response<Odgovor>
+    ) : Response<ResponseBody>
 
 }

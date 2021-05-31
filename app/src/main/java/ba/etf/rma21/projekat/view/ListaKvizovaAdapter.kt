@@ -31,9 +31,10 @@ class ListaKvizovaAdapter(
     private var fragment: FragmentKvizovi
 ) :
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
-    private val pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
-    private val kvizListViewModel = KvizListViewModel(null, null)
-    private val predmetListViewModel = PredmetListViewModel(null, null)
+    private val pitanjeKvizListViewModel = PitanjeKvizListViewModel()
+    private val kvizListViewModel = KvizListViewModel()
+    private val predmetListViewModel = PredmetListViewModel()
+    private var kvizTakenViewModel = KvizTakenViewModel()
     private lateinit var context: Context
     private lateinit var grupe: List<Grupa>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
@@ -57,12 +58,6 @@ class ListaKvizovaAdapter(
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
         val pattern = "dd.MM.yyyy"
         val simpleDateFormat = SimpleDateFormat(pattern)
-
-        val datum = kvizovi[position].datumPocetka
-        holder.datumKviza.text = simpleDateFormat.format(datum)
-        holder.stanjeKviza.setImageResource(R.drawable.zelena)
-        holder.osvojeniBodovi.text = ""
-
 
         holder.itemView.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
@@ -88,7 +83,7 @@ class ListaKvizovaAdapter(
 
                 }
             }
-            }
+        }
 
         GlobalScope.launch(Dispatchers.IO) {
             launch(Dispatchers.IO) {
@@ -97,25 +92,29 @@ class ListaKvizovaAdapter(
                     onError = ::onError
                 )
             }
-            delay(500)
+            delay(1000)
             grupe = predmetListViewModel.grupe.value as ArrayList<Grupa>
             var grupa = Grupa(0, "", 0)
 
             for (group in grupe) {
                 launch(Dispatchers.IO) {
                     kvizListViewModel.getKvizoveZaGrupu(
-                        onSuccess = ::onSuccessKvizoviZaGrupu,
+                        onSuccess = ::onSuccessKvizovi,
                         onError = ::onError,
                         idGrupe = group.id
                     )
                 }
-                delay(500)
+                delay(600)
+                var nadjen = false
                 for (kviz in kvizListViewModel.kvizoviZaGrupu.value!!) {
                     if (kviz.id == kvizovi[position].id) {
                         grupa = group
+                        nadjen = true
                         break
                     }
                 }
+                if(nadjen)
+                    break
             }
             launch(Dispatchers.IO) {
                 predmetListViewModel.getPredmet(
@@ -132,7 +131,39 @@ class ListaKvizovaAdapter(
             }
             delay(10)
         }
-
+        GlobalScope.launch(Dispatchers.IO) {
+            launch {
+                kvizTakenViewModel.zapocetiKvizoviTaken(
+                    onSuccess = ::onSuccessTakenKvizovi,
+                    onError = ::onError
+                )
+            }
+            delay(600)
+            var kvizzes = kvizTakenViewModel.kvizovi.value
+            val refresh = Handler(Looper.getMainLooper())
+            refresh.post {
+                if (kvizzes != null) {
+                    for (quiz in kvizzes) {
+                        if (quiz.KvizId == kvizovi[position].id) {
+                            holder.stanjeKviza.setImageResource(R.drawable.plava)
+                            holder.osvojeniBodovi.text = quiz.osvojeniBodovi.toString()
+                            holder.datumKviza.text = simpleDateFormat.format(quiz.datumRada)
+                        }
+                        else {
+                            holder.stanjeKviza.setImageResource(R.drawable.zelena)
+                            holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
+                            holder.osvojeniBodovi.text = ""
+                        }
+                        }
+                    }
+                else {
+                    holder.stanjeKviza.setImageResource(R.drawable.zelena)
+                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
+                    holder.osvojeniBodovi.text = ""
+                }
+            }
+            delay(600)
+        }
     }
 
     fun updateKvizove(kvizovi: List<Kviz>) {
@@ -154,6 +185,10 @@ class ListaKvizovaAdapter(
         toast.show()
     }
 
+    fun onSuccessTakenKvizovi(taken: List<KvizTaken>) {
+        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        toast.show()
+    }
 
 
     fun onSuccessGrupe(grupe: List<Grupa>) {
@@ -161,7 +196,7 @@ class ListaKvizovaAdapter(
         toast.show()
     }
 
-    fun onSuccessKvizoviZaGrupu(kvizovi: List<Kviz>) {
+    fun onSuccessKvizovi(kvizovi: List<Kviz>) {
         val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
         toast.show()
     }

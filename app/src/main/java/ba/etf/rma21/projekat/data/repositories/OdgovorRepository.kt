@@ -75,7 +75,7 @@ object OdgovorRepository {
             jsonObject.addProperty("odgovor", odgovor)
             jsonObject.addProperty("pitanje", idPitanje)
             jsonObject.addProperty("bodovi", bodovi)
-            var response = ApiAdapter.retrofit.dodajOdgovor(idKvizTaken, jsonObject)
+            var result = ApiAdapter.retrofit.dodajOdgovor(idKvizTaken, jsonObject)
         return@withContext percentage
     }
 }

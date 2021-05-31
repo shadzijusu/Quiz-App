@@ -1,6 +1,8 @@
 package ba.etf.rma21.projekat.view.fragmenti
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +21,17 @@ import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.view.ListaKvizovaAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class FragmentKvizovi : Fragment() {
     private lateinit var listaKvizova: RecyclerView
     private lateinit var listaKvizovaAdapter: ListaKvizovaAdapter
     private lateinit var filterKvizova: Spinner
     private lateinit var kvizListViewModel: KvizListViewModel
-    private var kvizTakenViewModel = KvizTakenViewModel(null, null)
+    private var kvizTakenViewModel = KvizTakenViewModel()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,7 +40,7 @@ class FragmentKvizovi : Fragment() {
         var view = inflater.inflate(R.layout.fragment_kvizovi, container, false)
         listaKvizova = view.findViewById(R.id.listaKvizova)
         filterKvizova = view.findViewById(R.id.filterKvizova)
-        kvizListViewModel = KvizListViewModel(this@FragmentKvizovi::searchDone,this@FragmentKvizovi::onError)
+        kvizListViewModel = KvizListViewModel()
 
         activity?.let {
             ArrayAdapter.createFromResource(
@@ -62,18 +68,32 @@ class FragmentKvizovi : Fragment() {
                             onSuccess = ::onSuccess,
                             onError = ::onError
                         )
+
                     }
                     "Urađeni kvizovi" -> {
-                        kvizTakenViewModel.zapocetiKvizovi(
-                            onSuccess = ::onSuccessZapoceti,
-                            onError = ::onError
-                        )
+                        GlobalScope.launch(Dispatchers.IO) {
+                            launch {
+                                kvizTakenViewModel.zapocetiKvizoviTaken(
+                                    onSuccess = ::onSuccessZapoceti,
+                                    onError = ::onError
+                                )
+                            }
+                            delay(100)
+                            kvizTakenViewModel.zapocetiKvizovi(
+                                onSuccess = ::onSuccess,
+                                onError = ::onError
+                            )
+                        }
                     }
+
+
                     "Budući kvizovi" -> {
                         //datum pocetka im u buducnosti
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getFuture().sortedBy { it.datumPocetka }, this@FragmentKvizovi)
+                                kvizListViewModel.getFuture().sortedBy { it.datumPocetka },
+                                this@FragmentKvizovi
+                            )
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
                     }
@@ -81,7 +101,9 @@ class FragmentKvizovi : Fragment() {
                         //datum kraj prosao nije u kviztaken
                         listaKvizovaAdapter =
                             ListaKvizovaAdapter(
-                                kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka }, this@FragmentKvizovi)
+                                kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka },
+                                this@FragmentKvizovi
+                            )
                         listaKvizova.adapter = listaKvizovaAdapter
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
                     }
@@ -91,6 +113,7 @@ class FragmentKvizovi : Fragment() {
                             onError = ::onError
                         )
                     }
+
                 }
             }
         })
@@ -120,16 +143,17 @@ class FragmentKvizovi : Fragment() {
         listaKvizovaAdapter.updateKvizove(kvizovi)
     }
 
-    fun onSuccess(kvizovi: List<Kviz>){
+    fun onSuccess(kvizovi: List<Kviz>) {
         val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
         toast.show()
         listaKvizovaAdapter.updateKvizove(kvizovi)
     }
 
-    fun onSuccessZapoceti(kvizovi: List<KvizTaken>){
+    fun onSuccessZapoceti(kvizovi: List<KvizTaken>) {
         val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
         toast.show()
     }
+
     fun onError() {
         val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
         toast.show()

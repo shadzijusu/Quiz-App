@@ -37,7 +37,7 @@ class FragmentPredmeti : Fragment() {
         odabirGrupa = view.findViewById(R.id.odabirGrupa)
         upisDugme = view.findViewById(R.id.dodajPredmetDugme)
         predmetListViewModel =
-            PredmetListViewModel(null, null)
+            PredmetListViewModel()
 
 
         activity?.let {
