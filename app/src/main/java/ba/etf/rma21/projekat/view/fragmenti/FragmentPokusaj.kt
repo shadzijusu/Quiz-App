@@ -4,6 +4,8 @@ package ba.etf.rma21.projekat.view.fragmenti
 import android.app.usage.UsageEvents.Event.NONE
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
@@ -11,13 +13,21 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.R
+import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
+import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
+import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.*
 
@@ -35,18 +45,23 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private var odabranoPitanje = 0
     private var odabraniOdgovor = -1
     private var nazivKviza = ""
-    private var percentage = 0.0
+    private var idKviza = 0
+    private var odgovorListViewModel = OdgovorViewModel()
     private var itemId = 0
+    private var idKvizTaken = 0
+    private val kvizTakenViewModel = KvizTakenViewModel(null, null)
+
     private var mOnNavigationViewItemSelectedListener =
         NavigationView.OnNavigationItemSelectedListener { item ->
             if (item.title == "Rezultat") {
-                val porukaFragment = FragmentPoruka.newInstance()
-                otvoriPoruku(porukaFragment)
+                    val porukaFragment = FragmentPoruka.newInstance()
+                    otvoriPoruku(porukaFragment)
             } else {
                 pitanje = pitanja.get(item.itemId)
                 odabranoPitanje = item.itemId
                 var bundle = Bundle()
-                bundle.putString("data", item.itemId.toString())
+                bundle.putString("tekstPitanja", item.itemId.toString())
+                bundle.putInt("idKvizTaken", idKvizTaken)
                 pitanjeFragment =
                     FragmentPitanje(pitanje)
                 pitanjeFragment.arguments = bundle
@@ -63,7 +78,8 @@ class FragmentPokusaj() : Fragment(), Serializable {
                     navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
                     val porukaFragment =
                         FragmentPoruka.newInstance()
-                    otvoriPoruku(porukaFragment)
+                            otvoriPoruku(porukaFragment)
+
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.zaustaviKviz -> {
@@ -143,55 +159,64 @@ class FragmentPokusaj() : Fragment(), Serializable {
             menu.add(0, itemId, NONE, "" + i)
             itemId++
         }
+        var bundle = this.arguments
+        GlobalScope.launch(Dispatchers.IO) {
+            launch(Dispatchers.IO) {
+                var poruka = bundle?.getString("id")
+                idKviza = poruka?.toInt()!!
+                if (poruka != null) {
+                    kvizTakenViewModel.zapocniKviz(
+                        onSuccess = ::onSuccessPocni,
+                        onError = ::onError,
+                        idKviza = poruka.toInt()
+                    )
+                }
+            }
+            delay(1000)
+            idKvizTaken = kvizTakenViewModel.zapoceti.value!!.id
+        }
 
         navigacijaPitanja.setNavigationItemSelectedListener(mOnNavigationViewItemSelectedListener)
-        mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
-            navigacijaPitanja.menu.getItem(
-                0
-            )
-        )
+//        mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
+//            navigacijaPitanja.menu.getItem(
+//                0
+//            )
+//        )
         return view
     }
 
 
-    private fun otvoriPoruku(porukaFragment: FragmentPoruka) {
-        var menu: Menu = navigacijaPitanja.menu
-        var brojTacnih = 0.0
-        var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
-        var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
-        for (i in 0 until questions.size) {
-            for (j in 0 until pitanja.size) {
-                if (pitanja[j].tekstPitanja == questions[i].tekstPitanja) {
-                    if (pitanja[j].tacan == odgovori[i])
-                        brojTacnih++
-                }
-            }
-        }
+     fun otvoriPoruku(porukaFragment: FragmentPoruka) {
+         var menu: Menu = navigacijaPitanja.menu
+         var brojTacnih = 0.0
+         var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
+         var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
+         for (i in 0 until questions.size) {
+             for (j in 0 until pitanja.size) {
+                 if (pitanja[j].tekstPitanja == questions[i].tekstPitanja) {
+                     if (pitanja[j].tacan == odgovori[i])
+                         brojTacnih++
+                 }
+             }
+         }
 
-        var brojSvih = pitanja.size.toDouble()
-        percentage = brojTacnih / brojSvih
+         var brojSvih = pitanja.size.toDouble()
+         var percentage : Int = ((brojTacnih / brojSvih)*100).toInt()
+          var bundle1 = this.arguments
+            nazivKviza = bundle1?.getString("naziv").toString()
+            var bundle = Bundle()
+            var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
+            bundle.putString("data", poruka)
+            porukaFragment.arguments = bundle
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.framePitanje, porukaFragment, "poruka")
+            transaction?.addToBackStack("poruka")
+            transaction?.commit()
+            bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
+            bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
+            bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
+            bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
 
-
-        var bundle1 = this.arguments
-        nazivKviza = bundle1?.getString("naziv").toString()
-        var bundle = Bundle()
-        var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
-        bundle.putString("data", poruka)
-        porukaFragment.arguments = bundle
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.framePitanje, porukaFragment, "poruka")
-        transaction?.addToBackStack("poruka")
-        transaction?.commit()
-        var kviz = kvizListViewModel.getKviz(nazivKviza)
-//        if (kviz.osvojeniBodovi == null) {
-//            kviz.osvojeniBodovi = percentage.toFloat()
-//            kviz.datumRada = Calendar.getInstance().time
-//            kvizListViewModel.addMine(kviz)
-//        }
-        bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
-        bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
-        bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
-        bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
     }
 
     private fun openFragment(fragment: Fragment) {
@@ -216,6 +241,15 @@ class FragmentPokusaj() : Fragment(), Serializable {
         if (pitanja.isNotEmpty()) {
             this.pitanja = pitanja
             brojPitanja = pitanja.size
+
         }
+    }
+    fun onSuccessPocni(kvizTaken: KvizTaken) {
+        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+    fun onError() {
+        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
+        toast.show()
     }
 }

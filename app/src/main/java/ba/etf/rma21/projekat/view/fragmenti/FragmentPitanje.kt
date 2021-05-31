@@ -9,15 +9,19 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.R
+import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
+import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class FragmentPitanje() : Fragment() {
@@ -26,8 +30,9 @@ class FragmentPitanje() : Fragment() {
     private lateinit var navigacijaPitanja: NavigationView
     private lateinit var pitanje: Pitanje
     private  var pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
-
+    private var odgovorViewModel = OdgovorViewModel()
     private var pozicija = -1
+    private var idKvizTaken = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var odabraniOdgovor = pitanjeKvizListViewModel.dajOdgovor(pitanje)
@@ -67,7 +72,11 @@ class FragmentPitanje() : Fragment() {
         navigacijaPitanja =
             requireParentFragment().requireView().findViewById(R.id.navigacijaPitanja)
         var bundle = this.arguments
-        var poruka = bundle?.getString("data")
+        var poruka = bundle?.getString("tekstPitanja")
+        var poruka2 = bundle?.getInt("idKvizTaken")
+        if (poruka2 != null) {
+            idKvizTaken = poruka2
+        }
         tekstPitanja.text = pitanje.tekstPitanja
 
         val listaVrijednosti = pitanje.opcije
@@ -79,6 +88,18 @@ class FragmentPitanje() : Fragment() {
 
         odgovoriLista.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
+                GlobalScope.launch(Dispatchers.IO) {
+                    launch(Dispatchers.IO) {
+                        odgovorViewModel.addOdgovor(
+                            onSuccess = ::onSuccess,
+                            onError = ::onError,
+                            idKvizTaken = idKvizTaken,
+                            idPitanje = pitanje.id,
+                            odgovor = position
+                        )
+                    }
+                    delay(1000)
+                }
                 if (pitanjeKvizListViewModel.dajOdgovor(pitanje) == null)
                     pitanjeKvizListViewModel.addAnswer(pitanje, position)
                 var menuItem = poruka?.toInt()?.let { navigacijaPitanja.menu.getItem(it) }
@@ -110,5 +131,14 @@ class FragmentPitanje() : Fragment() {
 
     constructor(pitanje: Pitanje) : this() {
         this.pitanje = pitanje
+    }
+
+    fun onSuccess(bodovi: Int){
+        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+    fun onError() {
+        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
+        toast.show()
     }
 }

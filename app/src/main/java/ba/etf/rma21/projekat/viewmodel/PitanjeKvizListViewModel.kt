@@ -70,4 +70,10 @@ class PitanjeKvizListViewModel (private val searchDone: ((pitanja: List<Pitanje>
     fun setAll(qAndA: HashMap<Pitanje, Int>) {
         PitanjeKvizRepository.setSve(qAndA)
     }
+    suspend fun getBodove(kvizId : Int): Int? {
+        return PitanjeKvizRepository.getBodove(kvizId)
+    }
+    suspend fun dodajKvizIBodove(kvizId: Int, bodovi : Int) {
+        PitanjeKvizRepository.dodajKvizIBodove(kvizId, bodovi)
+    }
 }

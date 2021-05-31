@@ -16,6 +16,7 @@ class KvizTakenViewModel (private val searchDone: ((kvizTaken: List<KvizTaken>) 
     val scope = CoroutineScope(
         Job() + Dispatchers.Main)
     var kvizovi = MutableLiveData<List<KvizTaken>?>()
+    var zapoceti = MutableLiveData<KvizTaken>()
     fun zapocniKviz( onSuccess: (kvizTaken: KvizTaken) -> Unit,
                      onError: () -> Unit, idKviza : Int){
         // Create a new coroutine on the UI thread
@@ -25,7 +26,10 @@ class KvizTakenViewModel (private val searchDone: ((kvizTaken: List<KvizTaken>) 
 
             // Display result of the network request to the user
             when (result) {
-                is KvizTaken -> onSuccess?.invoke(result)
+                is KvizTaken -> {
+                    onSuccess?.invoke(result)
+                    zapoceti.postValue(result!!)
+                }
                 else-> onError?.invoke()
             }
         }

@@ -6,12 +6,23 @@ import ba.etf.rma21.projekat.data.models.PitanjeKviz
 import java.util.*
 import kotlin.collections.HashMap
 
+var kvizIBodovi = mutableMapOf<Int, Int>()
 var zavrseniKvizovi: MutableList<String> =
     mutableListOf(
         "Kviz - OOP u Javi"
     )
 var odgovoriIPitanja : HashMap<Pitanje, Int> = hashMapOf()
 var kvizoviKojiImajuPitanja = listOf("Kviz 1 - vježbe 2 i 3", "Test", "Kviz 2 - vježbe 4 i 5")
+
+
+fun dodajKvizIBodove(kvizId : Int, bodovi : Int) {
+    if(kvizIBodovi[kvizId]!! < bodovi)
+        kvizIBodovi.remove(kvizId)
+    kvizIBodovi.put(kvizId, bodovi)
+}
+fun dajBodove(kvizId: Int) : Int? {
+    return kvizIBodovi.get(kvizId)
+}
 
 fun pitanje(nazivKviza: String): Pitanje {
     var pitanje =

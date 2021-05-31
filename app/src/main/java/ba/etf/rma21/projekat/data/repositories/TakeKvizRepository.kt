@@ -9,6 +9,7 @@ object TakeKvizRepository {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.zapocniKviz(idKviza)
             val responseBody = response.body()
+            responseBody?.KvizId = idKviza
             return@withContext responseBody
         }
     }

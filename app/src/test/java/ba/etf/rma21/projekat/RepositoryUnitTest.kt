@@ -29,7 +29,7 @@ class RepositoryUnitTest {
         var request: Request = builder.build()
         withContext(Dispatchers.IO) {
             var response: Response = client.newCall(request).execute()
-            var odgovor: String = response.body.toString()
+           // var odgovor: String = response.body.toString()
         }
     }
     @Test

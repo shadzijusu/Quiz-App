@@ -67,7 +67,6 @@ object KvizRepository {
             var kvizovi = listOf<Kviz>()
             var grupe = listOf<Grupa>()
                 grupe = ApiAdapter.retrofit.dajStudentoveGrupe().body()!!
-                println(grupe)
                 if (grupe != null) {
                     for (grupa in grupe)
                         launch(Dispatchers.IO) {
@@ -75,7 +74,6 @@ object KvizRepository {
                         }
                     delay(500)
                     korisnikoviKvizovi.addAll(kvizovi)
-                    println(korisnikoviKvizovi)
             }
             return@withContext korisnikoviKvizovi
         }

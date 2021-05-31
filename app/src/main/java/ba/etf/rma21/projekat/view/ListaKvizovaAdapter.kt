@@ -33,7 +33,6 @@ class ListaKvizovaAdapter(
     RecyclerView.Adapter<ListaKvizovaAdapter.KvizViewHolder>() {
     private val pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
     private val kvizListViewModel = KvizListViewModel(null, null)
-    private val kvizTakenViewModel = KvizTakenViewModel(null, null)
     private val predmetListViewModel = PredmetListViewModel(null, null)
     private lateinit var context: Context
     private lateinit var grupe: List<Grupa>
@@ -52,6 +51,44 @@ class ListaKvizovaAdapter(
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
         //naziv predmeta add
         var grupe = arrayListOf<Grupa>()
+
+
+        holder.nazivKviza.text = kvizovi[position].naziv
+        holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
+        val pattern = "dd.MM.yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+
+        val datum = kvizovi[position].datumPocetka
+        holder.datumKviza.text = simpleDateFormat.format(datum)
+        holder.stanjeKviza.setImageResource(R.drawable.zelena)
+        holder.osvojeniBodovi.text = ""
+
+
+        holder.itemView.setOnClickListener {
+            GlobalScope.launch(Dispatchers.IO) {
+                launch(Dispatchers.IO) {
+                    pitanjeKvizListViewModel.dajPitanja(
+                        onSuccess = ::onSuccess,
+                        onError = ::onError,
+                        idKviza = kvizovi[position].id
+                    )
+                }
+                delay(500)
+
+                var bundle = Bundle()
+                var questions = pitanjeKvizListViewModel.pitanja.value
+                var pokusajFragment = questions?.let { it1 -> FragmentPokusaj(it1) }
+                bundle.putString("naziv", kvizovi[position].naziv)
+                bundle.putString("id", kvizovi[position].id.toString())
+                pokusajFragment?.arguments = bundle
+
+                if (pokusajFragment != null) {
+                    fragment.activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(R.id.container, pokusajFragment)?.commit()
+
+                }
+            }
+            }
 
         GlobalScope.launch(Dispatchers.IO) {
             launch(Dispatchers.IO) {
@@ -96,40 +133,6 @@ class ListaKvizovaAdapter(
             delay(10)
         }
 
-        holder.nazivKviza.text = kvizovi[position].naziv
-        holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
-        val pattern = "dd.MM.yyyy"
-        val simpleDateFormat = SimpleDateFormat(pattern)
-
-        val datum = kvizovi[position].datumPocetka
-        holder.datumKviza.text = simpleDateFormat.format(datum)
-        holder.stanjeKviza.setImageResource(R.drawable.zelena)
-        holder.osvojeniBodovi.text = ""
-
-
-        holder.itemView.setOnClickListener {
-            pitanjeKvizListViewModel.dajPitanja(
-                onSuccess = ::onSuccess,
-                onError = ::onError,
-                idKviza = kvizovi[position].id
-            )
-            var questions = pitanjeKvizListViewModel.pitanja.value
-            kvizTakenViewModel.zapocniKviz(
-                onSuccess = ::onSuccessPocni,
-                onError = ::onError,
-                idKviza = kvizovi[position].id
-            )
-            var pokusajFragment = questions?.let { it1 -> FragmentPokusaj(it1) }
-
-            var bundle = Bundle()
-            bundle.putString("naziv", kvizovi[position].naziv)
-            pokusajFragment?.arguments = bundle
-
-            if (pokusajFragment != null) {
-                fragment.activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(R.id.container, pokusajFragment)?.commit()
-            }
-        }
     }
 
     fun updateKvizove(kvizovi: List<Kviz>) {
@@ -151,10 +154,7 @@ class ListaKvizovaAdapter(
         toast.show()
     }
 
-    fun onSuccessPocni(kvizTaken: KvizTaken) {
-        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
-        toast.show()
-    }
+
 
     fun onSuccessGrupe(grupe: List<Grupa>) {
         val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
