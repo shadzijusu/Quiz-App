@@ -3,8 +3,7 @@ package ba.etf.rma21.projekat.data.repositories
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.staticdata.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONException
@@ -63,17 +62,23 @@ object KvizRepository {
     }
 
     suspend fun getUpisani(): List<Kviz>? {
-        var korisnikoviKvizovi = arrayListOf<Kviz>()
-         withContext(Dispatchers.IO) {
-            var grupe = PredmetIGrupaRepository.getUpisaneGrupe()
-            if (grupe != null) {
-                for(grupa in grupe) {
-                    var response = ApiAdapter.retrofit.dajUpisane(grupa.id)
-                    response.body()?.let { korisnikoviKvizovi.addAll(it) }
-                }
+        return withContext(Dispatchers.IO) {
+            var korisnikoviKvizovi = arrayListOf<Kviz>()
+            var kvizovi = listOf<Kviz>()
+            var grupe = listOf<Grupa>()
+                grupe = ApiAdapter.retrofit.dajStudentoveGrupe().body()!!
+                println(grupe)
+                if (grupe != null) {
+                    for (grupa in grupe)
+                        launch(Dispatchers.IO) {
+                            kvizovi = ApiAdapter.retrofit.dajUpisane(grupa.id).body()!!
+                        }
+                    delay(500)
+                    korisnikoviKvizovi.addAll(kvizovi)
+                    println(korisnikoviKvizovi)
             }
+            return@withContext korisnikoviKvizovi
         }
-        return korisnikoviKvizovi
     }
     suspend fun pomocna(idGrupe : Int) : List<Kviz>? {
         return withContext(Dispatchers.IO) {

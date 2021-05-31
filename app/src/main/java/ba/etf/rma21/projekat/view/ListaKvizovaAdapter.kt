@@ -52,7 +52,6 @@ class ListaKvizovaAdapter(
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
         //naziv predmeta add
         var grupe = arrayListOf<Grupa>()
-        var nazivP = "naziv"
 
         GlobalScope.launch(Dispatchers.IO) {
             launch(Dispatchers.IO) {
@@ -90,7 +89,6 @@ class ListaKvizovaAdapter(
             }
             delay(500)
             kvizovi[position].nazivPredmeta = predmetListViewModel.predmet.value!!.naziv
-            println(kvizovi[position].nazivPredmeta)
             val refresh = Handler(Looper.getMainLooper())
             refresh.post {
                 holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
