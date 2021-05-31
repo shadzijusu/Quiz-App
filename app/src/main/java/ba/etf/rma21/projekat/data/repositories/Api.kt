@@ -23,11 +23,16 @@ interface Api {
 
     @GET("grupa/{id}/kvizovi")
     suspend fun dajUpisane(
-        @Path("id") id : Int = 1
+        @Path("id") id : Int
     ): Response<List<Kviz>>
 
     @GET("predmet")
     suspend fun dajSvePredmete () : Response<List<Predmet>>
+    @GET("predmet/{id}")
+    suspend fun dajPredmet (
+        @Path("id") id : Int
+    ) : Response<Predmet>
+
 
     @GET("grupa")
     suspend fun dajSveGrupe () : Response<List<Grupa>>
@@ -53,6 +58,10 @@ interface Api {
         @Path("id") id : Int
     ) : Response<List<Pitanje>>
 
+    @GET("kviz/{id}/grupa")
+    suspend fun dajDostupneGrupe(
+        @Path("id") id : Int
+    ) : Response<List<Grupa>>
 
     @POST("student/{id}/kviz/{kid}")
     suspend fun zapocniKviz(
@@ -76,6 +85,6 @@ interface Api {
         @Path("ktid") ktid: Int,
         @Body body: JsonObject,
         @Path("id") id: String = "9d53bd38-18d2-49ec-889f-703ab44db589"
-    ) : Response<ResponseBody>
+    ) : Response<Odgovor>
 
 }

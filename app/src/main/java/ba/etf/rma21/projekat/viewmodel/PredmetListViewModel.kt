@@ -16,17 +16,22 @@ class PredmetListViewModel(private val searchDone: ((predmeti: List<Predmet>) ->
                         private val onError: (()->Unit)?
 ) {
     val scope = CoroutineScope(
-        Job() + Dispatchers.Main)
+        Job() + Dispatchers.Main
+    )
     var predmeti = MutableLiveData<List<Predmet>?>()
     var grupeZaPredmet = MutableLiveData<List<Grupa>?>()
+    var grupe = MutableLiveData<List<Grupa?>?>()
+    var predmet = MutableLiveData<Predmet>()
     fun getUpisani(): List<Predmet> {
         return PredmetRepository.getUpisani()
     }
 
-    fun getAll( onSuccess: (predmeti: List<Predmet>) -> Unit,
-                     onError: () -> Unit){
+    fun getAll(
+        onSuccess: (predmeti: List<Predmet>) -> Unit,
+        onError: () -> Unit
+    ) {
         // Create a new coroutine on the UI thread
-        scope.launch{
+        scope.launch {
             // Make the network call and suspend execution until it finishes
             val result = PredmetIGrupaRepository.getPredmeti()
 
@@ -36,12 +41,15 @@ class PredmetListViewModel(private val searchDone: ((predmeti: List<Predmet>) ->
                     onSuccess?.invoke(result)
                     predmeti.postValue(result!!)
                 }
-                else-> onError?.invoke()
+                else -> onError?.invoke()
             }
         }
     }
-    fun getAllGroups( onSuccess: (grupe: List<Grupa>) -> Unit,
-                      onError: () -> Unit) {
+
+    fun getAllGroups(
+        onSuccess: (grupe: List<Grupa>) -> Unit,
+        onError: () -> Unit
+    ) {
         // Create a new coroutine on the UI thread
         scope.launch {
             // Make the network call and suspend execution until it finishes
@@ -49,13 +57,19 @@ class PredmetListViewModel(private val searchDone: ((predmeti: List<Predmet>) ->
 
             // Display result of the network request to the user
             when (result) {
-                is List<Grupa> -> onSuccess?.invoke(result)
+                is List<Grupa> -> {
+                    onSuccess?.invoke(result)
+                    grupe.postValue(result)
+                }
                 else -> onError?.invoke()
             }
         }
     }
-    fun getGrupeZaPredmet( onSuccess: (grupe: List<Grupa>) -> Unit,
-                      onError: () -> Unit, idPredmeta : Int) {
+
+    fun getGrupeZaPredmet(
+        onSuccess: (grupe: List<Grupa>) -> Unit,
+        onError: () -> Unit, idPredmeta: Int
+    ) {
         // Create a new coroutine on the UI thread
         scope.launch {
             // Make the network call and suspend execution until it finishes
@@ -71,8 +85,11 @@ class PredmetListViewModel(private val searchDone: ((predmeti: List<Predmet>) ->
             }
         }
     }
-    fun upisiStudenta( onSuccess: (uspjesno: ResponseBody) -> Unit,
-                           onError: () -> Unit, idGrupe : Int) {
+
+    fun upisiStudenta(
+        onSuccess: (uspjesno: ResponseBody) -> Unit,
+        onError: () -> Unit, idGrupe: Int
+    ) {
         // Create a new coroutine on the UI thread
         scope.launch {
             // Make the network call and suspend execution until it finishes
@@ -85,8 +102,11 @@ class PredmetListViewModel(private val searchDone: ((predmeti: List<Predmet>) ->
             }
         }
     }
-    fun getUpisaneGrups( onSuccess: (grupe: List<Grupa>) -> Unit,
-                       onError: () -> Unit) {
+
+    fun getUpisaneGrups(
+        onSuccess: (grupe: List<Grupa>) -> Unit,
+        onError: () -> Unit
+    ) {
         // Create a new coroutine on the UI thread
         scope.launch {
             // Make the network call and suspend execution until it finishes
@@ -100,5 +120,26 @@ class PredmetListViewModel(private val searchDone: ((predmeti: List<Predmet>) ->
         }
     }
 
+    fun getPredmet(
+        onSuccess: (predmet: Predmet) -> Unit,
+        onError: () -> Unit,
+        predmetId : Int
+    ) {
+        // Create a new coroutine on the UI thread
+        scope.launch {
+            // Make the network call and suspend execution until it finishes
+            val result = PredmetIGrupaRepository.getPredmet(predmetId)
 
+            // Display result of the network request to the user
+            when (result) {
+                is Predmet -> {
+                    onSuccess?.invoke(result)
+                    predmet.postValue(result!!)
+                }
+                else -> onError?.invoke()
+            }
+        }
+
+
+    }
 }

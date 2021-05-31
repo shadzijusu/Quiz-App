@@ -15,7 +15,13 @@ object PredmetIGrupaRepository {
             return@withContext responseBody
         }
     }
-
+    suspend fun getPredmet(predmetId : Int): Predmet? {
+        return withContext(Dispatchers.IO) {
+            var response = ApiAdapter.retrofit.dajPredmet(predmetId)
+            val responseBody = response.body()
+            return@withContext responseBody
+        }
+    }
     suspend fun getGrupe(): List<Grupa>? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajSveGrupe()

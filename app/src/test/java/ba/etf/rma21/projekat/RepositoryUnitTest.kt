@@ -94,7 +94,7 @@ class RepositoryUnitTest {
         var pitanja = PitanjeKvizRepository.getPitanja(poceti!![poceti.size-1]?.KvizId)
         var result = OdgovorRepository.postaviOdgovorKviz(poceti!![poceti.size-1]?.id,pitanja!![0]?.id,pitanja!![0]?.tacan)
         assertThat(result,CoreMatchers.notNullValue())
-        //assertThat(result,CoreMatchers.equalTo(50))
+        assertThat(result,CoreMatchers.equalTo(50))
         assertThat(OdgovorRepository.getOdgovoriKviz(poceti!![poceti.size-1]?.id)!!.size,CoreMatchers.equalTo(1))
     }
     @Test

@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.staticdata.*
 import kotlinx.coroutines.Dispatchers
@@ -62,8 +63,28 @@ object KvizRepository {
     }
 
     suspend fun getUpisani(): List<Kviz>? {
+        var korisnikoviKvizovi = arrayListOf<Kviz>()
+         withContext(Dispatchers.IO) {
+            var grupe = PredmetIGrupaRepository.getUpisaneGrupe()
+            if (grupe != null) {
+                for(grupa in grupe) {
+                    var response = ApiAdapter.retrofit.dajUpisane(grupa.id)
+                    response.body()?.let { korisnikoviKvizovi.addAll(it) }
+                }
+            }
+        }
+        return korisnikoviKvizovi
+    }
+    suspend fun pomocna(idGrupe : Int) : List<Kviz>? {
         return withContext(Dispatchers.IO) {
-            var response = ApiAdapter.retrofit.dajUpisane()
+            var response = ApiAdapter.retrofit.dajUpisane(idGrupe)
+            val responseBody = response.body()
+            return@withContext responseBody
+        }
+    }
+    suspend fun dostupne(idKviza : Int) : List<Grupa>? {
+        return withContext(Dispatchers.IO) {
+            var response = ApiAdapter.retrofit.dajDostupneGrupe(idKviza)
             val responseBody = response.body()
             return@withContext responseBody
         }

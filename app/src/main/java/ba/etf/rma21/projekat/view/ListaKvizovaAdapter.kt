@@ -2,6 +2,8 @@ package ba.etf.rma21.projekat.view
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,16 +12,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
-import ba.etf.rma21.projekat.data.models.Kviz
-import ba.etf.rma21.projekat.data.models.KvizTaken
-import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.data.models.*
 import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPokusaj
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
+import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
 
 
 class ListaKvizovaAdapter(
@@ -30,9 +34,11 @@ class ListaKvizovaAdapter(
     private val pitanjeKvizListViewModel = PitanjeKvizListViewModel(null, null)
     private val kvizListViewModel = KvizListViewModel(null, null)
     private val kvizTakenViewModel = KvizTakenViewModel(null, null)
-
+    private val predmetListViewModel = PredmetListViewModel(null, null)
     private lateinit var context: Context
+    private lateinit var grupe: List<Grupa>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
+        grupe = listOf()
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.item_kviz, parent, false)
@@ -44,24 +50,58 @@ class ListaKvizovaAdapter(
 
 
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
-        val current: Date = Calendar.getInstance().time
-        var boja: String = "zelena"
-//        holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
+        //naziv predmeta add
+        var grupe = arrayListOf<Grupa>()
+        var nazivP = "naziv"
+
+        GlobalScope.launch(Dispatchers.IO) {
+            launch(Dispatchers.IO) {
+                predmetListViewModel.getAllGroups(
+                    onSuccess = ::onSuccessGrupe,
+                    onError = ::onError
+                )
+            }
+            delay(500)
+            grupe = predmetListViewModel.grupe.value as ArrayList<Grupa>
+            var grupa = Grupa(0, "", 0)
+
+            for (group in grupe) {
+                launch(Dispatchers.IO) {
+                    kvizListViewModel.getKvizoveZaGrupu(
+                        onSuccess = ::onSuccessKvizoviZaGrupu,
+                        onError = ::onError,
+                        idGrupe = group.id
+                    )
+                }
+                delay(500)
+                for (kviz in kvizListViewModel.kvizoviZaGrupu.value!!) {
+                    if (kviz.id == kvizovi[position].id) {
+                        grupa = group
+                        break
+                    }
+                }
+            }
+            launch(Dispatchers.IO) {
+                predmetListViewModel.getPredmet(
+                    onSuccess = ::onSuccessPredmet,
+                    onError = ::onError,
+                    predmetId = grupa.PredmetId
+                )
+            }
+            delay(500)
+            kvizovi[position].nazivPredmeta = predmetListViewModel.predmet.value!!.naziv
+            println(kvizovi[position].nazivPredmeta)
+            val refresh = Handler(Looper.getMainLooper())
+            refresh.post {
+                holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
+            }
+            delay(10)
+        }
 
         holder.nazivKviza.text = kvizovi[position].naziv
-
-
-
-
-
-
-
-
-
         holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
         val pattern = "dd.MM.yyyy"
         val simpleDateFormat = SimpleDateFormat(pattern)
-
 
         val datum = kvizovi[position].datumPocetka
         holder.datumKviza.text = simpleDateFormat.format(datum)
@@ -114,6 +154,21 @@ class ListaKvizovaAdapter(
     }
 
     fun onSuccessPocni(kvizTaken: KvizTaken) {
+        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccessGrupe(grupe: List<Grupa>) {
+        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccessKvizoviZaGrupu(kvizovi: List<Kviz>) {
+        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccessPredmet(predmeti: Predmet) {
         val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
         toast.show()
     }
