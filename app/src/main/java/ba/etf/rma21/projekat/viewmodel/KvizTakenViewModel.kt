@@ -17,6 +17,7 @@ class KvizTakenViewModel () {
         Job() + Dispatchers.Main)
     var kvizovi = MutableLiveData<List<KvizTaken>?>()
     var zapoceti = MutableLiveData<KvizTaken>()
+    var quizzess = MutableLiveData<List<Kviz>>()
     fun zapocniKviz( onSuccess: (kvizTaken: KvizTaken) -> Unit,
                      onError: () -> Unit, idKviza : Int){
         // Create a new coroutine on the UI thread
@@ -66,6 +67,9 @@ class KvizTakenViewModel () {
                             if (kvizoviTaken != null) {
                                 for (taken in kvizoviTaken) {
                                     if (taken.KvizId == kviz.id) {
+                                        kviz.datumRada = taken.datumRada
+                                        kviz.osvojeniBodovi = taken.osvojeniBodovi
+                                        if(!uradjeni.contains(kviz))
                                         uradjeni.add(kviz)
                                         break
                                     }
@@ -74,6 +78,7 @@ class KvizTakenViewModel () {
                         }
                     }
                     onSuccess?.invoke(uradjeni)
+                    quizzess.postValue(uradjeni)
                 }
                 else-> onError?.invoke()
             }

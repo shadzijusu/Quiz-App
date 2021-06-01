@@ -35,7 +35,7 @@ object OdgovorRepository {
             launch {
                 responseTaken = ApiAdapter.retrofit.dajZapocete().body()!!
             }
-            delay(500)
+            delay(1000)
             var kvizId = 0
             for (kvizTaken in responseTaken) {
                 if (kvizTaken.id == idKvizTaken) {
@@ -48,12 +48,13 @@ object OdgovorRepository {
             launch {
                 pitanja = ApiAdapter.retrofit.dajPitanja(kvizId).body()!!
             }
-            delay(500)
+            delay(1000)
 
             var odgovori = listOf<Odgovor>()
             launch {
                 odgovori = ApiAdapter.retrofit.dajOdgovore(idKvizTaken).body()!!
             }
+            delay(1000)
 
                 var brojTacnih = 0
                 for (pitanje in pitanja) {
@@ -74,7 +75,7 @@ object OdgovorRepository {
             val jsonObject = JsonObject()
             jsonObject.addProperty("odgovor", odgovor)
             jsonObject.addProperty("pitanje", idPitanje)
-            jsonObject.addProperty("bodovi", bodovi)
+            jsonObject.addProperty("bodovi", percentage)
             var result = ApiAdapter.retrofit.dodajOdgovor(idKvizTaken, jsonObject)
         return@withContext percentage
     }

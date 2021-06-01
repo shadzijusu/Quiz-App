@@ -24,6 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ListaKvizovaAdapter(
@@ -113,7 +114,7 @@ class ListaKvizovaAdapter(
                         break
                     }
                 }
-                if(nadjen)
+                if (nadjen)
                     break
             }
             launch(Dispatchers.IO) {
@@ -138,31 +139,82 @@ class ListaKvizovaAdapter(
                     onError = ::onError
                 )
             }
-            delay(600)
-            var kvizzes = kvizTakenViewModel.kvizovi.value
+            delay(1000)
+            launch {
+                kvizTakenViewModel.zapocetiKvizovi(
+                    onSuccess = ::onSuccessKvizovi,
+                    onError = ::onError
+                )
+            }
+            delay(1000)
+            var current = Calendar.getInstance().time
+            var kvizzes = kvizTakenViewModel.quizzess.value
             val refresh = Handler(Looper.getMainLooper())
             refresh.post {
                 if (kvizzes != null) {
                     for (quiz in kvizzes) {
-                        if (quiz.KvizId == kvizovi[position].id) {
-                            holder.stanjeKviza.setImageResource(R.drawable.plava)
-                            holder.osvojeniBodovi.text = quiz.osvojeniBodovi.toString()
-                            holder.datumKviza.text = simpleDateFormat.format(quiz.datumRada)
+                        if (quiz.naziv == kvizovi[position].naziv) {
+                                holder.stanjeKviza.setImageResource(R.drawable.plava)
+                                holder.osvojeniBodovi.text = quiz.osvojeniBodovi.toString()
+                                holder.datumKviza.text = simpleDateFormat.format(quiz.datumRada)
                         }
                         else {
-                            holder.stanjeKviza.setImageResource(R.drawable.zelena)
-                            holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
-                            holder.osvojeniBodovi.text = ""
-                        }
+                            if (kvizovi[position].datumKraj != null && kvizovi[position].datumKraj?.compareTo(
+                                    current
+                                )!! < 0
+                            ) {
+                                holder.stanjeKviza.setImageResource(R.drawable.crvena)
+                                holder.datumKviza.text =
+                                    simpleDateFormat.format(kvizovi[position].datumKraj)
+                                holder.osvojeniBodovi.text = ""
+                            } else if (kvizovi[position].datumPocetka != null && kvizovi[position].datumPocetka?.compareTo(
+                                    current
+                                )!! > 0
+                            ) {
+                                holder.stanjeKviza.setImageResource(R.drawable.zuta)
+                                holder.datumKviza.text =
+                                    simpleDateFormat.format(kvizovi[position].datumPocetka)
+                                holder.osvojeniBodovi.text = ""
+                            }
+                            else {
+                                holder.stanjeKviza.setImageResource(R.drawable.zelena)
+                                holder.datumKviza.text =
+                                    simpleDateFormat.format(kvizovi[position].datumPocetka)
+                                holder.osvojeniBodovi.text = ""
+                            }
+
                         }
                     }
-                else {
-                    holder.stanjeKviza.setImageResource(R.drawable.zelena)
-                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
-                    holder.osvojeniBodovi.text = ""
                 }
+
+                else {
+                    if (kvizovi[position].datumKraj != null && kvizovi[position].datumKraj?.compareTo(
+                            current
+                        )!! < 0
+                    ) {
+                        holder.stanjeKviza.setImageResource(R.drawable.crvena)
+                        holder.datumKviza.text =
+                            simpleDateFormat.format(kvizovi[position].datumKraj)
+                        holder.osvojeniBodovi.text = ""
+                    } else if (kvizovi[position].datumPocetka != null && kvizovi[position].datumPocetka?.compareTo(
+                            current
+                        )!! > 0
+                    ) {
+                        holder.stanjeKviza.setImageResource(R.drawable.zuta)
+                        holder.datumKviza.text =
+                            simpleDateFormat.format(kvizovi[position].datumPocetka)
+                        holder.osvojeniBodovi.text = ""
+                    }
+                    else {
+                        holder.stanjeKviza.setImageResource(R.drawable.zelena)
+                        holder.datumKviza.text =
+                            simpleDateFormat.format(kvizovi[position].datumPocetka)
+                        holder.osvojeniBodovi.text = ""
+                    }
+                    }
             }
             delay(600)
+
         }
     }
 
