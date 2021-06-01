@@ -1,6 +1,7 @@
 package ba.etf.rma21.projekat.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.repositories.OdgovorRepository
 import ba.etf.rma21.projekat.data.repositories.PitanjeKvizRepository
@@ -13,6 +14,7 @@ class OdgovorViewModel {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main
     )
+    var odgovori = MutableLiveData<List<Odgovor>>()
     var bodovi = MutableLiveData<Int>()
     fun addOdgovor(
         onSuccess: (bodovi: Int) -> Unit,
@@ -33,5 +35,26 @@ class OdgovorViewModel {
                 else -> onError?.invoke()
             }
         }
+    }
+
+    fun getOdgovori(
+        onSuccess: (List<Odgovor>) -> Unit,
+        onError: () -> Unit,
+        idKviza: Int
+    ) {
+        scope.launch {
+            // Make the network call and suspend execution until it finishes
+            val result = OdgovorRepository.getOdgovoriKviz(idKviza)
+
+            // Display result of the network request to the user
+            when (result) {
+                is List<Odgovor> -> {
+                    onSuccess?.invoke(result)
+                    odgovori.postValue(result!!)
+                }
+                else -> onError?.invoke()
+            }
+        }
+
     }
 }

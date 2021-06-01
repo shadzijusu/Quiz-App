@@ -1,6 +1,7 @@
 package ba.etf.rma21.projekat.view.fragmenti
 
 
+import android.app.usage.UsageEvents
 import android.app.usage.UsageEvents.Event.NONE
 import android.graphics.Color
 import android.os.Bundle
@@ -14,9 +15,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.R
+import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.KvizTaken
+import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
 import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
@@ -29,7 +33,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.Serializable
-import java.util.*
 
 
 class FragmentPokusaj() : Fragment(), Serializable {
@@ -54,8 +57,8 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private var mOnNavigationViewItemSelectedListener =
         NavigationView.OnNavigationItemSelectedListener { item ->
             if (item.title == "Rezultat") {
-                    val porukaFragment = FragmentPoruka.newInstance()
-                    otvoriPoruku(porukaFragment)
+                val porukaFragment = FragmentPoruka.newInstance()
+                otvoriPoruku(porukaFragment)
             } else {
                 pitanje = pitanja.get(item.itemId)
                 odabranoPitanje = item.itemId
@@ -78,7 +81,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                     navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
                     val porukaFragment =
                         FragmentPoruka.newInstance()
-                            otvoriPoruku(porukaFragment)
+                    otvoriPoruku(porukaFragment)
 
                     return@OnNavigationItemSelectedListener true
                 }
@@ -107,39 +110,86 @@ class FragmentPokusaj() : Fragment(), Serializable {
 
     override fun onResume() {
         super.onResume()
-        var present = false
-        var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
-        var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
-        for(question in questions) {
-            if(question.tekstPitanja.equals(pitanja[0].tekstPitanja))
-                present = true
-        }
-        if(present) {
-                for (i in 0 until questions.size) {
-                    for (j in 0 until pitanja.size) {
-                        var menuItem = navigacijaPitanja.menu.getItem(j)
-                        var s: SpannableString = SpannableString("")
-                        s = SpannableString(menuItem?.title.toString() + " +")
-                        if (questions[i].tekstPitanja == pitanja[j].tekstPitanja) {
-                            if (pitanja[j].tacan == odgovori[i]) {
-                                s.setSpan(ForegroundColorSpan(Color.GREEN), 0, s.length, 0)
-                            } else
-                                s.setSpan(ForegroundColorSpan(Color.RED), 0, s.length, 0)
-                            menuItem?.title = s
-                            menuItem.isChecked = true
+        GlobalScope.launch(Dispatchers.IO) {
+            launch {
+                odgovorListViewModel.getOdgovori(
+                    onSuccess = ::onSuccessOdgovori,
+                    onError = ::onError,
+                    idKviza = idKviza
+                )
+            }
+            delay(1000)
+            var ima = false
+            var odgovori = odgovorListViewModel.odgovori.value
+            if (odgovori != null) {
+                for (odgovor in odgovori) {
+                    if (odgovor.PitanjeId == pitanje.id) {
+                        ima = true
+                    }
+                }
+            }
+            if (ima) {
+                launch{
+                    pitanjeKvizListViewModel.dajPitanja(
+                        onSuccess = ::onSuccessPitanja,
+                        onError = ::onError,
+                        idKviza = idKviza
+                    )
+                }
+                delay(500)
+                var questions = pitanjeKvizListViewModel.pitanja.value
+                if (odgovori != null) {
+                    for(odgovor in odgovori) {
+                        if (questions != null) {
+                            for(i in 0 until questions.size) {
+                                if(odgovor.PitanjeId == questions[i].id) {
+                                    var menuItem = navigacijaPitanja.menu.getItem(i)
+                                    var s: SpannableString = SpannableString("")
+                                    s = SpannableString(menuItem?.title.toString() + " +")
+                                    if (odgovor.odgovoreno == questions[i].tacan) {
+                                        s.setSpan(
+                                            ForegroundColorSpan(Color.GREEN),
+                                            0,
+                                            s.length,
+                                            0
+                                        )
+                                    } else
+                                        s.setSpan(
+                                            ForegroundColorSpan(Color.RED),
+                                            0,
+                                            s.length,
+                                            0
+                                        )
+                                    val refresh2 = Handler(Looper.getMainLooper())
+                                    refresh2.post {
+                                        menuItem?.title = s
+                                        menuItem.isChecked = true
+                                    }
+                                    break
+                                }
+                            }
                         }
                     }
                 }
-                navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
-                bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
-                bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
-                bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
-                bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
-                bottomNavigationView.selectedItemId = R.id.invisible
+                val refresh2 = Handler(Looper.getMainLooper())
+                refresh2.post {
+                    navigacijaPitanja.menu.add(
+                        0,
+                        navigacijaPitanja.size,
+                        UsageEvents.Event.NONE,
+                        "Rezultat"
+                    )
+                    bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible =
+                        false
+                    bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible =
+                        false
+                    bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
+                    bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
+                    bottomNavigationView.selectedItemId = R.id.invisible
+                }
             }
+        }
     }
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -160,49 +210,47 @@ class FragmentPokusaj() : Fragment(), Serializable {
             itemId++
         }
         var bundle = this.arguments
-        GlobalScope.launch(Dispatchers.IO) {
-            launch(Dispatchers.IO) {
-                var poruka = bundle?.getString("id")
-                idKviza = poruka?.toInt()!!
-                if (poruka != null) {
-                    kvizTakenViewModel.zapocniKviz(
-                        onSuccess = ::onSuccessPocni,
-                        onError = ::onError,
-                        idKviza = poruka.toInt()
-                    )
-                }
-            }
-            delay(1000)
-            idKvizTaken = kvizTakenViewModel.zapoceti.value!!.id
+        var poruka = bundle?.getInt("idKvizTaken")
+        var poruka1 = bundle?.getInt("idKviza")
+        if (poruka != null) {
+            idKvizTaken = poruka
         }
-
+        if (poruka1 != null) {
+            idKviza = poruka1
+            kvizIds.add(idKviza)
+        }
         navigacijaPitanja.setNavigationItemSelectedListener(mOnNavigationViewItemSelectedListener)
-//        mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
-//            navigacijaPitanja.menu.getItem(
-//                0
-//            )
-//        )
+        mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
+            navigacijaPitanja.menu.getItem(
+                0
+            )
+        )
         return view
     }
 
 
-     fun otvoriPoruku(porukaFragment: FragmentPoruka) {
-         var menu: Menu = navigacijaPitanja.menu
-         var brojTacnih = 0.0
-         var odgovori = pitanjeKvizListViewModel.getAll().values.toMutableList()
-         var questions = pitanjeKvizListViewModel.getAll().keys.toMutableList()
-         for (i in 0 until questions.size) {
-             for (j in 0 until pitanja.size) {
-                 if (pitanja[j].tekstPitanja == questions[i].tekstPitanja) {
-                     if (pitanja[j].tacan == odgovori[i])
-                         brojTacnih++
-                 }
-             }
-         }
-
-         var brojSvih = pitanja.size.toDouble()
-         var percentage : Int = ((brojTacnih / brojSvih)*100).toInt()
-          var bundle1 = this.arguments
+    fun otvoriPoruku(porukaFragment: FragmentPoruka) {
+        GlobalScope.launch(Dispatchers.IO) {
+            var percentage: Int = 0
+            launch {
+                kvizTakenViewModel.zapocetiKvizoviTaken(
+                    onSuccess = ::onSuccessTaken,
+                    onError = ::onError
+                )
+            }
+            delay(1000)
+            var kvizoviTaken = kvizTakenViewModel.kvizovi.value
+            if (kvizoviTaken != null) {
+                for (kvizT in kvizoviTaken) {
+                    if (kvizT.id == idKvizTaken) {
+                        percentage = kvizT.osvojeniBodovi.toInt()
+                        break
+                    }
+                }
+            }
+            delay(50)
+            println(percentage)
+            var bundle1 = this@FragmentPokusaj.arguments
             nazivKviza = bundle1?.getString("naziv").toString()
             var bundle = Bundle()
             var poruka = "Završili ste kviz $nazivKviza sa tačnosti $percentage!"
@@ -212,10 +260,11 @@ class FragmentPokusaj() : Fragment(), Serializable {
             transaction?.replace(R.id.framePitanje, porukaFragment, "poruka")
             transaction?.addToBackStack("poruka")
             transaction?.commit()
-            bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
-            bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
-            bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
-            bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
+        }
+        bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible = false
+        bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible = false
+        bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
+        bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
 
     }
 
@@ -233,8 +282,8 @@ class FragmentPokusaj() : Fragment(), Serializable {
 
 
     companion object {
-        fun newInstance(): FragmentPokusaj =
-            FragmentPokusaj()
+        @JvmStatic
+        var kvizIds = arrayListOf<Int>()
     }
 
     constructor(pitanja: List<Pitanje>) : this() {
@@ -244,12 +293,29 @@ class FragmentPokusaj() : Fragment(), Serializable {
 
         }
     }
-    fun onSuccessPocni(kvizTaken: KvizTaken) {
-        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
-        toast.show()
-    }
+
     fun onError() {
         val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
         toast.show()
     }
+
+    fun onSuccessTaken(kvizTaken: List<KvizTaken>) {
+        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccessOdgovori(odgovori: List<Odgovor>) {
+        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccessPitanja(pitanja: List<Pitanje>) {
+        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+    fun onSuccessKvizovi(kvizovi: List<Kviz>) {
+        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
 }

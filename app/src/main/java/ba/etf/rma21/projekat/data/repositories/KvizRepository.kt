@@ -3,17 +3,10 @@ package ba.etf.rma21.projekat.data.repositories
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.staticdata.*
-import kotlinx.coroutines.*
-import okhttp3.Response
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object KvizRepository {
 
@@ -52,7 +45,6 @@ object KvizRepository {
     }
 
 
-
     suspend fun getById(id: Int): Kviz? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajKviz(id)
@@ -65,27 +57,28 @@ object KvizRepository {
         return withContext(Dispatchers.IO) {
             var korisnikoviKvizovi = arrayListOf<Kviz>()
             var kvizovi = listOf<Kviz>()
-            var grupe = listOf<Grupa>()
-                grupe = ApiAdapter.retrofit.dajStudentoveGrupe().body()!!
-                if (grupe != null) {
-                    for (grupa in grupe)
-                        launch(Dispatchers.IO) {
-                            kvizovi = ApiAdapter.retrofit.dajUpisane(grupa.id).body()!!
-                        }
-                    delay(500)
-                    korisnikoviKvizovi.addAll(kvizovi)
+            var grupe = ApiAdapter.retrofit.dajStudentoveGrupe().body()!!
+            if (grupe != null) {
+                for (grupa in grupe)
+                    launch(Dispatchers.IO) {
+                        kvizovi = ApiAdapter.retrofit.dajUpisane(grupa.id).body()!!
+                    }
+                delay(1000)
+                korisnikoviKvizovi.addAll(kvizovi)
             }
             return@withContext korisnikoviKvizovi
         }
     }
-    suspend fun pomocna(idGrupe : Int) : List<Kviz>? {
+
+    suspend fun pomocna(idGrupe: Int): List<Kviz>? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajUpisane(idGrupe)
             val responseBody = response.body()
             return@withContext responseBody
         }
     }
-    suspend fun dostupne(idKviza : Int) : List<Grupa>? {
+
+    suspend fun dostupne(idKviza: Int): List<Grupa>? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajDostupneGrupe(idKviza)
             val responseBody = response.body()

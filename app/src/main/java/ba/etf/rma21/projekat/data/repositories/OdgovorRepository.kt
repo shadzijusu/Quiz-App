@@ -55,21 +55,22 @@ object OdgovorRepository {
                 odgovori = ApiAdapter.retrofit.dajOdgovore(idKvizTaken).body()!!
             }
             delay(1000)
-
-                var brojTacnih = 0
+            var brojTacnih = 0
+            for (odgovor in odgovori) {
+                for(pitanje in pitanja)
+                if (pitanje.id == odgovor.PitanjeId) {
+                    if (odgovor.odgovoreno == pitanje.tacan)
+                        brojTacnih++
+                    break
+                }
+            }
                 for (pitanje in pitanja) {
                     if (pitanje.id == idPitanje) {
                         if (odgovor == pitanje.tacan)
                             brojTacnih++
-                    } else {
-                        for (odgovor in odgovori) {
-                            if (pitanje.id == odgovor.PitanjeId) {
-                                if (odgovor.odgovoreno == pitanje.tacan)
-                                    brojTacnih++
-                            }
-                        }
+                        break
                     }
-            }
+                }
             bodovi = brojTacnih.toFloat()/pitanja.size.toFloat()
             var percentage = (bodovi*100).toInt()
             val jsonObject = JsonObject()

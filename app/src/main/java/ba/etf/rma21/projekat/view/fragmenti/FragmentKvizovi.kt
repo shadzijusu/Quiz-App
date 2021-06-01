@@ -78,7 +78,7 @@ class FragmentKvizovi : Fragment() {
                                     onError = ::onError
                                 )
                             }
-                            delay(100)
+                            delay(1000)
                             kvizTakenViewModel.zapocetiKvizovi(
                                 onSuccess = ::onSuccess,
                                 onError = ::onError
