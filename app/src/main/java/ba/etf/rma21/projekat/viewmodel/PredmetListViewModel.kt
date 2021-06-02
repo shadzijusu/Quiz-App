@@ -85,7 +85,7 @@ class PredmetListViewModel() {
     }
 
     fun upisiStudenta(
-        onSuccess: (uspjesno: ResponseBody) -> Unit,
+        onSuccess: (uspjesno: Boolean) -> Unit,
         onError: () -> Unit, idGrupe: Int
     ) {
         // Create a new coroutine on the UI thread
@@ -95,7 +95,7 @@ class PredmetListViewModel() {
 
             // Display result of the network request to the user
             when (result) {
-                is ResponseBody -> onSuccess?.invoke(result)
+                is Boolean -> onSuccess?.invoke(result)
                 else -> onError?.invoke()
             }
         }

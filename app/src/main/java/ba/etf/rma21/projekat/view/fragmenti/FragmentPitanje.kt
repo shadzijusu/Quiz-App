@@ -59,7 +59,7 @@ class FragmentPitanje() : Fragment() {
                     onError = ::onError
                 )
             }
-            delay(1000)
+            delay(500)
             var kvizoviTaken = takenViewModel.kvizovi.value
             if (kvizoviTaken != null) {
                 for (taken in kvizoviTaken) {
@@ -76,7 +76,7 @@ class FragmentPitanje() : Fragment() {
                     idKviza = idKviza
                 )
             }
-            delay(1000)
+            delay(500)
             launch {
                 pitanjeKvizListViewModel.dajPitanja(
                     onSuccess = ::onSuccessPitanja,
@@ -84,7 +84,7 @@ class FragmentPitanje() : Fragment() {
                     idKviza = idKviza
                 )
             }
-            delay(1000)
+            delay(500)
             var questions = pitanjeKvizListViewModel.pitanja.value
             var odgovori = odgovorViewModel.odgovori.value
             if (odgovori != null) {

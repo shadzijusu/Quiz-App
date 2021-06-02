@@ -79,6 +79,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
             when (item.itemId) {
                 R.id.predajKviz -> {
                     navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
+                    klikPredaj.put(idKviza, true)
                     val porukaFragment =
                         FragmentPoruka.newInstance()
                     otvoriPoruku(porukaFragment)
@@ -122,11 +123,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
             var ima = false
             var odgovori = odgovorListViewModel.odgovori.value
             if (odgovori != null) {
-                for (odgovor in odgovori) {
-                    if (odgovor.PitanjeId == pitanje.id) {
-                        ima = true
-                    }
-                }
+                ima = true
             }
             if (ima) {
                 launch{
@@ -136,7 +133,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                         idKviza = idKviza
                     )
                 }
-                delay(500)
+                delay(1000)
                 var questions = pitanjeKvizListViewModel.pitanja.value
                 if (odgovori != null) {
                     for(odgovor in odgovori) {
@@ -173,19 +170,29 @@ class FragmentPokusaj() : Fragment(), Serializable {
                 }
                 val refresh2 = Handler(Looper.getMainLooper())
                 refresh2.post {
-                    navigacijaPitanja.menu.add(
-                        0,
-                        navigacijaPitanja.size,
-                        UsageEvents.Event.NONE,
-                        "Rezultat"
-                    )
-                    bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible =
-                        false
-                    bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible =
-                        false
-                    bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
-                    bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
-                    bottomNavigationView.selectedItemId = R.id.invisible
+                    if (klikPredaj[idKviza] == true) {
+                        navigacijaPitanja.menu.add(
+                            0,
+                            navigacijaPitanja.size,
+                            UsageEvents.Event.NONE,
+                            "Rezultat"
+                        )
+                        bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible =
+                            false
+                        bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible =
+                            false
+                        bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = true
+                        bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = true
+                        bottomNavigationView.selectedItemId = R.id.invisible
+                    }
+                    else {
+                        bottomNavigationView.menu.findItem(R.id.predajKviz).isVisible =
+                            true
+                        bottomNavigationView.menu.findItem(R.id.zaustaviKviz).isVisible =
+                            true
+                        bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = false
+                        bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
+                    }
                 }
             }
         }
@@ -204,6 +211,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
         bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        println(klikPredaj)
         var menu: Menu = navigacijaPitanja.menu
         for (i in 1..brojPitanja) {
             menu.add(0, itemId, NONE, "" + i)
@@ -217,7 +225,6 @@ class FragmentPokusaj() : Fragment(), Serializable {
         }
         if (poruka1 != null) {
             idKviza = poruka1
-            kvizIds.add(idKviza)
         }
         navigacijaPitanja.setNavigationItemSelectedListener(mOnNavigationViewItemSelectedListener)
         mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
@@ -248,8 +255,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                     }
                 }
             }
-            delay(50)
-            println(percentage)
+            delay(100)
             var bundle1 = this@FragmentPokusaj.arguments
             nazivKviza = bundle1?.getString("naziv").toString()
             var bundle = Bundle()
@@ -282,8 +288,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
 
 
     companion object {
-        @JvmStatic
-        var kvizIds = arrayListOf<Int>()
+        @JvmStatic var klikPredaj = hashMapOf<Int, Boolean>()
     }
 
     constructor(pitanja: List<Pitanje>) : this() {

@@ -38,11 +38,16 @@ object PredmetIGrupaRepository {
         }
     }
 
-    suspend fun upisiUGrupu(idGrupa: Int): ResponseBody? {
+    suspend fun upisiUGrupu(idGrupa: Int): Boolean? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.upisiStudentaUGrupu(idGrupa)
             val responseBody = response.body()
-            return@withContext responseBody
+            if (responseBody != null) {
+                if(responseBody.message.contains("Ne postoji account", true) ||
+                    responseBody.message.contains("Grupa not found"))
+                    return@withContext false
+            }
+            return@withContext true
         }
     }
 

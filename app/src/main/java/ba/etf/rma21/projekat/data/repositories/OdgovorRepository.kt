@@ -37,33 +37,35 @@ object OdgovorRepository {
             }
             delay(1000)
             var kvizId = 0
-            for (kvizTaken in responseTaken) {
-                if (kvizTaken.id == idKvizTaken) {
-                    kvizId = kvizTaken.KvizId
+            if(responseTaken != null) {
+                for (kvizTaken in responseTaken) {
+                    if (kvizTaken.id == idKvizTaken) {
+                        kvizId = kvizTaken.KvizId
+                    }
                 }
             }
-
             var pitanja = listOf<Pitanje>()
-
-            launch {
-                pitanja = ApiAdapter.retrofit.dajPitanja(kvizId).body()!!
-            }
-            delay(1000)
-
-            var odgovori = listOf<Odgovor>()
-            launch {
-                odgovori = ApiAdapter.retrofit.dajOdgovore(idKvizTaken).body()!!
-            }
-            delay(1000)
-            var brojTacnih = 0
-            for (odgovor in odgovori) {
-                for(pitanje in pitanja)
-                if (pitanje.id == odgovor.PitanjeId) {
-                    if (odgovor.odgovoreno == pitanje.tacan)
-                        brojTacnih++
-                    break
+            if(kvizId != 0) {
+                launch {
+                    pitanja = ApiAdapter.retrofit.dajPitanja(kvizId).body()!!
                 }
+                delay(1000)
             }
+            if(idKvizTaken != 0) {
+                var odgovori = listOf<Odgovor>()
+                launch {
+                    odgovori = ApiAdapter.retrofit.dajOdgovore(idKvizTaken).body()!!
+                }
+                delay(1000)
+                var brojTacnih = 0
+                for (odgovor in odgovori) {
+                    for (pitanje in pitanja)
+                        if (pitanje.id == odgovor.PitanjeId) {
+                            if (odgovor.odgovoreno == pitanje.tacan)
+                                brojTacnih++
+                            break
+                        }
+                }
                 for (pitanje in pitanja) {
                     if (pitanje.id == idPitanje) {
                         if (odgovor == pitanje.tacan)
@@ -71,14 +73,19 @@ object OdgovorRepository {
                         break
                     }
                 }
-            bodovi = brojTacnih.toFloat()/pitanja.size.toFloat()
-            var percentage = (bodovi*100).toInt()
-            val jsonObject = JsonObject()
-            jsonObject.addProperty("odgovor", odgovor)
-            jsonObject.addProperty("pitanje", idPitanje)
-            jsonObject.addProperty("bodovi", percentage)
-            var result = ApiAdapter.retrofit.dodajOdgovor(idKvizTaken, jsonObject)
-        return@withContext percentage
-    }
+                bodovi = brojTacnih.toFloat() / pitanja.size.toFloat()
+            }
+                var percentage = (bodovi * 100).toInt()
+                val jsonObject = JsonObject()
+                jsonObject.addProperty("odgovor", odgovor)
+                jsonObject.addProperty("pitanje", idPitanje)
+                jsonObject.addProperty("bodovi", percentage)
+                var result = ApiAdapter.retrofit.dodajOdgovor(idKvizTaken, jsonObject)
+                var resultBody = result.body()
+                if (resultBody != null) {
+                    if (resultBody.message != null) return@withContext -1
+                }
+                return@withContext percentage
+            }
 }
 }

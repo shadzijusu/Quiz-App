@@ -140,5 +140,4 @@ class RepositoryUnitTest {
         var odgovorTProperties = listOf("id","odgovoreno")
         checkProperties(odgovorTProperties,odgovorProperties)
     }
-
 }

@@ -9,8 +9,15 @@ object TakeKvizRepository {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.zapocniKviz(idKviza)
             val responseBody = response.body()
-            responseBody?.KvizId = idKviza
-            return@withContext responseBody
+            if(responseBody?.message != null)
+                return@withContext null
+            else {
+                var kvizTaken = responseBody?.id?.let { responseBody.datumRada?.let { it1 ->
+                    KvizTaken(it, responseBody.student,
+                        it1, responseBody.osvojeniBodovi, idKviza)
+                } }
+                return@withContext kvizTaken
+            }
         }
     }
 
@@ -18,7 +25,7 @@ object TakeKvizRepository {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajZapocete()
             val responseBody = response.body()
-            if(responseBody?.size == 0)
+            if(responseBody?.isEmpty()!!)
                 return@withContext null
            else return@withContext responseBody
         }

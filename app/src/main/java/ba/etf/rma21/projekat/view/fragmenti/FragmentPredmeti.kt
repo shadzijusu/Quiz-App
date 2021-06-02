@@ -302,7 +302,7 @@ class FragmentPredmeti : Fragment() {
         toast.show()
     }
 
-    fun onSuccessUpis(upis: ResponseBody) {
+    fun onSuccessUpis(upis: Boolean) {
         val toast = Toast.makeText(context, "Upisan", Toast.LENGTH_SHORT)
         toast.show()
     }

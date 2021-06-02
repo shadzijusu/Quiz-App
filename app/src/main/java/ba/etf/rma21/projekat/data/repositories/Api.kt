@@ -46,7 +46,7 @@ interface Api {
     suspend fun upisiStudentaUGrupu(
         @Path("gid") gid : Int,
         @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
-    ) : Response<ResponseBody>
+    ) : Response<UpisiUGrupuResponse>
 
     @GET("student/{id}/grupa")
     suspend fun dajStudentoveGrupe(
@@ -67,7 +67,7 @@ interface Api {
     suspend fun zapocniKviz(
         @Path("kid") kid : Int,
         @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589"
-    ) : Response<KvizTaken>
+    ) : Response<GetTakenKvizResponse>
 
     @GET("student/{id}/kviztaken")
     suspend fun dajZapocete(
@@ -85,6 +85,6 @@ interface Api {
         @Path("ktid") ktid: Int,
         @Body body: JsonObject,
         @Path("id") id: String = "9d53bd38-18d2-49ec-889f-703ab44db589"
-    ) : Response<ResponseBody>
+    ) : Response<DodajOdgovorResponse>
 
 }
