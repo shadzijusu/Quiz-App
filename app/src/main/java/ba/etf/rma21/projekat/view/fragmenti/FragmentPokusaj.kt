@@ -211,7 +211,6 @@ class FragmentPokusaj() : Fragment(), Serializable {
         bottomNavigationView.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigationView.menu.findItem(R.id.predmeti).isVisible = false
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        println(klikPredaj)
         var menu: Menu = navigacijaPitanja.menu
         for (i in 1..brojPitanja) {
             menu.add(0, itemId, NONE, "" + i)
@@ -245,7 +244,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                     onError = ::onError
                 )
             }
-            delay(1000)
+            delay(500)
             var kvizoviTaken = kvizTakenViewModel.kvizovi.value
             if (kvizoviTaken != null) {
                 for (kvizT in kvizoviTaken) {
@@ -255,7 +254,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                     }
                 }
             }
-            delay(100)
+            delay(2000)
             var bundle1 = this@FragmentPokusaj.arguments
             nazivKviza = bundle1?.getString("naziv").toString()
             var bundle = Bundle()

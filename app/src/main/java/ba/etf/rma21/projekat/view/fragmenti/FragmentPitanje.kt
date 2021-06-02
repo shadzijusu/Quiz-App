@@ -76,7 +76,7 @@ class FragmentPitanje() : Fragment() {
                     idKviza = idKviza
                 )
             }
-            delay(500)
+            delay(300)
             launch {
                 pitanjeKvizListViewModel.dajPitanja(
                     onSuccess = ::onSuccessPitanja,
