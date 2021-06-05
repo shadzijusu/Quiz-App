@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ba.etf.rma21.projekat">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,6 +24,28 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter android:autoVerify="true" >
+                <action android:name="android.intent.action.VIEW"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                <category android:name="android.intent.category.BROWSABLE"></category>
+                <data
+                    android:scheme="http"
+                    android:host="rma21-etf.herokuapp.com"
+                    android:pathPrefix="/androidDone"
+                    />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                <category android:name="android.intent.category.BROWSABLE"></category>
+                <data
+                    android:scheme="https"
+                    android:host="rma21-etf.herokuapp.com"
+                    android:pathPrefix="/androidDone"
+                  />
+            </intent-filter>
+
+
         </activity>
     </application>
 

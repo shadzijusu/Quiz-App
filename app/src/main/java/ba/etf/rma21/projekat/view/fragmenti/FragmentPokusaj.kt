@@ -238,6 +238,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
     fun otvoriPoruku(porukaFragment: FragmentPoruka) {
         GlobalScope.launch(Dispatchers.IO) {
             var percentage: Int = 0
+            
             launch {
                 kvizTakenViewModel.zapocetiKvizoviTaken(
                     onSuccess = ::onSuccessTaken,

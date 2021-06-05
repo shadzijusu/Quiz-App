@@ -1,22 +1,19 @@
 package ba.etf.rma21.projekat
 
 
+import android.net.Uri
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.data.repositories.AccountRepository
+
 import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPredmeti
-import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.HashMap
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var kvizoviFragment : FragmentKvizovi
+    private lateinit var kvizoviFragment: FragmentKvizovi
     private lateinit var bottomNavigation: BottomNavigationView
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -34,13 +31,18 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
-    override fun onResume() {
-        bottomNavigation.selectedItemId = R.id.kvizovi
-        super.onResume()
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
+        val user : String? = intent.extras?.getString("payload")
+        if (user != null) {
+            upisi(user)
+        }
+        println(data)
         bottomNavigation = findViewById(R.id.bottomNav)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
@@ -51,9 +53,12 @@ class MainActivity : AppCompatActivity() {
         openFragment(kvizoviFragment)
 
     }
+    private fun upisi(user : String) {
+        AccountRepository.postaviHash(user)
+    }
 
     //Funkcija za izmjenu fragmenta
-    private fun openFragment(fragment : Fragment) {
+    private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment).addToBackStack(null)
         transaction.commit()
@@ -63,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         if (R.id.predajKviz == bottomNavigation.selectedItemId) {
             supportFragmentManager.popBackStack("poruka", 1)
             bottomNavigation.selectedItemId = R.id.kvizovi
-        } else if(R.id.kvizovi != bottomNavigation.selectedItemId) {
+        } else if (R.id.kvizovi != bottomNavigation.selectedItemId) {
             bottomNavigation.selectedItemId = R.id.kvizovi
 
         }
@@ -73,6 +78,15 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
         bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
         bottomNavigation.selectedItemId = R.id.kvizovi
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bottomNavigation.selectedItemId = R.id.kvizovi
+//        val intent = getIntent()
+//        val data: Uri? = intent.data
+//            println("deeplinkingcallback   :- $data")
+
     }
 }
 
