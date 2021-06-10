@@ -3,18 +3,21 @@ package ba.etf.rma21.projekat
 
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.data.repositories.AccountRepository
 
 import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPredmeti
+import ba.etf.rma21.projekat.viewmodel.AccountViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var kvizoviFragment: FragmentKvizovi
     private lateinit var bottomNavigation: BottomNavigationView
+    private var accountViewModel = AccountViewModel()
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -38,10 +41,11 @@ class MainActivity : AppCompatActivity() {
 
         val action: String? = intent?.action
         val data: Uri? = intent?.data
+
         val user : String? = intent.extras?.getString("payload")
         if (user != null) {
-            upisi(user)
-        }
+            accountViewModel.upisi(user, onSuccess = ::onSuccess, onError = ::onError )
+            }
         println(data)
         bottomNavigation = findViewById(R.id.bottomNav)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -52,9 +56,6 @@ class MainActivity : AppCompatActivity() {
         kvizoviFragment = FragmentKvizovi.newInstance()
         openFragment(kvizoviFragment)
 
-    }
-    private fun upisi(user : String) {
-        AccountRepository.postaviHash(user)
     }
 
     //Funkcija za izmjenu fragmenta
@@ -84,9 +85,18 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         bottomNavigation.selectedItemId = R.id.kvizovi
 //        val intent = getIntent()
+//        println(intent.extras)
 //        val data: Uri? = intent.data
 //            println("deeplinkingcallback   :- $data")
 
+    }
+    fun onSuccess(uspjesno:Boolean){
+        val toast = Toast.makeText(applicationContext, "Spaseno", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+    fun onError() {
+        val toast = Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT)
+        toast.show()
     }
 }
 

@@ -1,18 +1,21 @@
 package ba.etf.rma21.projekat.data.models
 
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.util.*
-
+@Entity(tableName = "Kviz")
 data class Kviz(
-    @SerializedName("id") var id: Int,
-    @SerializedName("naziv") var naziv: String,
-    @SerializedName("datumPocetak") var datumPocetka: Date?,
-    @SerializedName("datumKraj") var datumKraj: Date?,
-    @SerializedName("trajanje") var trajanje: Int,
-    @SerializedName("nazivPredmeta") var nazivPredmeta: String,
-    @SerializedName("datumRada") var datumRada: Date?,
-    @SerializedName("osvojeniBodovi") var osvojeniBodovi: Float
+    @PrimaryKey @SerializedName("id") var id: Int,
+    @ColumnInfo(name = "naziv") @SerializedName("naziv") var naziv: String,
+    @ColumnInfo(name = "datumPocetak")  @SerializedName("datumPocetak") var datumPocetka: String?,
+    @ColumnInfo(name = "datumKraj") @SerializedName("datumKraj") var datumKraj: String?,
+    @ColumnInfo(name = "trajanje")  @SerializedName("trajanje") var trajanje: Int,
+    @ColumnInfo(name = "nazivPredmeta")  @SerializedName("nazivPredmeta") var nazivPredmeta: String,
+    @ColumnInfo(name = "datumRada") @SerializedName("datumRada") var datumRada: String?,
+    @ColumnInfo(name = "osvojeniBodovi")  @SerializedName("osvojeniBodovi") var osvojeniBodovi: Float
 
 
 )

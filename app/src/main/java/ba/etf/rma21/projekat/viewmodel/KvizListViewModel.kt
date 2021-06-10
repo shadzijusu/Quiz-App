@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Kviz
@@ -16,6 +17,8 @@ class KvizListViewModel() {
     var kvizovi = MutableLiveData<List<Kviz>>()
     var kvizoviZaGrupu = MutableLiveData<List<Kviz>>()
     var dostupne = MutableLiveData<List<Grupa>>()
+
+
     fun getMyKvizes( onSuccess: (kvizovi: List<Kviz>) -> Unit,
                 onError: () -> Unit){
         // Create a new coroutine on the UI thread

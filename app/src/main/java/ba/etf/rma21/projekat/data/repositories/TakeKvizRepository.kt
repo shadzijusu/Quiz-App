@@ -14,7 +14,7 @@ object TakeKvizRepository {
             else {
                 var kvizTaken = responseBody?.id?.let { responseBody.datumRada?.let { it1 ->
                     KvizTaken(it, responseBody.student,
-                        it1, responseBody.osvojeniBodovi, idKviza)
+                       "", responseBody.osvojeniBodovi, idKviza)
                 } }
                 return@withContext kvizTaken
             }

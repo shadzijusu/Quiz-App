@@ -1,12 +1,16 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import android.content.Context
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.staticdata.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 object PitanjeKvizRepository {
-
+    private lateinit var context: Context
+    fun setContext(_context:Context){
+        context=_context
+    }
     suspend fun getPitanja(idKviza: Int): List<Pitanje>? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajPitanja(idKviza)

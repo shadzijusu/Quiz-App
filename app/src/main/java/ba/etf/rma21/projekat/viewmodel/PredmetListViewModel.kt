@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ba.etf.rma21.projekat.data.models.Grupa
@@ -20,6 +21,7 @@ class PredmetListViewModel() {
     var grupeZaPredmet = MutableLiveData<List<Grupa>?>()
     var grupe = MutableLiveData<List<Grupa?>?>()
     var predmet = MutableLiveData<Predmet>()
+
     fun getUpisani(): List<Predmet> {
         return PredmetRepository.getUpisani()
     }

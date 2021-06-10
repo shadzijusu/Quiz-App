@@ -169,31 +169,30 @@ class ListaKvizovaAdapter(
             }
             val refresh = Handler(Looper.getMainLooper())
             refresh.post {
-                if (kvizovi[position].datumRada != null) {
-                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
-                    holder.stanjeKviza.setImageResource(R.drawable.plava)
-                    holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
-                } else if (kvizovi[position].datumKraj != null && kvizovi[position].datumKraj?.compareTo(
-                        Calendar.getInstance().time
-                    )!! < 0
-                ) {
-                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumKraj)
-                    holder.stanjeKviza.setImageResource(R.drawable.crvena)
-                    holder.osvojeniBodovi.text = ""
-                } else if (kvizovi[position].datumPocetka != null && kvizovi[position].datumPocetka?.compareTo(
-                        Calendar.getInstance().time
-                    )!! > 0
-                ) {
-                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
-                    holder.stanjeKviza.setImageResource(R.drawable.zuta)
-                    holder.osvojeniBodovi.text = ""
-                } else {
-                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
+//                if (kvizovi[position].datumRada != null) {
+//                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
+//                    holder.stanjeKviza.setImageResource(R.drawable.plava)
+//                    holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
+//                } else if (kvizovi[position].datumKraj != null && kvizovi[position].datumKraj?.compareTo(
+//                        Calendar.getInstance().time
+//                    )!! < 0
+//                ) {
+//                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumKraj)
+//                    holder.stanjeKviza.setImageResource(R.drawable.crvena)
+//                    holder.osvojeniBodovi.text = ""
+//                } else if (kvizovi[position].datumPocetka != null && kvizovi[position].datumPocetka?.compareTo(
+//                        Calendar.getInstance().time
+//                    )!! > 0
+//                ) {
+//                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
+//                    holder.stanjeKviza.setImageResource(R.drawable.zuta)
+//                    holder.osvojeniBodovi.text = ""
+//                } else {
+//                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
                     holder.stanjeKviza.setImageResource(R.drawable.zelena)
                     holder.osvojeniBodovi.text = ""
                 }
             }
-        }
     }
 
     fun updateKvizove(kvizovi: List<Kviz>) {

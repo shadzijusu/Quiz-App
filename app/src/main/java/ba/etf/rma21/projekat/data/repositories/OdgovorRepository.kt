@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import android.content.Context
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Odgovor
@@ -12,6 +13,10 @@ import kotlinx.coroutines.withContext
 
 
 object OdgovorRepository {
+    private lateinit var context: Context
+    fun setContext(_context: Context){
+        context=_context
+    }
     suspend fun getOdgovoriKviz(idKviza: Int): List<Odgovor>? {
         return withContext(Dispatchers.IO) {
             var idKvizTaken : Int = 0

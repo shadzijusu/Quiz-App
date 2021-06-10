@@ -4,11 +4,9 @@ import ba.etf.rma21.projekat.BuildConfig
 import ba.etf.rma21.projekat.data.models.*
 import com.google.gson.JsonObject
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface Api {
@@ -87,4 +85,10 @@ interface Api {
         @Path("id") id: String = "9d53bd38-18d2-49ec-889f-703ab44db589"
     ) : Response<DodajOdgovorResponse>
 
+
+    @GET("account/{id}/lastUpdate")
+    suspend fun update(
+        @Query("date") date : String,
+        @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589")
+    : Response<JSONObject>
 }

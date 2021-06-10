@@ -161,8 +161,11 @@ override fun onCreateView(
     }
 
     tekstPitanja.text = pitanje.tekstPitanja
-
-    val listaVrijednosti = pitanje.opcije
+    val opcije = pitanje.opcije.split(",")
+    val opcija1 = opcije[0]
+    val opcija2 = opcije[1]
+    val opcija3 = opcije[2]
+    val listaVrijednosti = listOf(opcija1, opcija2, opcija3)
     val layoutID = android.R.layout.simple_list_item_1
     var adapter = view.context?.let { ArrayAdapter<String>(it, layoutID, listaVrijednosti) }
     odgovoriLista.adapter = adapter

@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ba.etf.rma21.projekat.data.models.Kviz
@@ -16,6 +17,11 @@ class PitanjeKvizListViewModel () {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main)
     var pitanja = MutableLiveData<List<Pitanje>>()
+
+
+
+
+
         fun dajPitanja(onSuccess: (pitanja: List<Pitanje>) -> Unit,
                onError: () -> Unit, idKviza : Int) {
         // Create a new coroutine on the UI thread

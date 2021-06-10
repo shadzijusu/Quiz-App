@@ -6,7 +6,7 @@ import java.util.*
 data class KvizTaken(
     @SerializedName("id") var id: Int,
     @SerializedName("student") var student: String,
-    @SerializedName("datumRada") var datumRada: Date,
+    @SerializedName("datumRada") var datumRada: String,
     @SerializedName("osvojeniBodovi") var osvojeniBodovi: Float,
     @SerializedName("KvizId") var KvizId : Int
     )
