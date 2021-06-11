@@ -1,11 +1,16 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import android.annotation.SuppressLint
 import android.content.Context
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Predmet
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
 
+@SuppressLint("StaticFieldLeak")
 object PredmetIGrupaRepository {
     private lateinit var context: Context
     fun setContext(_context:Context){
@@ -44,6 +49,19 @@ object PredmetIGrupaRepository {
     suspend fun upisiUGrupu(idGrupa: Int): Boolean? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.upisiStudentaUGrupu(idGrupa)
+
+            var grupa = ApiAdapter.retrofit.dajGrupu(idGrupa).body()
+            var db = AppDatabase.getInstance(context)
+
+            if (grupa != null) {
+                db.grupaDao().upisiUGrupu(idGrupa, grupa.naziv, grupa.PredmetId)
+
+                AccountRepository.setContext(context)
+                db.accountDao().setLastUpdate(
+                    AccountRepository.getHash(),
+                    "2021-06-11T12:00:00"
+                )
+            }
             val responseBody = response.body()
             if (responseBody != null) {
                 if(responseBody.message.contains("Ne postoji account", true) ||

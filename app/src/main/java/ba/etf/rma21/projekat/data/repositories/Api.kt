@@ -2,9 +2,11 @@ package ba.etf.rma21.projekat.data.repositories
 
 import ba.etf.rma21.projekat.BuildConfig
 import ba.etf.rma21.projekat.data.models.*
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import okhttp3.ResponseBody
 import org.json.JSONObject
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -24,6 +26,10 @@ interface Api {
         @Path("id") id : Int
     ): Response<List<Kviz>>
 
+    @GET("grupa/{id}")
+    suspend fun dajGrupu(
+        @Path("id") id : Int
+    ) : Response<Grupa>
     @GET("predmet")
     suspend fun dajSvePredmete () : Response<List<Predmet>>
     @GET("predmet/{id}")
@@ -88,7 +94,7 @@ interface Api {
 
     @GET("account/{id}/lastUpdate")
     suspend fun update(
-        @Query("date") date : String,
-        @Path("id") id : String = "9d53bd38-18d2-49ec-889f-703ab44db589")
-    : Response<JSONObject>
+        @Path("id") id : String,
+        @Query("date") date : String)
+    : JsonObject
 }

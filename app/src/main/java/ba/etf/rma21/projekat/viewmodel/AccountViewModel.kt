@@ -10,9 +10,10 @@ import kotlinx.coroutines.launch
 class AccountViewModel {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main)
-    fun upisi(acHash : String, onSuccess: (uspjesno : Boolean) -> Unit,
+    fun upisi(context : Context, acHash : String, onSuccess: (uspjesno : Boolean) -> Unit,
               onError: () -> Unit){
         scope.launch{
+            AccountRepository.setContext(context)
             val result = AccountRepository.postaviHash(acHash)
             when (result) {
                 is Boolean -> onSuccess?.invoke(result)

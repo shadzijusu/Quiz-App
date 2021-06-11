@@ -44,9 +44,8 @@ class MainActivity : AppCompatActivity() {
 
         val user : String? = intent.extras?.getString("payload")
         if (user != null) {
-            accountViewModel.upisi(user, onSuccess = ::onSuccess, onError = ::onError )
+            accountViewModel.upisi(applicationContext ,user, onSuccess = ::onSuccess, onError = ::onError )
             }
-        println(data)
         bottomNavigation = findViewById(R.id.bottomNav)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false

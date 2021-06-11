@@ -210,28 +210,28 @@ class ListaKvizovaAdapter(
     }
 
     fun onSuccess(pitanja: List<Pitanje>) {
-        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
         toast.show()
     }
 
     fun onSuccessTakenKvizovi(taken: List<KvizTaken>) {
-        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
         toast.show()
     }
 
 
     fun onSuccessGrupe(grupe: List<Grupa>) {
-        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context, "Uspjesno", Toast.LENGTH_SHORT)
         toast.show()
     }
 
     fun onSuccessKvizovi(kvizovi: List<Kviz>) {
-        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
         toast.show()
     }
 
     fun onSuccessPredmet(predmeti: Predmet) {
-        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context, "Uspjesno", Toast.LENGTH_SHORT)
         toast.show()
     }
 
@@ -240,7 +240,7 @@ class ListaKvizovaAdapter(
         toast.show()
     }
     fun onSuccessPocni(kvizTaken: KvizTaken) {
-        val toast = Toast.makeText(context, "Upcoming movies found", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context, "Uspjesno", Toast.LENGTH_SHORT)
         toast.show()
     }
     companion object {

@@ -21,7 +21,6 @@ class PredmetListViewModel() {
     var grupeZaPredmet = MutableLiveData<List<Grupa>?>()
     var grupe = MutableLiveData<List<Grupa?>?>()
     var predmet = MutableLiveData<Predmet>()
-
     fun getUpisani(): List<Predmet> {
         return PredmetRepository.getUpisani()
     }
@@ -88,11 +87,12 @@ class PredmetListViewModel() {
 
     fun upisiStudenta(
         onSuccess: (uspjesno: Boolean) -> Unit,
-        onError: () -> Unit, idGrupe: Int
+        onError: () -> Unit, idGrupe: Int, context: Context
     ) {
         // Create a new coroutine on the UI thread
         scope.launch {
             // Make the network call and suspend execution until it finishes
+            PredmetIGrupaRepository.setContext(context)
             val result = PredmetIGrupaRepository.upisiUGrupu(idGrupe)
 
             // Display result of the network request to the user

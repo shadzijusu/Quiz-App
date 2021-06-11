@@ -14,7 +14,6 @@ object AccountRepository {
         var acHash: String = ""
 
          suspend fun postaviHash(acHash: String): Boolean {
-             this.acHash = acHash
              return withContext(Dispatchers.IO) {
                  var db = AppDatabase.getInstance(context)
                  db.accountDao().izbrisiSve()
@@ -23,8 +22,12 @@ object AccountRepository {
              }
         }
 
-         fun getHash(): String {
-            return acHash
+         suspend fun getHash(): String {
+             return withContext(Dispatchers.IO) {
+                 var db = AppDatabase.getInstance(context)
+                 var acHash = db.accountDao().getHash()
+                 return@withContext acHash
+             }
         }
 
 }

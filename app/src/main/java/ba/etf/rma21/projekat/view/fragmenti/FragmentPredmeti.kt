@@ -11,9 +11,13 @@ import ba.etf.rma21.projekat.PreferenceManager
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Predmet
+import ba.etf.rma21.projekat.viewmodel.DBViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
-
 
 class FragmentPredmeti : Fragment() {
     private lateinit var odabirGodina: Spinner
@@ -21,6 +25,7 @@ class FragmentPredmeti : Fragment() {
     private lateinit var odabirGrupa: Spinner
     private lateinit var upisDugme: Button
     private lateinit var predmetListViewModel: PredmetListViewModel
+    private var dbViewModel = DBViewModel()
     private var grupaId = 0
     private var preferenceManger: PreferenceManager? = null
     private var grupeZaPredmet: ArrayList<Grupa> = arrayListOf()
@@ -52,6 +57,11 @@ class FragmentPredmeti : Fragment() {
                 odabirGodina.adapter = adapter
             }
         }
+        dbViewModel.update(
+            onSuccess = ::onSuccessUpdate,
+            onError = ::onError,
+            context = requireContext()
+        )
         var naziviPredmeta = arrayListOf<String>()
         val predmetiAdapter: ArrayAdapter<String>
         predmetiAdapter = ArrayAdapter<String>(
@@ -255,7 +265,8 @@ class FragmentPredmeti : Fragment() {
         predmetListViewModel.upisiStudenta(
             onSuccess = ::onSuccessUpis,
             onError = ::onError,
-            idGrupe = grupaId
+            idGrupe = grupaId,
+            context = activity!!.applicationContext
         )
 
         var bundle: Bundle = Bundle()
@@ -304,6 +315,11 @@ class FragmentPredmeti : Fragment() {
 
     fun onSuccessUpis(upis: Boolean) {
         val toast = Toast.makeText(context, "Upisan", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    fun onSuccessUpdate(upis: Boolean) {
+        val toast = Toast.makeText(context, "Update", Toast.LENGTH_SHORT)
         toast.show()
     }
 }
