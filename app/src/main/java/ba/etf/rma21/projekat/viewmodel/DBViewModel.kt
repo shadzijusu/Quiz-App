@@ -22,10 +22,10 @@ class DBViewModel {
             val result = DBRepository.updateNow()
             when (result) {
                 is Boolean -> {
-                    onSuccess?.invoke(result)
+                    onSuccess.invoke(result)
                     updated.postValue(result!!)
                 }
-                else-> onError?.invoke()
+                else-> onError.invoke()
             }
 
         }

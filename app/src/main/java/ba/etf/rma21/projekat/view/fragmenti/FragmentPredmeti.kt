@@ -78,7 +78,7 @@ class FragmentPredmeti : Fragment() {
             android.R.layout.simple_spinner_dropdown_item,
             naziviGrupa
         )
-        odabirGrupa.setAdapter(grupeAdapter)
+        odabirGrupa.adapter = grupeAdapter
 
         predmetListViewModel.getAll(
             onSuccess = ::onSuccess,

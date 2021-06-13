@@ -13,7 +13,7 @@ import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 
 
-class PredmetListViewModel() {
+class PredmetListViewModel {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main
     )
@@ -37,10 +37,10 @@ class PredmetListViewModel() {
             // Display result of the network request to the user
             when (result) {
                 is List<Predmet> -> {
-                    onSuccess?.invoke(result)
-                    predmeti.postValue(result!!)
+                    onSuccess.invoke(result)
+                    predmeti.postValue(result)
                 }
-                else -> onError?.invoke()
+                else -> onError.invoke()
             }
         }
     }
@@ -57,10 +57,10 @@ class PredmetListViewModel() {
             // Display result of the network request to the user
             when (result) {
                 is List<Grupa> -> {
-                    onSuccess?.invoke(result)
+                    onSuccess.invoke(result)
                     grupe.postValue(result)
                 }
-                else -> onError?.invoke()
+                else -> onError.invoke()
             }
         }
     }
@@ -77,10 +77,10 @@ class PredmetListViewModel() {
             // Display result of the network request to the user
             when (result) {
                 is List<Grupa> -> {
-                    onSuccess?.invoke(result)
+                    onSuccess.invoke(result)
                     grupeZaPredmet.postValue(result)
                 }
-                else -> onError?.invoke()
+                else -> onError.invoke()
             }
         }
     }
@@ -97,8 +97,8 @@ class PredmetListViewModel() {
 
             // Display result of the network request to the user
             when (result) {
-                is Boolean -> onSuccess?.invoke(result)
-                else -> onError?.invoke()
+                is Boolean -> onSuccess.invoke(result)
+                else -> onError.invoke()
             }
         }
     }
@@ -114,8 +114,8 @@ class PredmetListViewModel() {
 
             // Display result of the network request to the user
             when (result) {
-                is List<Grupa> -> onSuccess?.invoke(result)
-                else -> onError?.invoke()
+                is List<Grupa> -> onSuccess.invoke(result)
+                else -> onError.invoke()
             }
         }
     }
@@ -133,10 +133,10 @@ class PredmetListViewModel() {
             // Display result of the network request to the user
             when (result) {
                 is Predmet -> {
-                    onSuccess?.invoke(result)
-                    predmet.postValue(result!!)
+                    onSuccess.invoke(result)
+                    predmet.postValue(result)
                 }
-                else -> onError?.invoke()
+                else -> onError.invoke()
             }
         }
 

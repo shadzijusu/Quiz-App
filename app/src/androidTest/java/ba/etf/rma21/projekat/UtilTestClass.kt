@@ -52,7 +52,7 @@ class UtilTestClass {
             }
 
             override fun matchesSafely(item: View): Boolean {
-                if(!(item is TextView)) return false;
+                if(!(item is TextView)) return false
                 return item.currentTextColor== trazenaBoja
 
             }
@@ -64,7 +64,7 @@ class UtilTestClass {
             }
 
             override fun matchesSafely(item: View): Boolean {
-                if(!(item.background is ColorDrawable)) return false;
+                if(!(item.background is ColorDrawable)) return false
                 var boja = item.background as ColorDrawable
                 return boja.color==trazenaBoja
             }

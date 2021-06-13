@@ -1,6 +1,7 @@
 package ba.etf.rma21.projekat.data.repositories
 
 import android.content.Context
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.staticdata.*
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,13 @@ object PitanjeKvizRepository {
                     pitanja.add(Pitanje(id, naziv, tekst, opcije, tacan, idKviza))
                 }
             }
+            return@withContext pitanja
+        }
+    }
+    suspend fun getPitanjaDB(idKviza: Int) : List<Pitanje> {
+        return withContext(Dispatchers.IO) {
+            var db = AppDatabase.getInstance(context)
+            var pitanja = db.pitanjeDao().getAllZaKviz(idKviza)
             return@withContext pitanja
         }
     }

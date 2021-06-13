@@ -12,4 +12,7 @@ interface PitanjeDao {
 
     @Insert
     suspend fun insertAll(pitanja : List<Pitanje>)
+
+    @Query("SELECT * from Pitanje where kvizId = :kvizId")
+    suspend fun getAllZaKviz(kvizId : Int) : List<Pitanje>
 }

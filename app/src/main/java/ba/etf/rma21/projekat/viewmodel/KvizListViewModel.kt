@@ -11,7 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-class KvizListViewModel() {
+class KvizListViewModel {
      val scope = CoroutineScope(
         Job() + Dispatchers.Main)
     var kvizovi = MutableLiveData<List<Kviz>>()
@@ -28,10 +28,10 @@ class KvizListViewModel() {
             val result = KvizRepository.getMyDb()
             when (result) {
                 is List<*> -> {
-                    onSuccess?.invoke(result as List<Kviz>)
+                    onSuccess.invoke(result as List<Kviz>)
                     kvizoviDB.postValue(result as List<Kviz>?)
                 }
-                else -> onError?.invoke()
+                else -> onError.invoke()
             }
 
         }
@@ -47,10 +47,10 @@ class KvizListViewModel() {
             // Display result of the network request to the user
             when (result) {
                 is List<Kviz> -> {
-                    onSuccess?.invoke(result)
-                    kvizovi.postValue(result!!)
+                    onSuccess.invoke(result)
+                    kvizovi.postValue(result)
                 }
-                else-> onError?.invoke()
+                else-> onError.invoke()
             }
         }
     }
@@ -63,8 +63,8 @@ class KvizListViewModel() {
 
             // Display result of the network request to the user
             when (result) {
-                is Kviz -> onSuccess?.invoke(result!!)
-                else-> onError?.invoke()
+                is Kviz -> onSuccess.invoke(result)
+                else-> onError.invoke()
             }
         }
     }
@@ -77,8 +77,8 @@ class KvizListViewModel() {
 
             // Display result of the network request to the user
             when (result) {
-                is List<Kviz> -> onSuccess?.invoke(result!!)
-                else-> onError?.invoke()
+                is List<Kviz> -> onSuccess.invoke(result)
+                else-> onError.invoke()
             }
         }
     }
@@ -91,10 +91,10 @@ class KvizListViewModel() {
             // Display result of the network request to the user
             when (result) {
                 is List<Kviz> -> {
-                    onSuccess?.invoke(result)
-                    kvizoviZaGrupu.postValue(result!!)
+                    onSuccess.invoke(result)
+                    kvizoviZaGrupu.postValue(result)
                 }
-                else-> onError?.invoke()
+                else-> onError.invoke()
             }
         }
     }
@@ -107,10 +107,10 @@ class KvizListViewModel() {
             // Display result of the network request to the user
             when (result) {
                 is List<Grupa> -> {
-                    onSuccess?.invoke(result)
-                    dostupne.postValue(result!!)
+                    onSuccess.invoke(result)
+                    dostupne.postValue(result)
                 }
-                else-> onError?.invoke()
+                else-> onError.invoke()
             }
         }
     }

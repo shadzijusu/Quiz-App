@@ -16,8 +16,8 @@ class AccountViewModel {
             AccountRepository.setContext(context)
             val result = AccountRepository.postaviHash(acHash)
             when (result) {
-                is Boolean -> onSuccess?.invoke(result)
-                else-> onError?.invoke()
+                is Boolean -> onSuccess.invoke(result)
+                else-> onError.invoke()
             }
         }
     }

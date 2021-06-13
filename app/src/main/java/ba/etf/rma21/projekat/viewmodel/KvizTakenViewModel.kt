@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 
-class KvizTakenViewModel () {
+class KvizTakenViewModel {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main)
     var kvizovi = MutableLiveData<List<KvizTaken>?>()
@@ -28,10 +28,10 @@ class KvizTakenViewModel () {
             // Display result of the network request to the user
             when (result) {
                 is KvizTaken -> {
-                    onSuccess?.invoke(result)
-                    zapoceti.postValue(result!!)
+                    onSuccess.invoke(result)
+                    zapoceti.postValue(result)
                 }
-                else-> onError?.invoke()
+                else-> onError.invoke()
             }
         }
     }
@@ -44,10 +44,10 @@ class KvizTakenViewModel () {
             // Display result of the network request to the user
             when (result) {
                 is List<KvizTaken> -> {
-                    onSuccess?.invoke(result)
+                    onSuccess.invoke(result)
                     kvizovi.postValue(result)
                 }
-                else-> onError?.invoke()
+                else-> onError.invoke()
             }
         }
     }
@@ -77,10 +77,10 @@ class KvizTakenViewModel () {
                             }
                         }
                     }
-                    onSuccess?.invoke(uradjeni)
+                    onSuccess.invoke(uradjeni)
                     quizzess.postValue(uradjeni)
                 }
-                else-> onError?.invoke()
+                else-> onError.invoke()
             }
         }
     }

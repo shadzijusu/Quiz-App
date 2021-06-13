@@ -96,5 +96,5 @@ interface Api {
     suspend fun update(
         @Path("id") id : String,
         @Query("date") date : String)
-    : JsonObject
+    : Response<UpdateResponse>
 }

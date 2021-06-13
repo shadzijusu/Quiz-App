@@ -58,6 +58,12 @@ class DBTests {
         @BeforeClass @JvmStatic
         fun createDb() = runBlocking {
 
+            context = ApplicationProvider.getApplicationContext<Context>()
+            AccountRepository.setContext(context)
+            DBRepository.setContext(context)
+            OdgovorRepository.setContext(context)
+            PredmetIGrupaRepository.setContext(context)
+
             var client: OkHttpClient = OkHttpClient()
             var builder: Request.Builder = Request.Builder()
                 .url(URL(ApiConfig.baseURL + "/student/" + AccountRepository.getHash() + "/upisugrupeipokusaji"))
@@ -67,15 +73,10 @@ class DBTests {
                 var response: Response = client.newCall(request).execute()
                 var odgovor: String = response.body().toString()
             }
-            context = ApplicationProvider.getApplicationContext<Context>()
+
             db = Room.inMemoryDatabaseBuilder(
                 context, AppDatabase::class.java
             ).build()
-            AccountRepository.setContext(context)
-            DBRepository.setContext(context)
-            OdgovorRepository.setContext(context)
-            PredmetIGrupaRepository.setContext(context)
-
             AppDatabase.setInstance(db)
 
         }

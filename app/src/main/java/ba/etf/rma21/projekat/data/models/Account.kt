@@ -7,5 +7,4 @@ import androidx.room.PrimaryKey
 @Entity
 data class Account(
     @PrimaryKey var acHash:String,
-    @ColumnInfo(name = "lastUpdate") var lastUpdate:String?) {
-}
+    @ColumnInfo(name = "lastUpdate") var lastUpdate:String?)

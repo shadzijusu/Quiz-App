@@ -1,6 +1,8 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import android.annotation.SuppressLint
 import android.content.Context
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Odgovor
@@ -10,8 +12,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 
+@SuppressLint("StaticFieldLeak")
 object OdgovorRepository {
     private lateinit var context: Context
     fun setContext(_context: Context){
@@ -32,9 +36,10 @@ object OdgovorRepository {
             return@withContext responseBody
         }
     }
-
-    suspend fun postaviOdgovorKviz(idKvizTaken: Int, idPitanje: Int, odgovor: Int): Int? {
+    suspend fun postaviOdgovorKviz(idKvizTaken: Int, idPitanje: Int, odgovor: Int) : Int {
         return withContext(Dispatchers.IO) {
+            var db = AppDatabase.getInstance(context)
+            var pitanje = db.odgovorDao().getOdgovor(idPitanje)
             var bodovi = 0f
             var responseTaken = listOf<KvizTaken>()
             launch {
@@ -50,16 +55,18 @@ object OdgovorRepository {
                 }
             }
             var pitanja = listOf<Pitanje>()
+
             if(kvizId != 0) {
+                PitanjeKvizRepository.setContext(context)
                 launch {
-                    pitanja = PitanjeKvizRepository.getPitanja(kvizId)!!
+                    pitanja = PitanjeKvizRepository.getPitanjaDB(kvizId)!!
                 }
                 delay(1000)
             }
             if(idKvizTaken != 0) {
                 var odgovori = listOf<Odgovor>()
                 launch {
-                    odgovori = ApiAdapter.retrofit.dajOdgovore(idKvizTaken).body()!!
+                    odgovori = db.odgovorDao().getOdgovore(idKvizTaken)
                 }
                 delay(1000)
                 var brojTacnih = 0
@@ -71,26 +78,83 @@ object OdgovorRepository {
                             break
                         }
                 }
-                for (pitanje in pitanja) {
-                    if (pitanje.id == idPitanje) {
-                        if (odgovor == pitanje.tacan)
-                            brojTacnih++
-                        break
+                if(pitanje != idPitanje) {
+                    for (pitanje in pitanja) {
+                        if (pitanje.id == idPitanje) {
+                            if (odgovor == pitanje.tacan)
+                                brojTacnih++
+                            break
+                        }
                     }
                 }
+
                 bodovi = brojTacnih.toFloat() / pitanja.size.toFloat()
             }
                 var percentage = (bodovi * 100).toInt()
-                val jsonObject = JsonObject()
-                jsonObject.addProperty("odgovor", odgovor)
-                jsonObject.addProperty("pitanje", idPitanje)
-                jsonObject.addProperty("bodovi", percentage)
-                var result = ApiAdapter.retrofit.dodajOdgovor(idKvizTaken, jsonObject)
-                var resultBody = result.body()
-                if (resultBody != null) {
-                    if (resultBody.message != null) return@withContext -1
-                }
-                return@withContext percentage
-            }
-}
+            if(pitanje != idPitanje)
+                db.odgovorDao().dodajOdgovor(Random.nextInt(), odgovor, idPitanje, kvizId, idKvizTaken)
+            return@withContext percentage
+        }
+    }
+
+//    suspend fun postaviOdgovorKviz(idKvizTaken: Int, idPitanje: Int, odgovor: Int): Int? {
+//        return withContext(Dispatchers.IO) {
+//            var bodovi = 0f
+//            var responseTaken = listOf<KvizTaken>()
+//            launch {
+//                responseTaken = ApiAdapter.retrofit.dajZapocete().body()!!
+//            }
+//            delay(1000)
+//            var kvizId = 0
+//            if(responseTaken != null) {
+//                for (kvizTaken in responseTaken) {
+//                    if (kvizTaken.id == idKvizTaken) {
+//                        kvizId = kvizTaken.KvizId
+//                    }
+//                }
+//            }
+//            var pitanja = listOf<Pitanje>()
+//            if(kvizId != 0) {
+//                launch {
+//                    pitanja = PitanjeKvizRepository.getPitanja(kvizId)!!
+//                }
+//                delay(1000)
+//            }
+//            if(idKvizTaken != 0) {
+//                var odgovori = listOf<Odgovor>()
+//                launch {
+//                    odgovori = ApiAdapter.retrofit.dajOdgovore(idKvizTaken).body()!!
+//                }
+//                delay(1000)
+//                var brojTacnih = 0
+//                for (odgovor in odgovori) {
+//                    for (pitanje in pitanja)
+//                        if (pitanje.id == odgovor.PitanjeId) {
+//                            if (odgovor.odgovoreno == pitanje.tacan)
+//                                brojTacnih++
+//                            break
+//                        }
+//                }
+//                for (pitanje in pitanja) {
+//                    if (pitanje.id == idPitanje) {
+//                        if (odgovor == pitanje.tacan)
+//                            brojTacnih++
+//                        break
+//                    }
+//                }
+//                bodovi = brojTacnih.toFloat() / pitanja.size.toFloat()
+//            }
+//                var percentage = (bodovi * 100).toInt()
+//                val jsonObject = JsonObject()
+//                jsonObject.addProperty("odgovor", odgovor)
+//                jsonObject.addProperty("pitanje", idPitanje)
+//                jsonObject.addProperty("bodovi", percentage)
+//                var result = ApiAdapter.retrofit.dodajOdgovor(idKvizTaken, jsonObject)
+//                var resultBody = result.body()
+//                if (resultBody != null) {
+//                    if (resultBody.message != null) return@withContext -1
+//                }
+//                return@withContext percentage
+//            }
+
 }

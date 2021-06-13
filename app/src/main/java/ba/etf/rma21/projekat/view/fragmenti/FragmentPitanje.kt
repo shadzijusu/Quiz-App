@@ -181,7 +181,8 @@ override fun onCreateView(
                         onError = ::onError,
                         idKvizTaken = idKvizTaken,
                         idPitanje = pitanje.id,
-                        odgovor = position
+                        odgovor = position,
+                        context = requireContext()
                     )
                 }
                 delay(1000)

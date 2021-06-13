@@ -56,12 +56,13 @@ object PredmetIGrupaRepository {
             var grupa = ApiAdapter.retrofit.dajGrupu(idGrupa).body()
             var db = AppDatabase.getInstance(context)
 
+
             if (grupa != null) {
                 db.grupaDao().upisiUGrupu(idGrupa, grupa.naziv, grupa.PredmetId)
 
                 AccountRepository.setContext(context)
                 db.accountDao().setLastUpdate(
-                    AccountRepository.getHash(),
+                    db.accountDao().getHash(),
                     (Calendar.getInstance().time.toString())
                 )
             }

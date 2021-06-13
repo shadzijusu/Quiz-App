@@ -13,12 +13,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class PitanjeKvizListViewModel () {
+class PitanjeKvizListViewModel {
     val scope = CoroutineScope(
         Job() + Dispatchers.Main)
     var pitanja = MutableLiveData<List<Pitanje>>()
+    var pitanjaDB = MutableLiveData<List<Pitanje>>()
 
+    fun dajPitanjaDB(onSuccess: (pitanja: List<Pitanje>) -> Unit,
+                   onError: () -> Unit, idKviza : Int, context: Context) {
+        // Create a new coroutine on the UI thread
+        scope.launch {
+            // Make the network call and suspend execution until it finishes
+            PitanjeKvizRepository.setContext(context)
+            val result = PitanjeKvizRepository.getPitanjaDB(idKviza)
 
+            // Display result of the network request to the user
+            when (result) {
+                is List<Pitanje> -> {
+                    onSuccess.invoke(result)
+                    pitanjaDB.postValue(result)
+                }
+                else -> onError.invoke()
+            }
+        }
+    }
 
 
 
@@ -32,10 +50,10 @@ class PitanjeKvizListViewModel () {
             // Display result of the network request to the user
             when (result) {
                 is List<Pitanje> -> {
-                    onSuccess?.invoke(result)
+                    onSuccess.invoke(result)
                     pitanja.postValue(result!!)
                 }
-                else -> onError?.invoke()
+                else -> onError.invoke()
             }
         }
     }

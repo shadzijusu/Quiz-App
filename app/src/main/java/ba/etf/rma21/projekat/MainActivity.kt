@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         if (user != null) {
             accountViewModel.upisi(applicationContext ,user, onSuccess = ::onSuccess, onError = ::onError )
             }
+
         bottomNavigation = findViewById(R.id.bottomNav)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false

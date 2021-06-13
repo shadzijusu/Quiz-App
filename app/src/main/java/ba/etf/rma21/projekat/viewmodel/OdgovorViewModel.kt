@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.Pitanje
@@ -19,20 +20,21 @@ class OdgovorViewModel {
     fun addOdgovor(
         onSuccess: (bodovi: Int) -> Unit,
         onError: () -> Unit,
-        idKvizTaken: Int, idPitanje: Int, odgovor: Int
+        idKvizTaken: Int, idPitanje: Int, odgovor: Int, context: Context
     ) {
         // Create a new coroutine on the UI thread
         scope.launch {
             // Make the network call and suspend execution until it finishes
+            OdgovorRepository.setContext(context)
             val result = OdgovorRepository.postaviOdgovorKviz(idKvizTaken, idPitanje, odgovor)
 
             // Display result of the network request to the user
             when (result) {
                 is Int -> {
-                    onSuccess?.invoke(result)
-                    bodovi.postValue(result!!)
+                    onSuccess.invoke(result)
+                    bodovi.postValue(result)
                 }
-                else -> onError?.invoke()
+                else -> onError.invoke()
             }
         }
     }
@@ -49,10 +51,10 @@ class OdgovorViewModel {
             // Display result of the network request to the user
             when (result) {
                 is List<Odgovor> -> {
-                    onSuccess?.invoke(result)
+                    onSuccess.invoke(result)
                     odgovori.postValue(result!!)
                 }
-                else -> onError?.invoke()
+                else -> onError.invoke()
             }
         }
 
