@@ -15,7 +15,6 @@ data class Kviz(
     @ColumnInfo(name = "trajanje")  @SerializedName("trajanje") var trajanje: Int,
     @ColumnInfo(name = "nazivPredmeta")  @SerializedName("nazivPredmeta") var nazivPredmeta: String,
     @ColumnInfo(name = "datumRada") @SerializedName("datumRada") var datumRada: String?,
-    @ColumnInfo(name = "osvojeniBodovi")  @SerializedName("osvojeniBodovi") var osvojeniBodovi: Float
-
-
+    @ColumnInfo(name = "osvojeniBodovi")  @SerializedName("osvojeniBodovi") var osvojeniBodovi: Float,
+    @ColumnInfo(name = "predan") @SerializedName("predan") var predan : Boolean
 )

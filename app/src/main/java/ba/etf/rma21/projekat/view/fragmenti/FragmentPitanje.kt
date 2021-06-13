@@ -19,6 +19,7 @@ import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.staticdata.kvizoviSPitanjima
+import ba.etf.rma21.projekat.viewmodel.DBViewModel
 import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
 import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
@@ -35,6 +36,7 @@ class FragmentPitanje() : Fragment() {
     private lateinit var tekstPitanja: TextView
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var navigacijaPitanja: NavigationView
+    private var dbViewModel = DBViewModel()
     private lateinit var pitanje: Pitanje
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
     private var odgovorViewModel = OdgovorViewModel()
@@ -186,6 +188,11 @@ override fun onCreateView(
                     )
                 }
                 delay(1000)
+                dbViewModel.update(
+                    onSuccess = ::onSuccessUpdate,
+                    onError = ::onError,
+                    context = requireContext()
+                )
             }
             if (pitanjeKvizListViewModel.dajOdgovor(pitanje) == null)
                 pitanjeKvizListViewModel.addAnswer(pitanje, position)
@@ -244,4 +251,8 @@ fun onSuccessPitanja(pitanja: List<Pitanje>) {
     val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
     toast.show()
 }
+    fun onSuccessUpdate(upis: Boolean) {
+        val toast = Toast.makeText(context, "Update", Toast.LENGTH_SHORT)
+        toast.show()
+    }
 }

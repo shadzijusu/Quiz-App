@@ -92,11 +92,32 @@ object OdgovorRepository {
             }
                 var percentage = (bodovi * 100).toInt()
             if(pitanje != idPitanje)
-                db.odgovorDao().dodajOdgovor(Random.nextInt(), odgovor, idPitanje, kvizId, idKvizTaken)
+                db.odgovorDao().dodajOdgovor(Random.nextInt(), odgovor, idPitanje, kvizId, idKvizTaken, percentage)
             return@withContext percentage
         }
     }
+    suspend fun predajOdgovore(idKviz : Int) {
+        withContext(Dispatchers.IO) {
+            var greska = 0
+            var db = AppDatabase.getInstance(context)
+            var odgovori = db.odgovorDao().dajOdgovoreZaKviz(idKviz)
+            for(odg in  odgovori) {
+            val jsonObject = JsonObject()
+                jsonObject.addProperty("odgovor", odg.odgovoreno)
+                jsonObject.addProperty("pitanje", odg.PitanjeId)
+                jsonObject.addProperty("bodovi", odg.bodovi)
+                var result = ApiAdapter.retrofit.dodajOdgovor(odg.KvizTakenId, jsonObject)
+                var resultBody = result.body()
+                if (resultBody != null) {
+                    if (resultBody.message != null) greska = -1
+                    }
+                }
+            if(greska == 0) {
+                db.kvizDao().predaj(idKviz)
+            }
 
+        }
+    }
 //    suspend fun postaviOdgovorKviz(idKvizTaken: Int, idPitanje: Int, odgovor: Int): Int? {
 //        return withContext(Dispatchers.IO) {
 //            var bodovi = 0f

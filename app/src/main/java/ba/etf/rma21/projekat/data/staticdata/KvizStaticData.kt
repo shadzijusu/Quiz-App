@@ -110,7 +110,7 @@ fun dajKviz(nazivKviza: String): Kviz {
 //            Date(121, 7, 30), Date(0, 0, 0), 2,
 //            "PON11:30", null
 //        )
-      Kviz(1, "", "", "",  0, "", "", 0f)
+      Kviz(1, "", "", "",  0, "", "", 0f, false)
 
     return kviz
 }

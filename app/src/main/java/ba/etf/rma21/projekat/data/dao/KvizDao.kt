@@ -13,4 +13,10 @@ interface KvizDao {
     fun izbrisiSve()
     @Query("SELECT * from Kviz")
     fun getMyKvizes() : List<Kviz>
+
+    @Query("UPDATE Kviz SET predan = 'true' where id = :id")
+    fun predaj(id: Int)
+
+    @Query("SELECT predan from Kviz where id = :id")
+    fun isPredan(id : Int) : Boolean
 }

@@ -22,10 +22,7 @@ import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.Pitanje
-import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
-import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
-import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
-import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
+import ba.etf.rma21.projekat.viewmodel.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +40,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
     private lateinit var pitanja: List<Pitanje>
     private lateinit var pitanje: Pitanje
     private var pitanjeKvizListViewModel = PitanjeKvizListViewModel()
+    private var DBViewModel = DBViewModel()
     private var pitanjeFragment = FragmentPitanje()
     private var kvizListViewModel = KvizListViewModel()
     private var odabranoPitanje = 0
@@ -80,6 +78,11 @@ class FragmentPokusaj() : Fragment(), Serializable {
                 R.id.predajKviz -> {
                     navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
                     klikPredaj.put(idKviza, true)
+                    odgovorListViewModel.predaj(
+                        idKviza = idKviza,
+                        context = requireContext()
+                    )
+
                     val porukaFragment =
                         FragmentPoruka.newInstance()
                     otvoriPoruku(porukaFragment)

@@ -59,4 +59,16 @@ class OdgovorViewModel {
         }
 
     }
+    fun predaj(
+        idKviza: Int,
+        context : Context
+    ) {
+        scope.launch {
+            // Make the network call and suspend execution until it finishes
+            OdgovorRepository.setContext(context)
+            val result = OdgovorRepository.predajOdgovore(idKviza)
+
+        }
+
+    }
 }

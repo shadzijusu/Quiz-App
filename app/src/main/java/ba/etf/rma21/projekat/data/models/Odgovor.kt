@@ -11,7 +11,7 @@ data class Odgovor(
     @ColumnInfo(name = "odgovoreno") @SerializedName("odgovoreno") var odgovoreno: Int,
     @ColumnInfo(name = "PitanjeId") @SerializedName("PitanjeId") var PitanjeId: Int,
     @ColumnInfo(name = "KvizId") @SerializedName("KvizId") var KvizId: Int,
-    @ColumnInfo(name = "KvizTakenId") @SerializedName("KvizTakenId") var KvizTakenId: Int
-
+    @ColumnInfo(name = "KvizTakenId") @SerializedName("KvizTakenId") var KvizTakenId: Int,
+    @ColumnInfo(name = "bodovi") @SerializedName("bodovi") var bodovi : Float
     )
 
