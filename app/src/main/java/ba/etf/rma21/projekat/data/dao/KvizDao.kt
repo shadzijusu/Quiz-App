@@ -11,4 +11,6 @@ interface KvizDao {
     suspend fun insertAll(kvizovi : List<Kviz>)
     @Query("DELETE from Kviz")
     fun izbrisiSve()
+    @Query("SELECT * from Kviz")
+    fun getMyKvizes() : List<Kviz>
 }

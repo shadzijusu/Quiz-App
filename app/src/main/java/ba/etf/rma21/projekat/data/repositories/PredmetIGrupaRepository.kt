@@ -91,6 +91,18 @@ object PredmetIGrupaRepository {
                         if (kvizovi != null) {
                             db.kvizDao().insertAll(kvizovi)
                         }
+                        //pitanja za kviz dodajemo u bazu
+                        for(kviz in kvizovi) {
+                            var pitanja = PitanjeKvizRepository.getPitanja(kviz.id)
+                            println(pitanja)
+                            if (pitanja != null) {
+                                for(pitanje in pitanja)
+                                    pitanje.kvizId = kviz.id
+                            }
+                            if (pitanja != null) {
+                                db.pitanjeDao().insertAll(pitanja)
+                            }
+                        }
                     }
                 }
             }

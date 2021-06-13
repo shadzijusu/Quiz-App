@@ -52,123 +52,147 @@ class ListaKvizovaAdapter(
 
 
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
-        //naziv predmeta add
-        var grupe = arrayListOf<Grupa>()
 
-
-        holder.nazivKviza.text = kvizovi[position].naziv
-        holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
-        val pattern = "dd.MM.yyyy"
-        val simpleDateFormat = SimpleDateFormat(pattern)
-
-        holder.itemView.setOnClickListener {
-            GlobalScope.launch(Dispatchers.IO) {
-                launch(Dispatchers.IO) {
-                    pitanjeKvizListViewModel.dajPitanja(
-                        onSuccess = ::onSuccess,
-                        onError = ::onError,
-                        idKviza = kvizovi[position].id
-                    )
-                }
-                delay(1000)
-                var zapoceti = 0
-                if (kvizITakenId.containsKey(kvizovi[position].id)) {
-                    zapoceti = kvizITakenId[kvizovi[position].id]!!
-                } else {
-                    launch(Dispatchers.IO) {
-                        kvizTakenViewModel.zapocniKviz(
-                            onSuccess = ::onSuccessPocni,
-                            onError = ::onError,
-                            idKviza = kvizovi[position].id
-                        )
-                    }
-                    delay(1000)
-                    zapoceti = kvizTakenViewModel.zapoceti.value?.id!!
-                    kvizITakenId.put(kvizovi[position].id, zapoceti)
-                }
-
-                var bundle = Bundle()
-                var questions = pitanjeKvizListViewModel.pitanja.value
-                var pokusajFragment = questions?.let { it1 -> FragmentPokusaj(it1) }
-                bundle.putString("naziv", kvizovi[position].naziv)
-                if (zapoceti != null) {
-                    bundle.putInt("idKvizTaken", zapoceti)
-                }
-                bundle.putInt("idKviza", kvizovi[position].id)
-                pokusajFragment?.arguments = bundle
-
-                if (pokusajFragment != null) {
-                    fragment.activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.container, pokusajFragment)?.commit()
-
-                }
-            }
-        }
-
-        GlobalScope.launch(Dispatchers.IO) {
-            launch(Dispatchers.IO) {
-                predmetListViewModel.getAllGroups(
-                    onSuccess = ::onSuccessGrupe,
+        GlobalScope.launch {
+            launch {
+                kvizListViewModel.getMyDB(
+                    context = context,
+                    onSuccess = ::onSuccessKvizovi,
                     onError = ::onError
-                )
-            }
-            delay(1000)
-            grupe = predmetListViewModel.grupe.value as ArrayList<Grupa>
-            var grupa = Grupa(0, "", 0)
 
-            for (group in grupe) {
-                launch(Dispatchers.IO) {
-                    kvizListViewModel.getKvizoveZaGrupu(
-                        onSuccess = ::onSuccessKvizovi,
-                        onError = ::onError,
-                        idGrupe = group.id
-                    )
-                }
-                delay(1000)
-                var nadjen = false
-                for (kviz in kvizListViewModel.kvizoviZaGrupu.value!!) {
-                    if (kviz.id == kvizovi[position].id) {
-                        grupa = group
-                        nadjen = true
-                        break
-                    }
-                }
-                if (nadjen)
-                    break
-            }
-            launch(Dispatchers.IO) {
-                predmetListViewModel.getPredmet(
-                    onSuccess = ::onSuccessPredmet,
-                    onError = ::onError,
-                    predmetId = grupa.PredmetId
                 )
             }
             delay(500)
-            kvizovi[position].nazivPredmeta = predmetListViewModel.predmet.value!!.naziv
-            val refresh = Handler(Looper.getMainLooper())
-            refresh.post {
-                holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
+            var tu = false
+            for (kviz in kvizListViewModel.kvizoviDB.value!!) {
+                if (kviz.id == kvizovi[position].id) {
+                    tu = true
+                    break
+                }
             }
-            delay(10)
-        }
-        GlobalScope.launch(Dispatchers.IO) {
-            launch {
-                kvizTakenViewModel.zapocetiKvizoviTaken(
-                    onSuccess = ::onSuccessTakenKvizovi,
-                    onError = ::onError
-                )
-            }
-            delay(1000)
-            var quizzes = kvizTakenViewModel.kvizovi.value
-            if (quizzes != null) {
-                for (kviz in quizzes)
-                    if (kviz.KvizId == kvizovi[position].id) {
-                        kvizovi[position].datumRada = kviz.datumRada
-                        kvizovi[position].osvojeniBodovi = kviz.osvojeniBodovi
+            if (tu) {
+                val refresh = Handler(Looper.getMainLooper())
+                refresh.post {
+                    holder.nazivKviza.text = kvizovi[position].naziv
+                    holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
+                    holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
+                }
+            } else {
+
+                //naziv predmeta add
+                var grupe = arrayListOf<Grupa>()
+
+
+                val pattern = "dd.MM.yyyy"
+                val simpleDateFormat = SimpleDateFormat(pattern)
+
+                holder.itemView.setOnClickListener {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        launch(Dispatchers.IO) {
+                            pitanjeKvizListViewModel.dajPitanja(
+                                onSuccess = ::onSuccess,
+                                onError = ::onError,
+                                idKviza = kvizovi[position].id
+                            )
+                        }
+                        delay(1000)
+                        var zapoceti = 0
+                        if (kvizITakenId.containsKey(kvizovi[position].id)) {
+                            zapoceti = kvizITakenId[kvizovi[position].id]!!
+                        } else {
+                            launch(Dispatchers.IO) {
+                                kvizTakenViewModel.zapocniKviz(
+                                    onSuccess = ::onSuccessPocni,
+                                    onError = ::onError,
+                                    idKviza = kvizovi[position].id
+                                )
+                            }
+                            delay(1000)
+                            zapoceti = kvizTakenViewModel.zapoceti.value?.id!!
+                            kvizITakenId.put(kvizovi[position].id, zapoceti)
+                        }
+
+                        var bundle = Bundle()
+                        var questions = pitanjeKvizListViewModel.pitanja.value
+                        var pokusajFragment = questions?.let { it1 -> FragmentPokusaj(it1) }
+                        bundle.putString("naziv", kvizovi[position].naziv)
+                        if (zapoceti != null) {
+                            bundle.putInt("idKvizTaken", zapoceti)
+                        }
+                        bundle.putInt("idKviza", kvizovi[position].id)
+                        pokusajFragment?.arguments = bundle
+
+                        if (pokusajFragment != null) {
+                            fragment.activity?.supportFragmentManager?.beginTransaction()
+                                ?.replace(R.id.container, pokusajFragment)?.commit()
+
+                        }
                     }
-            }
-            val refresh = Handler(Looper.getMainLooper())
-            refresh.post {
+                }
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    launch(Dispatchers.IO) {
+                        predmetListViewModel.getAllGroups(
+                            onSuccess = ::onSuccessGrupe,
+                            onError = ::onError
+                        )
+                    }
+                    delay(1000)
+                    grupe = predmetListViewModel.grupe.value as ArrayList<Grupa>
+                    var grupa = Grupa(0, "", 0)
+
+                    for (group in grupe) {
+                        launch(Dispatchers.IO) {
+                            kvizListViewModel.getKvizoveZaGrupu(
+                                onSuccess = ::onSuccessKvizovi,
+                                onError = ::onError,
+                                idGrupe = group.id
+                            )
+                        }
+                        delay(1000)
+                        var nadjen = false
+                        for (kviz in kvizListViewModel.kvizoviZaGrupu.value!!) {
+                            if (kviz.id == kvizovi[position].id) {
+                                grupa = group
+                                nadjen = true
+                                break
+                            }
+                        }
+                        if (nadjen)
+                            break
+                    }
+                    launch(Dispatchers.IO) {
+                        predmetListViewModel.getPredmet(
+                            onSuccess = ::onSuccessPredmet,
+                            onError = ::onError,
+                            predmetId = grupa.PredmetId
+                        )
+                    }
+                    delay(500)
+                    kvizovi[position].nazivPredmeta = predmetListViewModel.predmet.value!!.naziv
+                    val refresh = Handler(Looper.getMainLooper())
+                    refresh.post {
+                        holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
+                    }
+                    delay(10)
+                }
+                GlobalScope.launch(Dispatchers.IO) {
+                    launch {
+                        kvizTakenViewModel.zapocetiKvizoviTaken(
+                            onSuccess = ::onSuccessTakenKvizovi,
+                            onError = ::onError
+                        )
+                    }
+                    delay(1000)
+                    var quizzes = kvizTakenViewModel.kvizovi.value
+                    if (quizzes != null) {
+                        for (kviz in quizzes)
+                            if (kviz.KvizId == kvizovi[position].id) {
+                                kvizovi[position].datumRada = kviz.datumRada
+                                kvizovi[position].osvojeniBodovi = kviz.osvojeniBodovi
+                            }
+                    }
+
 //                if (kvizovi[position].datumRada != null) {
 //                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
 //                    holder.stanjeKviza.setImageResource(R.drawable.plava)
@@ -189,9 +213,16 @@ class ListaKvizovaAdapter(
 //                    holder.osvojeniBodovi.text = ""
 //                } else {
 //                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka)
-                    holder.stanjeKviza.setImageResource(R.drawable.zelena)
-                    holder.osvojeniBodovi.text = ""
+                    val refresh = Handler(Looper.getMainLooper())
+                    refresh.post {
+
+                        holder.nazivKviza.text = kvizovi[position].naziv
+                        holder.trajanjeKviza.text = kvizovi[position].trajanje.toString()
+                        holder.stanjeKviza.setImageResource(R.drawable.zelena)
+                        holder.osvojeniBodovi.text = ""
+                    }
                 }
+            }
             }
     }
 

@@ -9,7 +9,7 @@ import ba.etf.rma21.projekat.data.models.*
 
 
 @Database(entities = arrayOf(Kviz::class, Pitanje::class,
-    Odgovor::class, Grupa::class, Predmet::class,Account::class), version = 1)
+    Odgovor::class, Grupa::class, Predmet::class,Account::class), version = 2)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun accountDao(): AccountDao
     abstract fun kvizDao(): KvizDao
@@ -38,6 +38,7 @@ abstract class AppDatabase: RoomDatabase() {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "RMA21DB"
-            ).build()
+            ).
+            build()
     }
 }

@@ -10,5 +10,6 @@ data class Pitanje(
     @ColumnInfo(name = "naziv") @SerializedName("naziv") var naziv: String,
     @ColumnInfo(name = "tekstPitanja") @SerializedName("tekstPitanja") var tekstPitanja: String,
     @ColumnInfo(name = "opcije") @SerializedName("opcije") var opcije: String,
-    @ColumnInfo(name = "tacan")@SerializedName("tacan") var tacan: Int
+    @ColumnInfo(name = "tacan")@SerializedName("tacan") var tacan: Int,
+    @ColumnInfo(name = "kvizId") var kvizId : Int
 )

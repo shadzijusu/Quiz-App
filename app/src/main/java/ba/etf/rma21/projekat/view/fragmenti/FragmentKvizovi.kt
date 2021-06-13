@@ -108,7 +108,8 @@ class FragmentKvizovi : Fragment() {
                         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
                     }
                     else -> {
-                        kvizListViewModel.getMyKvizes(
+                        kvizListViewModel.getMyDB(
+                            context = requireContext(),
                             onSuccess = ::onSuccess,
                             onError = ::onError
                         )

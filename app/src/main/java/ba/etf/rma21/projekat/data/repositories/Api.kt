@@ -60,7 +60,7 @@ interface Api {
     @GET("kviz/{id}/pitanja")
     suspend fun dajPitanja(
         @Path("id") id : Int
-    ) : Response<List<Pitanje>>
+    ) : Response<List<PitanjeResponse>>
 
     @GET("kviz/{id}/grupa")
     suspend fun dajDostupneGrupe(

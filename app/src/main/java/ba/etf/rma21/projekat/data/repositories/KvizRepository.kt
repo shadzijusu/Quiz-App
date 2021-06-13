@@ -1,5 +1,7 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import android.content.Context
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.staticdata.*
@@ -9,7 +11,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 object KvizRepository {
-
+    private lateinit var context: Context
+    fun setContext(_context: Context){
+        context=_context
+    }
     fun getMyKvizes(): List<Kviz> {
         return myKvizes()
     }
@@ -75,6 +80,13 @@ object KvizRepository {
             var response = ApiAdapter.retrofit.dajUpisane(idGrupe)
             val responseBody = response.body()
             return@withContext responseBody
+        }
+    }
+    suspend fun getMyDb() : List<Kviz?> {
+        return withContext(Dispatchers.IO) {
+            var db = AppDatabase.getInstance(KvizRepository.context)
+            var kvizovi = db.kvizDao().getMyKvizes()
+            return@withContext kvizovi
         }
     }
 

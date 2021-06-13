@@ -15,9 +15,27 @@ class KvizListViewModel() {
      val scope = CoroutineScope(
         Job() + Dispatchers.Main)
     var kvizovi = MutableLiveData<List<Kviz>>()
+    var kvizoviDB = MutableLiveData<List<Kviz>>()
+
     var kvizoviZaGrupu = MutableLiveData<List<Kviz>>()
     var dostupne = MutableLiveData<List<Grupa>>()
 
+    fun getMyDB(onSuccess: (kvizovi: List<Kviz>) -> Unit,
+                onError: () -> Unit,
+    context: Context) {
+        scope.launch {
+            KvizRepository.setContext(context)
+            val result = KvizRepository.getMyDb()
+            when (result) {
+                is List<*> -> {
+                    onSuccess?.invoke(result as List<Kviz>)
+                    kvizoviDB.postValue(result as List<Kviz>?)
+                }
+                else -> onError?.invoke()
+            }
+
+        }
+    }
 
     fun getMyKvizes( onSuccess: (kvizovi: List<Kviz>) -> Unit,
                 onError: () -> Unit){

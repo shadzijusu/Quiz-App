@@ -15,7 +15,18 @@ object PitanjeKvizRepository {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajPitanja(idKviza)
             val responseBody = response.body()
-            return@withContext responseBody
+            var pitanja = arrayListOf<Pitanje>()
+            if (responseBody != null) {
+                for(quest in responseBody){
+                    var id = quest.id
+                    var naziv = quest.naziv
+                    var tacan = quest.tacan
+                    var tekst = quest.tekstPitanja
+                    var opcije = quest.opcije[0] + "," + quest.opcije[1] + "," + quest.opcije[2]
+                    pitanja.add(Pitanje(id, naziv, tekst, opcije, tacan, idKviza))
+                }
+            }
+            return@withContext pitanja
         }
     }
 

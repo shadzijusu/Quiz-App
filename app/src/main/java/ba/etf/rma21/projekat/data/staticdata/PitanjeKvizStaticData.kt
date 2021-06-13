@@ -54,7 +54,7 @@ fun pitanje(nazivKviza: String): Pitanje {
 //                0
 //            )
 //            else ->
-            Pitanje(0,"", "", "1,2,3", 1)
+            Pitanje(0,"", "", "1,2,3", 1, 0)
     return pitanje
 }
 

@@ -52,7 +52,7 @@ object OdgovorRepository {
             var pitanja = listOf<Pitanje>()
             if(kvizId != 0) {
                 launch {
-                    pitanja = ApiAdapter.retrofit.dajPitanja(kvizId).body()!!
+                    pitanja = PitanjeKvizRepository.getPitanja(kvizId)!!
                 }
                 delay(1000)
             }
