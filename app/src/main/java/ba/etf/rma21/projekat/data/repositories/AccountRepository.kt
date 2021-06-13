@@ -11,12 +11,16 @@ object AccountRepository {
         context=_context
     }
         //TODO Ovdje trebate dodati hash string vašeg accounta
-        var acHash: String = ""
+        var acHash: String = "9d53bd38-18d2-49ec-889f-703ab44db589"
 
          suspend fun postaviHash(acHash: String): Boolean {
              return withContext(Dispatchers.IO) {
                  var db = AppDatabase.getInstance(context)
                  db.accountDao().izbrisiSve()
+                 db.grupaDao().izbrisiSve()
+                 db.kvizDao().izbrisiSve()
+                 db.predmetDao().izbrisiSve()
+                 db.pitanjeDao().izbrisiSve()
                  db.accountDao().upisi(acHash, null.toString())
                  return@withContext true
              }

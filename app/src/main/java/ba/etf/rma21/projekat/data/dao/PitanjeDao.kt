@@ -4,4 +4,6 @@ import androidx.room.Dao
 import androidx.room.Query
 @Dao
 interface PitanjeDao {
+    @Query("DELETE from Pitanje")
+    fun izbrisiSve()
 }

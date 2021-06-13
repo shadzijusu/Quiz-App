@@ -9,4 +9,10 @@ interface PredmetDao {
 
     @Query("SELECT * from Predmet where godina = :godina")
     fun dajPredmeteZaGodinu(godina: Int) : List<Predmet>
+
+    @Query("INSERT INTO Predmet VALUES(:id, :naziv, :godina)")
+    fun dodajPredmet(id : Int, naziv : String, godina : Int)
+
+    @Query("DELETE from Predmet")
+    fun izbrisiSve()
 }
