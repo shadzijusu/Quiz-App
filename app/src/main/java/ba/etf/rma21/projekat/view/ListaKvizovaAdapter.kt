@@ -65,9 +65,8 @@ class ListaKvizovaAdapter(
             delay(500)
             var quizzes = kvizListViewModel.kvizoviDB.value
             if (quizzes != null) {
-                for(kviz in quizzes) {
-                    if(kviz.id == kvizovi[position].id)
-                    {
+                for (kviz in quizzes) {
+                    if (kviz.id == kvizovi[position].id) {
                         kvizovi[position].nazivPredmeta = kviz.nazivPredmeta
                         break
                     }
@@ -77,7 +76,7 @@ class ListaKvizovaAdapter(
             refresh.post {
                 holder.nazivPredmeta.text = kvizovi[position].nazivPredmeta
             }
-            if(kvizovi[position].nazivPredmeta != null && kvizovi[position].nazivPredmeta.isEmpty()) {
+            if (kvizovi[position].nazivPredmeta != null && kvizovi[position].nazivPredmeta.isEmpty()) {
                 GlobalScope.launch(Dispatchers.IO) {
                     launch(Dispatchers.IO) {
                         predmetListViewModel.getAllGroups(
@@ -190,8 +189,31 @@ class ListaKvizovaAdapter(
                         kvizovi[position].osvojeniBodovi = kviz.osvojeniBodovi
                     }
             }
-            val refresh = Handler(Looper.getMainLooper())
-            refresh.post {
+
+            GlobalScope.launch(Dispatchers.IO) {
+                launch {
+                    kvizListViewModel.isPredan(
+                        kvizId = kvizovi[position].id,
+                        context = context
+                    )
+                }
+                delay(500)
+                if (kvizListViewModel.predan.value == true) {
+                    val refresh = Handler(Looper.getMainLooper())
+                    refresh.post {
+                        holder.stanjeKviza.setImageResource(R.drawable.plava)
+                        holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
+                        holder.datumKviza.text = kvizovi[position].datumRada
+                    }
+                } else {
+                    val refresh = Handler(Looper.getMainLooper())
+                    refresh.post {
+                        holder.datumKviza.text = kvizovi[position].datumPocetka
+                        holder.stanjeKviza.setImageResource(R.drawable.zelena)
+                        holder.osvojeniBodovi.text = ""
+                    }
+                }
+
 //                if (kvizovi[position].datumRada != null) {
 //                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumRada)
 //                    holder.stanjeKviza.setImageResource(R.drawable.plava)
@@ -212,11 +234,9 @@ class ListaKvizovaAdapter(
 //                    holder.osvojeniBodovi.text = ""
 //                } else {
 //                    holder.datumKviza.text = simpleDateFormat.format(kvizovi[position].datumPocetka.)
-                    holder.datumKviza.text = kvizovi[position].datumPocetka
-                    holder.stanjeKviza.setImageResource(R.drawable.zelena)
-                    holder.osvojeniBodovi.text = ""
-                }
+
             }
+        }
     }
 
     fun updateKvizove(kvizovi: List<Kviz>) {

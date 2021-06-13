@@ -14,8 +14,10 @@ import kotlinx.coroutines.launch
 class KvizListViewModel {
      val scope = CoroutineScope(
         Job() + Dispatchers.Main)
+    var predan = MutableLiveData<Boolean>(false)
     var kvizovi = MutableLiveData<List<Kviz>>()
     var kvizoviDB = MutableLiveData<List<Kviz>>()
+    var bodovi = MutableLiveData<Float>()
 
     var kvizoviZaGrupu = MutableLiveData<List<Kviz>>()
     var dostupne = MutableLiveData<List<Grupa>>()
@@ -36,6 +38,24 @@ class KvizListViewModel {
 
         }
     }
+    fun isPredan(kvizId: Int,
+                context: Context) {
+        scope.launch {
+            KvizRepository.setContext(context)
+            val result = KvizRepository.isPredan(kvizId)
+            predan.postValue(result)
+
+        }
+    }
+    fun getBodove(kvizId: Int,
+                 context: Context) {
+        scope.launch {
+            KvizRepository.setContext(context)
+            val result = KvizRepository.getBodove(kvizId)
+            bodovi.postValue(result!!)
+
+        }
+    }
 
     fun getMyKvizes( onSuccess: (kvizovi: List<Kviz>) -> Unit,
                 onError: () -> Unit){
@@ -48,7 +68,7 @@ class KvizListViewModel {
             when (result) {
                 is List<Kviz> -> {
                     onSuccess.invoke(result)
-                    kvizovi.postValue(result)
+                    kvizovi.postValue(result!!)
                 }
                 else-> onError.invoke()
             }
@@ -92,7 +112,7 @@ class KvizListViewModel {
             when (result) {
                 is List<Kviz> -> {
                     onSuccess.invoke(result)
-                    kvizoviZaGrupu.postValue(result)
+                    kvizoviZaGrupu.postValue(result!!)
                 }
                 else-> onError.invoke()
             }
@@ -108,7 +128,7 @@ class KvizListViewModel {
             when (result) {
                 is List<Grupa> -> {
                     onSuccess.invoke(result)
-                    dostupne.postValue(result)
+                    dostupne.postValue(result!!)
                 }
                 else-> onError.invoke()
             }

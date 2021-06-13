@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import android.annotation.SuppressLint
 import android.content.Context
 import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Grupa
@@ -10,6 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@SuppressLint("StaticFieldLeak")
 object KvizRepository {
     private lateinit var context: Context
     fun setContext(_context: Context){
@@ -89,7 +91,20 @@ object KvizRepository {
             return@withContext kvizovi
         }
     }
-
+    suspend fun isPredan(kvizId : Int) : Boolean{
+        return withContext(Dispatchers.IO) {
+            var db = AppDatabase.getInstance(context)
+            var isP = db.kvizDao().isPredan(kvizId)
+            return@withContext isP
+        }
+}
+suspend fun getBodove(kvizId : Int) : Float{
+    return withContext(Dispatchers.IO) {
+        var db = AppDatabase.getInstance(KvizRepository.context)
+        var points = db.kvizDao().getBodove(kvizId)
+        return@withContext points
+    }
+}
     suspend fun dostupne(idKviza: Int): List<Grupa>? {
         return withContext(Dispatchers.IO) {
             var response = ApiAdapter.retrofit.dajDostupneGrupe(idKviza)

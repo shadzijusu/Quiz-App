@@ -116,28 +116,29 @@ class FragmentPokusaj() : Fragment(), Serializable {
         super.onResume()
         GlobalScope.launch(Dispatchers.IO) {
             launch {
-                odgovorListViewModel.getOdgovori(
-                    onSuccess = ::onSuccessOdgovori,
-                    onError = ::onError,
-                    idKviza = idKviza
+                odgovorListViewModel.getOdgovoriDB(
+                    idKvizTaken = idKvizTaken,
+                    idKviza = idKviza,
+                    context = requireContext()
                 )
             }
             delay(1000)
             var ima = false
-            var odgovori = odgovorListViewModel.odgovori.value
+            var odgovori = odgovorListViewModel.odgovoriDB.value
             if (odgovori != null) {
                 ima = true
             }
             if (ima) {
                 launch{
-                    pitanjeKvizListViewModel.dajPitanja(
+                    pitanjeKvizListViewModel.dajPitanjaDB(
                         onSuccess = ::onSuccessPitanja,
                         onError = ::onError,
-                        idKviza = idKviza
+                        idKviza = idKviza,
+                        context = requireContext()
                     )
                 }
                 delay(1000)
-                var questions = pitanjeKvizListViewModel.pitanja.value
+                var questions = pitanjeKvizListViewModel.pitanjaDB.value
                 if (odgovori != null) {
                     for(odgovor in odgovori) {
                         if (questions != null) {
@@ -241,24 +242,14 @@ class FragmentPokusaj() : Fragment(), Serializable {
     fun otvoriPoruku(porukaFragment: FragmentPoruka) {
         GlobalScope.launch(Dispatchers.IO) {
             var percentage: Int = 0
-            
             launch {
-                kvizTakenViewModel.zapocetiKvizoviTaken(
-                    onSuccess = ::onSuccessTaken,
-                    onError = ::onError
+                kvizListViewModel.getBodove(
+                    kvizId = idKviza,
+                    context = requireContext()
                 )
             }
             delay(500)
-            var kvizoviTaken = kvizTakenViewModel.kvizovi.value
-            if (kvizoviTaken != null) {
-                for (kvizT in kvizoviTaken) {
-                    if (kvizT.id == idKvizTaken) {
-                        percentage = kvizT.osvojeniBodovi.toInt()
-                        break
-                    }
-                }
-            }
-            delay(2000)
+            percentage = kvizListViewModel.bodovi.value!!.toInt()
             var bundle1 = this@FragmentPokusaj.arguments
             nazivKviza = bundle1?.getString("naziv").toString()
             var bundle = Bundle()

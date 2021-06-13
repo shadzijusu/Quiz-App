@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import kotlin.random.Random
 
 
@@ -34,6 +35,13 @@ object OdgovorRepository {
             var response = ApiAdapter.retrofit.dajOdgovore(idKvizTaken)
             val responseBody = response.body()
             return@withContext responseBody
+        }
+    }
+    suspend fun getOdgovoriKvizDB(idKviza : Int, idKvizTaken: Int): List<Odgovor>? {
+        return withContext(Dispatchers.IO) {
+            var db = AppDatabase.getInstance(context)
+            var odgovori = db.odgovorDao().getOdgovore(idKviza, idKvizTaken)
+            return@withContext odgovori
         }
     }
     suspend fun postaviOdgovorKviz(idKvizTaken: Int, idPitanje: Int, odgovor: Int) : Int {
@@ -66,7 +74,7 @@ object OdgovorRepository {
             if(idKvizTaken != 0) {
                 var odgovori = listOf<Odgovor>()
                 launch {
-                    odgovori = db.odgovorDao().getOdgovore(idKvizTaken)
+                    odgovori = db.odgovorDao().getOdgovore(kvizId, idKvizTaken)
                 }
                 delay(1000)
                 var brojTacnih = 0
@@ -91,6 +99,7 @@ object OdgovorRepository {
                 bodovi = brojTacnih.toFloat() / pitanja.size.toFloat()
             }
                 var percentage = (bodovi * 100).toInt()
+            db.kvizDao().dodajBodove(percentage, kvizId)
             if(pitanje != idPitanje)
                 db.odgovorDao().dodajOdgovor(Random.nextInt(), odgovor, idPitanje, kvizId, idKvizTaken, percentage)
             return@withContext percentage
@@ -113,7 +122,8 @@ object OdgovorRepository {
                     }
                 }
             if(greska == 0) {
-                db.kvizDao().predaj(idKviz)
+                var datumRada = Calendar.getInstance().time.toString()
+                db.kvizDao().predaj(idKviz, datumRada)
             }
 
         }

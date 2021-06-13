@@ -16,6 +16,8 @@ class OdgovorViewModel {
         Job() + Dispatchers.Main
     )
     var odgovori = MutableLiveData<List<Odgovor>>()
+    var odgovoriDB = MutableLiveData<List<Odgovor>>()
+
     var bodovi = MutableLiveData<Int>()
     fun addOdgovor(
         onSuccess: (bodovi: Int) -> Unit,
@@ -56,6 +58,21 @@ class OdgovorViewModel {
                 }
                 else -> onError.invoke()
             }
+        }
+
+    }
+    fun getOdgovoriDB(
+        idKvizTaken: Int,
+        idKviza : Int,
+        context: Context
+    ) {
+        scope.launch {
+            // Make the network call and suspend execution until it finishes
+            OdgovorRepository.setContext(context)
+            val result = OdgovorRepository.getOdgovoriKvizDB(idKviza, idKvizTaken)
+
+                    odgovoriDB.postValue(result!!)
+
         }
 
     }

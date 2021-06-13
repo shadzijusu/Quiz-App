@@ -10,8 +10,9 @@ interface OdgovorDao {
     @Query("INSERT INTO Odgovor VALUES(:id, :odgovoreno, :PitanjeId, :KvizId, :KvizTakenId, :bodovi)")
     fun dodajOdgovor(id : Int, odgovoreno : Int, PitanjeId : Int, KvizId: Int, KvizTakenId: Int, bodovi : Int)
 
-    @Query("SELECT * from Odgovor where KvizTakenId = :KvizTakenId")
-    fun getOdgovore(KvizTakenId : Int) : List<Odgovor>
+    @Query("SELECT * from Odgovor WHERE KvizTakenId = :KvizTakenId AND KvizId = :kvizId")
+    fun getOdgovore(kvizId: Int, KvizTakenId : Int) : List<Odgovor>
+
 
     @Query("DELETE from Odgovor")
     fun izbrisiSve()
