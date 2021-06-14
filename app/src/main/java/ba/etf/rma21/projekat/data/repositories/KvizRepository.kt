@@ -10,6 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.util.*
 
 @SuppressLint("StaticFieldLeak")
 object KvizRepository {
@@ -21,16 +23,24 @@ object KvizRepository {
         return myKvizes()
     }
 
-    fun getDone(): List<Kviz> {
-        return done()
+
+    suspend fun getFuture(): List<Kviz> {
+        return withContext(Dispatchers.IO) {
+            var db = AppDatabase.getInstance(KvizRepository.context)
+            var datum = Calendar.getInstance().time.year.toString() + "-" +  Calendar.getInstance().time.month.toString() + "-" +  Calendar.getInstance().time.day.toString()
+            println(datum)
+            var kvizovi = db.kvizDao().getFuture(datum)
+            return@withContext kvizovi
+        }
     }
 
-    fun getFuture(): List<Kviz> {
-        return future()
-    }
-
-    fun getNotTaken(): List<Kviz> {
-        return notTaken()
+    suspend fun getNotTaken(): List<Kviz> {
+        return withContext(Dispatchers.IO) {
+            var db = AppDatabase.getInstance(KvizRepository.context)
+            var datum = Calendar.getInstance().time.year.toString() + "-" +  Calendar.getInstance().time.month.toString() + "-" +  Calendar.getInstance().time.day.toString()
+            var kvizovi = db.kvizDao().getNotTaken(datum)
+            return@withContext kvizovi
+        }
     }
 
     // TODO: Implementirati i ostale potrebne metode
@@ -51,6 +61,13 @@ object KvizRepository {
         }
     }
 
+    suspend fun getDone(): List<Kviz>? {
+        return withContext(Dispatchers.IO) {
+            var db = AppDatabase.getInstance(KvizRepository.context)
+            var kvizovi = db.kvizDao().getDone()
+            return@withContext kvizovi
+        }
+    }
 
     suspend fun getById(id: Int): Kviz? {
         return withContext(Dispatchers.IO) {

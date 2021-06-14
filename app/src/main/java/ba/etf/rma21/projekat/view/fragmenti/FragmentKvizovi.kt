@@ -71,41 +71,30 @@ class FragmentKvizovi : Fragment() {
 
                     }
                     "Urađeni kvizovi" -> {
-                        GlobalScope.launch(Dispatchers.IO) {
-                            launch {
-                                kvizTakenViewModel.zapocetiKvizoviTaken(
-                                    onSuccess = ::onSuccessZapoceti,
-                                    onError = ::onError
-                                )
-                            }
-                            delay(1000)
-                            kvizTakenViewModel.zapocetiKvizovi(
+
+                            kvizListViewModel.getDone(
                                 onSuccess = ::onSuccess,
-                                onError = ::onError
+                                onError = ::onError,
+                                context = requireContext()
                             )
-                        }
                     }
 
 
                     "Budući kvizovi" -> {
-                        //datum pocetka im u buducnosti
-                        listaKvizovaAdapter =
-                            ListaKvizovaAdapter(
-                                kvizListViewModel.getFuture().sortedBy { it.datumPocetka },
-                                this@FragmentKvizovi
-                            )
-                        listaKvizova.adapter = listaKvizovaAdapter
-                        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
+
+                        kvizListViewModel.getFuture(
+                            onSuccess = ::onSuccess,
+                            onError = ::onError,
+                            context = requireContext()
+                        )
                     }
                     "Prošli kvizovi" -> {
-                        //datum kraj prosao nije u kviztaken
-                        listaKvizovaAdapter =
-                            ListaKvizovaAdapter(
-                                kvizListViewModel.getNotTaken().sortedBy { it.datumPocetka },
-                                this@FragmentKvizovi
-                            )
-                        listaKvizova.adapter = listaKvizovaAdapter
-                        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
+
+                        kvizListViewModel.getNotTaken(
+                            onSuccess = ::onSuccess,
+                            onError = ::onError,
+                            context = requireContext()
+                        )
                     }
                     else -> {
                         kvizListViewModel.getMyDB(
@@ -126,9 +115,9 @@ class FragmentKvizovi : Fragment() {
             )
         )
         listaKvizovaAdapter =
-            ListaKvizovaAdapter(kvizListViewModel.getDone(), this@FragmentKvizovi)
+            ListaKvizovaAdapter(listOf(), this@FragmentKvizovi)
         listaKvizova.adapter = listaKvizovaAdapter
-        listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
+        listaKvizovaAdapter.updateKvizove(listOf())
         return view
     }
 

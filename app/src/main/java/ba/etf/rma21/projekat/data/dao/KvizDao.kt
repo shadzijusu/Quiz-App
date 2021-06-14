@@ -25,4 +25,16 @@ interface KvizDao {
 
     @Query("SELECT osvojeniBodovi from Kviz where id = :kvizId")
     fun getBodove(kvizId: Int) : Float
+
+    //uradjen
+    @Query("SELECT * from Kviz where predan = 1")
+    fun getDone() : List<Kviz>
+
+    //future
+    @Query("SELECT * from Kviz where datumPocetka > :datum AND datumRada == 'NULL'")
+    fun getFuture(datum : String) : List<Kviz>
+
+    //not taken
+    @Query("SELECT * from Kviz where datumKraj < :datum AND predan = 0")
+    fun getNotTaken(datum : String) : List<Kviz>
 }

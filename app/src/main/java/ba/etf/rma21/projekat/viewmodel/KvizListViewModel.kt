@@ -18,6 +18,8 @@ class KvizListViewModel {
     var kvizovi = MutableLiveData<List<Kviz>>()
     var kvizoviDB = MutableLiveData<List<Kviz>>()
     var bodovi = MutableLiveData<Float>()
+    var future = MutableLiveData<List<Kviz>>()
+    var notTaken = MutableLiveData<List<Kviz>>()
 
     var kvizoviZaGrupu = MutableLiveData<List<Kviz>>()
     var dostupne = MutableLiveData<List<Grupa>>()
@@ -32,6 +34,21 @@ class KvizListViewModel {
                 is List<*> -> {
                     onSuccess.invoke(result as List<Kviz>)
                     kvizoviDB.postValue(result as List<Kviz>?)
+                }
+                else -> onError.invoke()
+            }
+
+        }
+    }
+    fun getDone(onSuccess: (kvizovi: List<Kviz>) -> Unit,
+                onError: () -> Unit,
+                context: Context) {
+        scope.launch {
+            KvizRepository.setContext(context)
+            val result = KvizRepository.getDone()
+            when (result) {
+                is List<*> -> {
+                    onSuccess.invoke(result as List<Kviz>)
                 }
                 else -> onError.invoke()
             }
@@ -135,16 +152,41 @@ class KvizListViewModel {
         }
     }
 
-    fun getDone(): List<Kviz> {
-        return KvizRepository.getDone()
+
+    fun getFuture(onSuccess: (kvizovi: List<Kviz>) -> Unit,
+                  onError: () -> Unit, context: Context) {
+            scope.launch{
+                // Make the network call and suspend execution until it finishes
+                KvizRepository.setContext(context)
+                val result = KvizRepository.getFuture()
+
+                // Display result of the network request to the user
+                when (result) {
+                    is List<Kviz> -> {
+                        onSuccess.invoke(result)
+                        future.postValue(result!!)
+                    }
+                    else-> onError.invoke()
+                }
+            }
     }
 
-    fun getFuture(): List<Kviz> {
-        return KvizRepository.getFuture()
-    }
+    fun getNotTaken(onSuccess: (kvizovi: List<Kviz>) -> Unit,
+                  onError: () -> Unit, context: Context) {
+        scope.launch{
+            // Make the network call and suspend execution until it finishes
+            KvizRepository.setContext(context)
+            val result = KvizRepository.getNotTaken()
 
-    fun getNotTaken(): List<Kviz> {
-        return KvizRepository.getNotTaken()
+            // Display result of the network request to the user
+            when (result) {
+                is List<Kviz> -> {
+                    onSuccess.invoke(result)
+                    notTaken.postValue(result!!)
+                }
+                else-> onError.invoke()
+            }
+        }
     }
 
     fun addMine(kviz: Kviz) {
