@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.repositories.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -132,6 +133,7 @@ class DBTests {
         val prije = DBRepository.updateNow()
         assertThat(prije, equalTo(false))
         PredmetIGrupaRepository.upisiUGrupu(1)
+        delay(1000)
         val kt = TakeKvizRepository.zapocniKviz(1)
         assertThat(kt, notNullValue())
         ktid = kt!!.id

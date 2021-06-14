@@ -99,9 +99,10 @@ class FragmentPitanje() : Fragment() {
                                 odgovor.odgovoreno,
                                 odgovoriLista.adapter.getItemId(odgovor.odgovoreno)
                             )
-                            odgovoriLista.isEnabled = false
 
                         }
+                        odgovoriLista.isEnabled = false
+
                         //bojimo navigaciju pitanja
                         var pozicija = 0
                         if (questions != null) {

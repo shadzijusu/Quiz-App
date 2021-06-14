@@ -6,6 +6,8 @@ import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.KvizTaken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.random.Random
 
 @SuppressLint("StaticFieldLeak")
@@ -25,6 +27,13 @@ object TakeKvizRepository {
                     KvizTaken(it, responseBody.student,
                        "", responseBody.osvojeniBodovi, idKviza)
                 } }
+                var db = AppDatabase.getInstance(context)
+                var accHash = db.accountDao().getHash()
+                var datum = Calendar.getInstance().time
+                val pattern = "yyyy-M-dd hh:mm:ss"
+                val simpleDateFormat = SimpleDateFormat(pattern)
+                val update = simpleDateFormat.format(datum)
+                db.accountDao().setLastUpdate(accHash, update)
                 return@withContext kvizTaken
             }
         }

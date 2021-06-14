@@ -28,7 +28,6 @@ object KvizRepository {
         return withContext(Dispatchers.IO) {
             var db = AppDatabase.getInstance(KvizRepository.context)
             var datum = Calendar.getInstance().time.year.toString() + "-" +  Calendar.getInstance().time.month.toString() + "-" +  Calendar.getInstance().time.day.toString()
-            println(datum)
             var kvizovi = db.kvizDao().getFuture(datum)
             return@withContext kvizovi
         }

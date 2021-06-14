@@ -5,6 +5,8 @@ import android.content.Context
 import ba.etf.rma21.projekat.data.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -23,16 +25,20 @@ object AccountRepository {
              return withContext(Dispatchers.IO) {
                  var db = AppDatabase.getInstance(context)
                  var hashDB = db.accountDao().getHash()
-                 if(accHash != hashDB) {
-                     db.accountDao().izbrisiSve()
-                     db.grupaDao().izbrisiSve()
-                     db.kvizDao().izbrisiSve()
-                     db.predmetDao().izbrisiSve()
-                     db.pitanjeDao().izbrisiSve()
-                     db.odgovorDao().izbrisiSve()
-                     db.accountDao().upisi(accHash, Calendar.getInstance().time.toString())
-                 }
-                 acHash = accHash
+                if(accHash != hashDB) {
+                    db.accountDao().izbrisiSve()
+                    db.grupaDao().izbrisiSve()
+                    db.kvizDao().izbrisiSve()
+                    db.predmetDao().izbrisiSve()
+                    db.pitanjeDao().izbrisiSve()
+                    db.odgovorDao().izbrisiSve()
+                    var datum = Calendar.getInstance().time
+                    val pattern = "yyyy-M-dd hh:mm:ss"
+                    val simpleDateFormat = SimpleDateFormat(pattern)
+                    val update = simpleDateFormat.format(datum)
+                    db.accountDao().upisi(accHash, update)
+                    acHash = accHash
+                }
                  return@withContext true
              }
         }

@@ -14,16 +14,14 @@ class DBRepository {
         suspend fun updateNow(): Boolean? {
             return withContext(Dispatchers.IO) {
                 var db = AppDatabase.getInstance(context)
-                    var acHash = db.accountDao().getHash()
-                    var lastUpdate = db.accountDao().getLastUpdate()
-                    var responseBody = ApiAdapter.retrofit.update(acHash, lastUpdate).body()
-                if(responseBody?.message?.contains("Ne postoji account") == true)
+                var acHash = db.accountDao().getHash()
+                var lastUpdate = db.accountDao().getLastUpdate()
+                var responseBody = ApiAdapter.retrofit.update(acHash, "011").body()
+                if (responseBody?.message != null)
                     return@withContext false
-                else {
                     var ima = responseBody?.changed.toString()
                     return@withContext ima == "true"
                 }
             }
         }
     }
-}

@@ -256,7 +256,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                     context = requireContext()
                 )
             }
-            delay(500)
+            delay(1000)
             percentage = kvizListViewModel.bodovi.value!!.toInt()
             var bundle1 = this@FragmentPokusaj.arguments
             nazivKviza = bundle1?.getString("naziv").toString()

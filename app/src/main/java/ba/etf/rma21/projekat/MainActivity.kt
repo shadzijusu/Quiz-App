@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.data.repositories.AccountRepository
+import ba.etf.rma21.projekat.data.repositories.TakeKvizRepository
 
 import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPredmeti
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.selectedItemId = R.id.kvizovi
         kvizoviFragment = FragmentKvizovi.newInstance()
         openFragment(kvizoviFragment)
+        TakeKvizRepository.setContext(applicationContext)
 
     }
 

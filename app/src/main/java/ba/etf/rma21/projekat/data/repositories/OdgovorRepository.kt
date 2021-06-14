@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
@@ -100,6 +101,12 @@ object OdgovorRepository {
             }
                 var percentage = (bodovi * 100).toInt()
                  db.kvizDao().dodajBodove(percentage, kvizId)
+            var accHash = db.accountDao().getHash()
+            var datum = Calendar.getInstance().time
+            val pattern = "yyyy-M-dd hh:mm:ss"
+            val simpleDateFormat = SimpleDateFormat(pattern)
+            val update = simpleDateFormat.format(datum)
+            db.accountDao().setLastUpdate(accHash, update)
             if(pitanje != idPitanje)
                 db.odgovorDao().dodajOdgovor(Random.nextInt(), odgovor, idPitanje, kvizId, idKvizTaken, percentage)
             return@withContext percentage
@@ -122,10 +129,12 @@ object OdgovorRepository {
                     }
                 }
             if(greska == 0) {
-                var datumRada = Calendar.getInstance().time.toString()
-                db.kvizDao().predaj(idKviz, datumRada)
+                var datum = Calendar.getInstance().time
+                val pattern = "yyyy-M-dd hh:mm:ss"
+                val simpleDateFormat = SimpleDateFormat(pattern)
+                val update = simpleDateFormat.format(datum)
+                db.kvizDao().predaj(idKviz, update)
             }
-
         }
     }
 //    suspend fun postaviOdgovorKviz(idKvizTaken: Int, idPitanje: Int, odgovor: Int): Int? {

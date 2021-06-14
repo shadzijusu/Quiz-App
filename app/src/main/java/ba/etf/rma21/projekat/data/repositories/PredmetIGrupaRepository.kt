@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
@@ -18,6 +19,7 @@ object PredmetIGrupaRepository {
     private lateinit var context: Context
     fun setContext(_context:Context){
         context=_context
+        TakeKvizRepository.setContext(context)
     }
     suspend fun getPredmeti(): List<Predmet>? {
         return withContext(Dispatchers.IO) {
@@ -61,10 +63,12 @@ object PredmetIGrupaRepository {
                 db.grupaDao().upisiUGrupu(idGrupa, grupa.naziv, grupa.PredmetId)
 
                 AccountRepository.setContext(context)
-                db.accountDao().setLastUpdate(
-                    db.accountDao().getHash(),
-                    (Calendar.getInstance().time.toString())
-                )
+                var accHash = db.accountDao().getHash()
+                var datum = Calendar.getInstance().time
+                val pattern = "yyyy-M-dd hh:mm:ss"
+                val simpleDateFormat = SimpleDateFormat(pattern)
+                val update = simpleDateFormat.format(datum)
+                db.accountDao().setLastUpdate(accHash, update)
             }
             //predmet
             if(grupa != null) {
