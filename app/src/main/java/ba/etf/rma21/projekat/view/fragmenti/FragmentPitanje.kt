@@ -70,7 +70,6 @@ class FragmentPitanje() : Fragment() {
             launch {
                 odgovorViewModel.getOdgovoriDB(
                     idKvizTaken = idKvizTaken,
-                    idKviza = idKviza,
                     context = requireContext()
                 )
             }
@@ -189,7 +188,7 @@ class FragmentPitanje() : Fragment() {
                             context = requireContext()
                         )
                     }
-                    delay(1000)
+                    delay(2000)
                     dbViewModel.update(
                         onSuccess = ::onSuccessUpdate,
                         onError = ::onError,

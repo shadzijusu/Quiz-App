@@ -63,13 +63,12 @@ class OdgovorViewModel {
     }
     fun getOdgovoriDB(
         idKvizTaken: Int,
-        idKviza : Int,
         context: Context
     ) {
         scope.launch {
             // Make the network call and suspend execution until it finishes
             OdgovorRepository.setContext(context)
-            val result = OdgovorRepository.getOdgovoriKvizDB(idKviza, idKvizTaken)
+            val result = OdgovorRepository.getOdgovoriKvizDB(idKvizTaken)
 
                     odgovoriDB.postValue(result!!)
 

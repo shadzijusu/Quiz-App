@@ -37,10 +37,10 @@ object OdgovorRepository {
             return@withContext responseBody
         }
     }
-    suspend fun getOdgovoriKvizDB(idKviza : Int, idKvizTaken: Int): List<Odgovor>? {
+    suspend fun getOdgovoriKvizDB(idKvizTaken: Int): List<Odgovor>? {
         return withContext(Dispatchers.IO) {
             var db = AppDatabase.getInstance(context)
-            var odgovori = db.odgovorDao().getOdgovore(idKviza, idKvizTaken)
+            var odgovori = db.odgovorDao().getOdgovore(idKvizTaken)
             return@withContext odgovori
         }
     }
@@ -74,7 +74,7 @@ object OdgovorRepository {
             if(idKvizTaken != 0) {
                 var odgovori = listOf<Odgovor>()
                 launch {
-                    odgovori = db.odgovorDao().getOdgovore(kvizId, idKvizTaken)
+                    odgovori = db.odgovorDao().getOdgovore(idKvizTaken)
                 }
                 delay(1000)
                 var brojTacnih = 0
@@ -99,7 +99,7 @@ object OdgovorRepository {
                 bodovi = brojTacnih.toFloat() / pitanja.size.toFloat()
             }
                 var percentage = (bodovi * 100).toInt()
-            db.kvizDao().dodajBodove(percentage, kvizId)
+                 db.kvizDao().dodajBodove(percentage, kvizId)
             if(pitanje != idPitanje)
                 db.odgovorDao().dodajOdgovor(Random.nextInt(), odgovor, idPitanje, kvizId, idKvizTaken, percentage)
             return@withContext percentage

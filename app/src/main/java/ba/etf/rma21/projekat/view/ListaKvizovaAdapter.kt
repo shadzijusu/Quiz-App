@@ -147,8 +147,16 @@ class ListaKvizovaAdapter(
                 }
                 delay(1000)
                 var zapoceti = 0
-                if (kvizITakenId.containsKey(kvizovi[position].id)) {
-                    zapoceti = kvizITakenId[kvizovi[position].id]!!
+                launch(Dispatchers.IO) {
+                    kvizTakenViewModel.getTakenId(
+                        idKviza = kvizovi[position].id,
+                        context = context
+
+                    )
+                }
+                delay(100)
+                if(kvizTakenViewModel.zapocetId.value != 0) {
+                    zapoceti = kvizTakenViewModel.zapocetId.value!!
                 } else {
                     launch(Dispatchers.IO) {
                         kvizTakenViewModel.zapocniKviz(
@@ -159,7 +167,14 @@ class ListaKvizovaAdapter(
                     }
                     delay(1000)
                     zapoceti = kvizTakenViewModel.zapoceti.value?.id!!
-                    kvizITakenId.put(kvizovi[position].id, zapoceti)
+                    launch(Dispatchers.IO) {
+                        kvizTakenViewModel.zapocni(
+                            zapoceti,
+                            idKviza = kvizovi[position].id,
+                            context = context
+                        )
+                    }
+                    delay(500)
                 }
 
                 var bundle = Bundle()
@@ -238,10 +253,10 @@ class ListaKvizovaAdapter(
                     //Mon Jun 14 06 06:25:27 GMT+02:00 2021
 
                     holder.datumKviza.text =
-                        kvizovi[position].datumRada?.substring(30) + "-" + kvizovi[position].datumRada?.substring(
+                        kvizovi[position].datumRada?.substring(30) + "-" + (kvizovi[position].datumRada?.substring(
                             11,
                             13
-                        ) + "-" + kvizovi[position].datumRada?.substring(8, 10)
+                        )?.toInt()?.minus(1)).toString() + "-" + kvizovi[position].datumRada?.substring(8, 10)
 
                 } else {
                     if (boja == "zuta")

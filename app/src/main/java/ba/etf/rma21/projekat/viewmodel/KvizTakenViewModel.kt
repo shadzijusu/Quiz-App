@@ -1,9 +1,11 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.data.repositories.DBRepository
 import ba.etf.rma21.projekat.data.repositories.KvizRepository
 import ba.etf.rma21.projekat.data.repositories.TakeKvizRepository
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +20,8 @@ class KvizTakenViewModel {
     var kvizovi = MutableLiveData<List<KvizTaken>?>()
     var zapoceti = MutableLiveData<KvizTaken>()
     var quizzess = MutableLiveData<List<Kviz>>()
+    var zapocetId = MutableLiveData<Int>()
+
     fun zapocniKviz( onSuccess: (kvizTaken: KvizTaken) -> Unit,
                      onError: () -> Unit, idKviza : Int){
         // Create a new coroutine on the UI thread
@@ -29,7 +33,7 @@ class KvizTakenViewModel {
             when (result) {
                 is KvizTaken -> {
                     onSuccess.invoke(result)
-                    zapoceti.postValue(result)
+                    zapoceti.postValue(result!!)
                 }
                 else-> onError.invoke()
             }
@@ -68,7 +72,7 @@ class KvizTakenViewModel {
                                 for (taken in kvizoviTaken) {
                                     if (taken.KvizId == kviz.id) {
                                         kviz.datumRada = taken.datumRada
-                                        kviz.osvojeniBodovi = taken.osvojeniBodovi
+                                        kviz.osvojeniBodovi = taken.osvojeniBodovi!!
                                         if(!uradjeni.contains(kviz))
                                         uradjeni.add(kviz)
                                         break
@@ -82,6 +86,21 @@ class KvizTakenViewModel {
                 }
                 else-> onError.invoke()
             }
+        }
+    }
+    fun zapocni(id : Int, idKviza: Int, context : Context
+    ) {
+        scope.launch {
+            TakeKvizRepository.setContext(context)
+            TakeKvizRepository.zapocniDB(id, idKviza)
+
+        }
+    }
+    fun getTakenId(idKviza: Int, context: Context) {
+        scope.launch {
+            TakeKvizRepository.setContext(context)
+            val result = TakeKvizRepository.getKvizTakenId(idKviza)
+            zapocetId.postValue(result)
         }
     }
 }

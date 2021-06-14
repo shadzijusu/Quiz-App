@@ -77,7 +77,6 @@ class FragmentPokusaj() : Fragment(), Serializable {
             when (item.itemId) {
                 R.id.predajKviz -> {
                     navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
-                    klikPredaj.put(idKviza, true)
                     odgovorListViewModel.predaj(
                         idKviza = idKviza,
                         context = requireContext()
@@ -118,11 +117,10 @@ class FragmentPokusaj() : Fragment(), Serializable {
             launch {
                 odgovorListViewModel.getOdgovoriDB(
                     idKvizTaken = idKvizTaken,
-                    idKviza = idKviza,
                     context = requireContext()
                 )
             }
-            delay(1000)
+            delay(500)
             var ima = false
             var odgovori = odgovorListViewModel.odgovoriDB.value
             if (odgovori != null) {
@@ -137,7 +135,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                         context = requireContext()
                     )
                 }
-                delay(1000)
+                delay(500)
                 var questions = pitanjeKvizListViewModel.pitanjaDB.value
                 if (odgovori != null) {
                     for(odgovor in odgovori) {
@@ -172,9 +170,18 @@ class FragmentPokusaj() : Fragment(), Serializable {
                         }
                     }
                 }
+
+                  launch {
+                      kvizListViewModel.isPredan(
+                          kvizId = idKviza,
+                          context = requireContext()
+                      )
+                  }
+                delay(500)
+                var isPredan = kvizListViewModel.predan.value
                 val refresh2 = Handler(Looper.getMainLooper())
                 refresh2.post {
-                    if (klikPredaj[idKviza] == true) {
+                    if (isPredan!!) {
                         navigacijaPitanja.menu.add(
                             0,
                             navigacijaPitanja.size,
@@ -229,6 +236,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
         if (poruka1 != null) {
             idKviza = poruka1
         }
+
         navigacijaPitanja.setNavigationItemSelectedListener(mOnNavigationViewItemSelectedListener)
         mOnNavigationViewItemSelectedListener.onNavigationItemSelected(
             navigacijaPitanja.menu.getItem(
@@ -281,9 +289,6 @@ class FragmentPokusaj() : Fragment(), Serializable {
     }
 
 
-    companion object {
-        @JvmStatic var klikPredaj = hashMapOf<Int, Boolean>()
-    }
 
     constructor(pitanja: List<Pitanje>) : this() {
         if (pitanja.isNotEmpty()) {
@@ -294,27 +299,22 @@ class FragmentPokusaj() : Fragment(), Serializable {
     }
 
     fun onError() {
-        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccessTaken(kvizTaken: List<KvizTaken>) {
-        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccessOdgovori(odgovori: List<Odgovor>) {
-        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccessPitanja(pitanja: List<Pitanje>) {
-        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
     fun onSuccessKvizovi(kvizovi: List<Kviz>) {
-        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
 }

@@ -9,7 +9,7 @@ import ba.etf.rma21.projekat.data.models.*
 
 
 @Database(entities = arrayOf(Kviz::class, Pitanje::class,
-    Odgovor::class, Grupa::class, Predmet::class,Account::class), version = 5)
+    Odgovor::class, Grupa::class, Predmet::class,Account::class, KvizTaken::class), version = 6)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun accountDao(): AccountDao
     abstract fun kvizDao(): KvizDao
@@ -17,6 +17,7 @@ abstract class AppDatabase: RoomDatabase() {
     abstract fun predmetDao(): PredmetDao
     abstract fun pitanjeDao(): PitanjeDao
     abstract fun odgovorDao(): OdgovorDao
+    abstract fun kvizTakenDao() : KvizTakenDao
     companion object {
         private var INSTANCE: AppDatabase? = null
         fun getInstance(context: Context): AppDatabase {
