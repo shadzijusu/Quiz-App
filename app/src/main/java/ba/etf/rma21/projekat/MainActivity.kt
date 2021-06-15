@@ -86,10 +86,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         bottomNavigation.selectedItemId = R.id.kvizovi
-//        val intent = getIntent()
-//        println(intent.extras)
-//        val data: Uri? = intent.data
-//            println("deeplinkingcallback   :- $data")
 
     }
     fun onSuccess(uspjesno:Boolean){
@@ -97,8 +93,6 @@ class MainActivity : AppCompatActivity() {
         toast.show()
     }
     fun onError() {
-        val toast = Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT)
-        toast.show()
     }
 }
 
