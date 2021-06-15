@@ -54,7 +54,7 @@ class OdgovorViewModel {
             when (result) {
                 is List<Odgovor> -> {
                     onSuccess.invoke(result)
-                    odgovori.postValue(result!!)
+                    odgovori.postValue(result)
                 }
                 else -> onError.invoke()
             }

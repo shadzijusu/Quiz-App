@@ -51,7 +51,7 @@ class PitanjeKvizListViewModel {
             when (result) {
                 is List<Pitanje> -> {
                     onSuccess.invoke(result)
-                    pitanja.postValue(result!!)
+                    pitanja.postValue(result)
                 }
                 else -> onError.invoke()
             }

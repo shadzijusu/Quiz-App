@@ -140,12 +140,10 @@ class FragmentKvizovi : Fragment() {
     }
 
     fun onSuccessZapoceti(kvizovi: List<KvizTaken>) {
-        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onError() {
-        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 }

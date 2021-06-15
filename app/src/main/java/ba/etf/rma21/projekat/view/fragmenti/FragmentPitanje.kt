@@ -189,7 +189,7 @@ class FragmentPitanje() : Fragment() {
                             context = requireContext()
                         )
                     }
-                    delay(2000)
+                    delay(1000)
                     dbViewModel.update(
                         onSuccess = ::onSuccessUpdate,
                         onError = ::onError,
@@ -230,32 +230,26 @@ class FragmentPitanje() : Fragment() {
     }
 
     fun onSuccess(bodovi: Int) {
-        val toast = Toast.makeText(context, "Kvizovi pronađeni", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onError() {
-        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccessTaken(kvizTaken: List<KvizTaken>) {
-        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccessOdgovori(odgovori: List<Odgovor>) {
-        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccessPitanja(pitanja: List<Pitanje>) {
-        val toast = Toast.makeText(context, "Tražim", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccessUpdate(upis: Boolean) {
-        val toast = Toast.makeText(context, "Update", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 }

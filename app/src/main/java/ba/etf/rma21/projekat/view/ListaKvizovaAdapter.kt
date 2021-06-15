@@ -15,10 +15,7 @@ import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.*
 import ba.etf.rma21.projekat.view.fragmenti.FragmentKvizovi
 import ba.etf.rma21.projekat.view.fragmenti.FragmentPokusaj
-import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
-import ba.etf.rma21.projekat.viewmodel.KvizTakenViewModel
-import ba.etf.rma21.projekat.viewmodel.PitanjeKvizListViewModel
-import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
+import ba.etf.rma21.projekat.viewmodel.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -37,6 +34,7 @@ class ListaKvizovaAdapter(
     private val kvizListViewModel = KvizListViewModel()
     private val predmetListViewModel = PredmetListViewModel()
     private var kvizTakenViewModel = KvizTakenViewModel()
+    private var accountViewModel = AccountViewModel()
     private lateinit var context: Context
     private lateinit var grupe: List<Grupa>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
@@ -52,6 +50,9 @@ class ListaKvizovaAdapter(
 
 
     override fun onBindViewHolder(holder: ListaKvizovaAdapter.KvizViewHolder, position: Int) {
+        accountViewModel.setLastUpdate(
+            context
+        )
         var grupe = arrayListOf<Grupa>()
         GlobalScope.launch(Dispatchers.IO) {
             launch {
@@ -166,6 +167,7 @@ class ListaKvizovaAdapter(
                         )
                     }
                     delay(1000)
+
                     zapoceti = kvizTakenViewModel.zapoceti.value?.id!!
                     launch(Dispatchers.IO) {
                         kvizTakenViewModel.zapocni(
@@ -250,14 +252,7 @@ class ListaKvizovaAdapter(
                 if (kvizovi[position].predan) {
                     holder.stanjeKviza.setImageResource(R.drawable.plava)
                     holder.osvojeniBodovi.text = kvizovi[position].osvojeniBodovi.toString()
-                    //Mon Jun 14 06 06:25:27 GMT+02:00 2021
-
-                    holder.datumKviza.text =
-                        kvizovi[position].datumRada?.substring(30) + "-" + (kvizovi[position].datumRada?.substring(
-                            11,
-                            13
-                        )?.toInt()?.minus(1)).toString() + "-" + kvizovi[position].datumRada?.substring(8, 10)
-
+                    holder.datumKviza.text = kvizovi[position].datumRada
                 } else {
                     if (boja == "zuta")
                         holder.stanjeKviza.setImageResource(R.drawable.zuta)

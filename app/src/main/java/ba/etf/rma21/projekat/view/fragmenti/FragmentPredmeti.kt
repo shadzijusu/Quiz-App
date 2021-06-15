@@ -288,24 +288,12 @@ class FragmentPredmeti : Fragment() {
         odabirGodina.setSelection(preferenceManger?.selection!!)
     }
 
-    fun searchDone(predmeti: List<Predmet>) {
-        val toast = Toast.makeText(context, "Search done", Toast.LENGTH_SHORT)
-        toast.show()
-    }
-
-    fun searchDoneGrupe(grupe: List<Grupa>) {
-        val toast = Toast.makeText(context, "Search done", Toast.LENGTH_SHORT)
-        toast.show()
-    }
 
     fun onSuccessGrupe(grupe: List<Grupa>) {
-        val toast = Toast.makeText(context, "Grupe pronađene", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccess(predmeti: List<Predmet>) {
-        val toast = Toast.makeText(context, "Predmeti pronađeni", Toast.LENGTH_SHORT)
-        toast.show()
     }
 
     fun onError() {
@@ -314,12 +302,11 @@ class FragmentPredmeti : Fragment() {
     }
 
     fun onSuccessUpis(upis: Boolean) {
-        val toast = Toast.makeText(context, "Upisan", Toast.LENGTH_SHORT)
-        toast.show()
+
     }
 
     fun onSuccessUpdate(upis: Boolean) {
-        val toast = Toast.makeText(context, "Update", Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context, "Updating", Toast.LENGTH_SHORT)
         toast.show()
     }
 }

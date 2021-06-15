@@ -33,7 +33,7 @@ class KvizTakenViewModel {
             when (result) {
                 is KvizTaken -> {
                     onSuccess.invoke(result)
-                    zapoceti.postValue(result!!)
+                    zapoceti.postValue(result)
                 }
                 else-> onError.invoke()
             }

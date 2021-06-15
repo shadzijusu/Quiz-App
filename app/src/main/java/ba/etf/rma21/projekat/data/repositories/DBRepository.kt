@@ -16,10 +16,11 @@ class DBRepository {
                 var db = AppDatabase.getInstance(context)
                 var acHash = db.accountDao().getHash()
                 var lastUpdate = db.accountDao().getLastUpdate()
-                var responseBody = ApiAdapter.retrofit.update(acHash, "011").body()
+                var responseBody = ApiAdapter.retrofit.update(acHash, lastUpdate).body()
                 if (responseBody?.message != null)
                     return@withContext false
-                    var ima = responseBody?.changed.toString()
+
+                var ima = responseBody?.changed.toString()
                     return@withContext ima == "true"
                 }
             }

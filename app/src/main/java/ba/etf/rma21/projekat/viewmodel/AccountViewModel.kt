@@ -21,4 +21,10 @@ class AccountViewModel {
             }
         }
     }
+    fun setLastUpdate(context : Context) {
+        scope.launch{
+            AccountRepository.setContext(context)
+            val result = AccountRepository.setLastUpdate()
+        }
+    }
 }

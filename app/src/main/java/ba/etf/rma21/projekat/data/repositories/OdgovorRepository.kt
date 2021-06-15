@@ -68,7 +68,7 @@ object OdgovorRepository {
             if(kvizId != 0) {
                 PitanjeKvizRepository.setContext(context)
                 launch {
-                    pitanja = PitanjeKvizRepository.getPitanjaDB(kvizId)!!
+                    pitanja = PitanjeKvizRepository.getPitanjaDB(kvizId)
                 }
                 delay(1000)
             }
@@ -102,11 +102,13 @@ object OdgovorRepository {
                 var percentage = (bodovi * 100).toInt()
                  db.kvizDao().dodajBodove(percentage, kvizId)
             var accHash = db.accountDao().getHash()
-            var datum = Calendar.getInstance().time
-            val pattern = "yyyy-M-dd hh:mm:ss"
+            var datum = Calendar.getInstance()
+            datum.add(Calendar.DATE, -1);
+            val pattern = "yyyy-MM-dd'T'hh:mm:ss"
             val simpleDateFormat = SimpleDateFormat(pattern)
-            val update = simpleDateFormat.format(datum)
+            val update = simpleDateFormat.format(datum.time)
             db.accountDao().setLastUpdate(accHash, update)
+            delay(500)
             if(pitanje != idPitanje)
                 db.odgovorDao().dodajOdgovor(Random.nextInt(), odgovor, idPitanje, kvizId, idKvizTaken, percentage)
             return@withContext percentage
@@ -129,10 +131,11 @@ object OdgovorRepository {
                     }
                 }
             if(greska == 0) {
-                var datum = Calendar.getInstance().time
-                val pattern = "yyyy-M-dd hh:mm:ss"
+                var datum = Calendar.getInstance()
+                datum.add(Calendar.DATE, -1);
+                val pattern = "yyyy-MM-dd'T'hh:mm:ss"
                 val simpleDateFormat = SimpleDateFormat(pattern)
-                val update = simpleDateFormat.format(datum)
+                val update = simpleDateFormat.format(datum.time)
                 db.kvizDao().predaj(idKviz, update)
             }
         }

@@ -48,7 +48,7 @@ class KvizListViewModel {
             val result = KvizRepository.getDone()
             when (result) {
                 is List<*> -> {
-                    onSuccess.invoke(result as List<Kviz>)
+                    onSuccess.invoke(result)
                 }
                 else -> onError.invoke()
             }
@@ -69,7 +69,7 @@ class KvizListViewModel {
         scope.launch {
             KvizRepository.setContext(context)
             val result = KvizRepository.getBodove(kvizId)
-            bodovi.postValue(result!!)
+            bodovi.postValue(result)
 
         }
     }
@@ -85,7 +85,7 @@ class KvizListViewModel {
             when (result) {
                 is List<Kviz> -> {
                     onSuccess.invoke(result)
-                    kvizovi.postValue(result!!)
+                    kvizovi.postValue(result)
                 }
                 else-> onError.invoke()
             }
@@ -129,7 +129,7 @@ class KvizListViewModel {
             when (result) {
                 is List<Kviz> -> {
                     onSuccess.invoke(result)
-                    kvizoviZaGrupu.postValue(result!!)
+                    kvizoviZaGrupu.postValue(result)
                 }
                 else-> onError.invoke()
             }
@@ -145,7 +145,7 @@ class KvizListViewModel {
             when (result) {
                 is List<Grupa> -> {
                     onSuccess.invoke(result)
-                    dostupne.postValue(result!!)
+                    dostupne.postValue(result)
                 }
                 else-> onError.invoke()
             }
@@ -164,7 +164,7 @@ class KvizListViewModel {
                 when (result) {
                     is List<Kviz> -> {
                         onSuccess.invoke(result)
-                        future.postValue(result!!)
+                        future.postValue(result)
                     }
                     else-> onError.invoke()
                 }
@@ -182,7 +182,7 @@ class KvizListViewModel {
             when (result) {
                 is List<Kviz> -> {
                     onSuccess.invoke(result)
-                    notTaken.postValue(result!!)
+                    notTaken.postValue(result)
                 }
                 else-> onError.invoke()
             }

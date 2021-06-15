@@ -77,14 +77,14 @@ class FragmentPokusaj() : Fragment(), Serializable {
             when (item.itemId) {
                 R.id.predajKviz -> {
                     navigacijaPitanja.menu.add(0, itemId, NONE, "Rezultat")
-                    odgovorListViewModel.predaj(
-                        idKviza = idKviza,
-                        context = requireContext()
-                    )
 
-                    val porukaFragment =
-                        FragmentPoruka.newInstance()
-                    otvoriPoruku(porukaFragment)
+                            odgovorListViewModel.predaj(
+                                idKviza = idKviza,
+                                context = requireContext()
+                            )
+                        val porukaFragment =
+                            FragmentPoruka.newInstance()
+                        otvoriPoruku(porukaFragment)
 
                     return@OnNavigationItemSelectedListener true
                 }
@@ -256,7 +256,7 @@ class FragmentPokusaj() : Fragment(), Serializable {
                     context = requireContext()
                 )
             }
-            delay(1000)
+            delay(2000)
             percentage = kvizListViewModel.bodovi.value!!.toInt()
             var bundle1 = this@FragmentPokusaj.arguments
             nazivKviza = bundle1?.getString("naziv").toString()
