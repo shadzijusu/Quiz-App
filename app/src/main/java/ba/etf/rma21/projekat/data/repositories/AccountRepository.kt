@@ -24,20 +24,16 @@ object AccountRepository {
         return withContext(Dispatchers.IO) {
             var db = AppDatabase.getInstance(context)
             var hashDB = db.accountDao().getHash()
+            if(accHash != hashDB) {
                 db.accountDao().izbrisiSve()
                 db.grupaDao().izbrisiSve()
                 db.kvizDao().izbrisiSve()
                 db.predmetDao().izbrisiSve()
                 db.pitanjeDao().izbrisiSve()
                 db.odgovorDao().izbrisiSve()
-//                var datum = Calendar.getInstance()
-//                datum.add(Calendar.DATE, -1);
-//                val pattern = "yyyy-MM-dd'T'hh:mm:ss"
-//                val simpleDateFormat = SimpleDateFormat(pattern)
-//                val update = simpleDateFormat.format(datum.time)
-                val update = Date(0,0,0)
+                val update = Date(0, 0, 0)
                 db.accountDao().upisi(accHash, update.toString())
-
+            }
             return@withContext true
         }
     }
@@ -50,8 +46,7 @@ object AccountRepository {
         return withContext(Dispatchers.IO) {
             var db = AppDatabase.getInstance(context)
             var accHash = db.accountDao().getHash()
-            var datum = Calendar.getInstance()
-            datum.add(Calendar.DATE, -1);
+            var datum = Date()
             val pattern = "yyyy-MM-dd'T'hh:mm:ss"
             val simpleDateFormat = SimpleDateFormat(pattern)
             val update = simpleDateFormat.format(datum.time)

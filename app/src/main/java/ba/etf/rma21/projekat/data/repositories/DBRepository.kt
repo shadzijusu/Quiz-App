@@ -17,9 +17,6 @@ class DBRepository {
                 var acHash = db.accountDao().getHash()
                 var lastUpdate = db.accountDao().getLastUpdate()
                 var responseBody = ApiAdapter.retrofit.update(acHash, lastUpdate).body()
-                if (responseBody?.message != null)
-                    return@withContext false
-
                 var ima = responseBody?.changed.toString()
                     return@withContext ima == "true"
                 }

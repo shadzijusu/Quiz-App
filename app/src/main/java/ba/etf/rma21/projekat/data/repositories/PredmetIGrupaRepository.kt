@@ -64,8 +64,7 @@ object PredmetIGrupaRepository {
 
                 AccountRepository.setContext(context)
                 var accHash = db.accountDao().getHash()
-                var datum = Calendar.getInstance()
-                datum.add(Calendar.DATE, -1);
+                var datum = Date()
                 val pattern = "yyyy-MM-dd'T'hh:mm:ss"
                 val simpleDateFormat = SimpleDateFormat(pattern)
                 val update = simpleDateFormat.format(datum.time)

@@ -102,8 +102,7 @@ object OdgovorRepository {
                 var percentage = (bodovi * 100).toInt()
                  db.kvizDao().dodajBodove(percentage, kvizId)
             var accHash = db.accountDao().getHash()
-            var datum = Calendar.getInstance()
-            datum.add(Calendar.DATE, -1);
+            var datum = Date()
             val pattern = "yyyy-MM-dd'T'hh:mm:ss"
             val simpleDateFormat = SimpleDateFormat(pattern)
             val update = simpleDateFormat.format(datum.time)
@@ -131,8 +130,7 @@ object OdgovorRepository {
                     }
                 }
             if(greska == 0) {
-                var datum = Calendar.getInstance()
-                datum.add(Calendar.DATE, -1);
+                var datum = Date()
                 val pattern = "yyyy-MM-dd'T'hh:mm:ss"
                 val simpleDateFormat = SimpleDateFormat(pattern)
                 val update = simpleDateFormat.format(datum.time)
